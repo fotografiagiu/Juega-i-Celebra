@@ -57,7 +57,7 @@ const App: React.FC = () => {
       </main>
 
       <Footer />
-      <ChatAssistant />
+     {/* <ChatAssistant /> */}
     </div>
   );
 };
