@@ -1,31 +1,26 @@
 import React, { useEffect, useState } from "react";
-
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Services from "./components/Services";
-import BookingCalendar from "./components/BookingCalendar";
 import Features from "./components/Features";
 import Gallery from "./components/Gallery";
 import Pricing from "./components/Pricing";
 import Testimonials from "./components/Testimonials";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import ChatAssistant from "./components/ChatAssistant";
+import BookingCalendar from "./components/BookingCalendar";
 
-const App: React.FC = () => {
+// OJO: de momento NO montamos ChatAssistant
+// import ChatAssistant from "./components/ChatAssistant";
+
+export default function App() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -67,9 +62,9 @@ const App: React.FC = () => {
       </main>
 
       <Footer />
-      <ChatAssistant />
+
+      {/* NO por ahora */}
+      {/* <ChatAssistant /> */}
     </div>
   );
-};
-
-export default App;
+}
