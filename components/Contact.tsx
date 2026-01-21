@@ -69,7 +69,7 @@ const Contact: React.FC = () => {
               <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-2xl">📞</div>
               <div>
                 <p className="font-bold text-lg">Telèfon</p>
-                <p className="text-blue-100">+34 699 106 393</p>
+                <p className="text-blue-100">+34 669 106 393</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
