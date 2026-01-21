@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ca">
   <head>
@@ -12,7 +11,7 @@
       rel="stylesheet"
     />
 
-    <!-- Tailwind via CDN (válido aunque luego lo pases a config) -->
+    <!-- Tailwind CDN (válido mientras no uses config propia) -->
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
@@ -46,9 +45,8 @@
   <body>
     <div id="root"></div>
 
-    <!-- 🔴 ESTO ES LO QUE TE FALTABA -->
-    <!-- Arranque de Vite + React -->
+    <!-- 🔥 ESTO ES LO IMPORTANTE -->
+    <!-- Vite SOLO MONTA REACT DESDE AQUÍ -->
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
-
