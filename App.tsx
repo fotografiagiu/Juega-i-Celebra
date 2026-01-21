@@ -8,7 +8,6 @@ import Gallery from './components/Gallery';
 import Pricing from './components/Pricing';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import ChatAssistant from './components/ChatAssistant';
 import BookingCalendar from './components/BookingCalendar';
 
 const App: React.FC = () => {
@@ -57,7 +56,6 @@ const App: React.FC = () => {
       </main>
 
       <Footer />
-     {/* <ChatAssistant /> */}
     </div>
   );
 };
