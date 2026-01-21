@@ -2,26 +2,26 @@
 import React, { useState } from 'react';
 
 const images = [
-  '/galeria/Galeria1.jpeg',
-  '/galeria/Galeria2.jpeg',
-  '/galeria/Galeria3.jpeg',
-  '/galeria/Galeria4.jpeg',
-  '/galeria/Galeria5.jpeg',
-  '/galeria/Galeria6.jpeg',
-  '/galeria/Galeria7.jpeg',
-  '/galeria/Galeria8.jpeg',
-  '/galeria/Galeria9.jpeg',
-  '/galeria/Galeria10.jpeg',
-  '/galeria/Galeria11.jpeg',
-  '/galeria/Galeria12.jpeg',
-  '/galeria/Galeria13.jpeg',
-  '/galeria/Galeria14.jpeg',
-  '/galeria/Galeria15.jpeg',
-  '/galeria/Galeria16.jpeg',
-  '/galeria/Galeria17.jpeg',
-  '/galeria/Galeria18.jpeg',
-  '/galeria/Galeria19.jpeg',
-  '/galeria/Galeria20.jpeg',
+  '/gallery/Galeria1.jpeg',
+  '/gallery/Galeria2.jpeg',
+  '/gallery/Galeria3.jpeg',
+  '/gallery/Galeria4.jpeg',
+  '/gallery/Galeria5.jpeg',
+  '/gallery/Galeria6.jpeg',
+  '/gallery/Galeria7.jpeg',
+  '/gallery/Galeria8.jpeg',
+  '/gallery/Galeria9.jpeg',
+  '/gallery/Galeria10.jpeg',
+  '/gallery/Galeria11.jpeg',
+  '/gallery/Galeria12.jpeg',
+  '/gallery/Galeria13.jpeg',
+  '/gallery/Galeria14.jpeg',
+  '/gallery/Galeria15.jpeg',
+  '/gallery/Galeria16.jpeg',
+  '/gallery/Galeria17.jpeg',
+  '/gallery/Galeria18.jpeg',
+  '/gallery/Galeria19.jpeg',
+  '/gallery/Galeria20.jpeg',
 ];
 
 const Gallery: React.FC = () => {
@@ -29,8 +29,7 @@ const Gallery: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center font-['Quicksand']">
-      
-      {/* TÍTULO */}
+
       <div className="mb-16">
         <h2 className="text-5xl font-extrabold text-blue-600 mb-4 font-['Baloo_2']">
           Nuestra Selva de Bolas
@@ -41,7 +40,6 @@ const Gallery: React.FC = () => {
         </p>
       </div>
 
-      {/* GRID GALERÍA */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
         {images.map((img, idx) => (
           <div
@@ -65,24 +63,13 @@ const Gallery: React.FC = () => {
         ))}
       </div>
 
-      {/* TEXTO DESCRIPTIVO */}
-      <div className="mt-16 bg-gradient-to-br from-blue-50 via-white to-pink-50 p-10 rounded-[50px] border border-blue-100 shadow-sm">
-        <p className="text-gray-700 font-bold text-xl leading-relaxed max-w-4xl mx-auto">
-          Como puedes observar en las fotos, disponemos de{' '}
-          <span className="text-orange-500">zona de juegos multiaventura</span>, 
-          cocina equipada para tu merienda,{' '}
-          <span className="text-blue-500">baños adaptados</span> y un amplio salón para las familias.
-        </p>
-      </div>
-
-      {/* MODAL IMAGEN */}
       {selectedImg && (
         <div
-          className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-10 animate-[fadeIn_0.2s_ease-out]"
+          className="fixed inset-0 z-[200] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4 md:p-10"
           onClick={() => setSelectedImg(null)}
         >
           <button
-            className="absolute top-6 right-6 text-white text-5xl hover:scale-110 transition-transform font-light"
+            className="absolute top-6 right-6 text-white text-5xl"
             onClick={() => setSelectedImg(null)}
           >
             ×
@@ -91,7 +78,7 @@ const Gallery: React.FC = () => {
           <img
             src={selectedImg}
             alt="Detalle de la instalación"
-            className="max-w-full max-h-[90vh] rounded-3xl shadow-2xl animate-[zoomIn_0.3s_ease-out] object-contain border-4 border-white/10"
+            className="max-w-full max-h-[90vh] rounded-3xl shadow-2xl object-contain"
           />
         </div>
       )}
@@ -100,3 +87,4 @@ const Gallery: React.FC = () => {
 };
 
 export default Gallery;
+
