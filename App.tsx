@@ -60,7 +60,7 @@ export default function App() {
           </section>
         )}
 
-        {false && (
+        {true && (
           <section id="opiniones" className="py-20 bg-purple-50/30">
             <Testimonials />
           </section>
