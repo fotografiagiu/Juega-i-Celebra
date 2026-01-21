@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import Services from "./components/Services";
 
 export default function App() {
   const [scrolled, setScrolled] = useState(false);
@@ -16,7 +17,13 @@ export default function App() {
       <Navbar scrolled={scrolled} />
 
       <main>
-        <Hero />
+        <section id="inicio">
+          <Hero />
+        </section>
+
+        <section id="servicios">
+          <Services />
+        </section>
       </main>
     </div>
   );
