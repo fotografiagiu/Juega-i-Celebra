@@ -1,25 +1,27 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-// Always initialize with the apiKey from process.env.API_KEY directly
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 export const getPartyRecommendation = async (childAge: number, numChildren: number, interests: string) => {
-  const prompt = `Un pare vol celebrar un aniversari al nostre parc de boles "Juga i Celebra" situat a Algemesí. 
-  El seu fill té ${childAge} anys, vindran uns ${numChildren} nens i els agrada: ${interests}. 
-  Recomana quin dels nostres packs (Bàsic 14€ o VIP 18€) li convé més i suggereix una temàtica divertida. 
-  Respon de forma amable i entusiasta en valencià. Sigues concís.`;
+  // Always create a new instance right before making an API call to ensure latest API key is used
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  
+  const prompt = `Un padre/madre quiere celebrar un cumpleaños en nuestro parque de bolas "Juga i Celebra" situado en Algemesí. 
+  Su hijo/a tiene ${childAge} años, vendrán unos ${numChildren} niños y les gusta: ${interests}. 
+  Recomienda cuál de nuestros packs o tipos de alquiler le conviene más basándote en que tenemos:
+  - Lunes a Jueves: 80€
+  - Viernes/Tardes Finde: 150€
+  - Finde Completo: 200€
+  Sugiere una temática divertida. Responde de forma amable y entusiasta en español de España. Sé conciso.`;
 
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: [{ parts: [{ text: prompt }] }],
+      contents: prompt,
     });
-    
-    // Using .text property directly as it is a getter in GenerateContentResponse
-    return response.text || "Ho sento, no he pogut calcular la teva recomanació. Truca'ns!";
+    // Correctly access .text property
+    return response.text || "Lo siento, no he podido calcular tu recomendación. ¡Llámanos!";
   } catch (error) {
     console.error("Gemini Error:", error);
-    return "¡Oups! Alguna cosa ha fallat. Per favor, contacta amb nosaltres directament.";
+    return "¡Ups! Algo ha fallado. Por favor, contacta con nosotros directamente.";
   }
 };

@@ -12,13 +12,8 @@ const Footer: React.FC = () => {
               <span className="text-2xl font-extrabold text-blue-600">Juga <span className="text-orange-500">i</span> Celebra</span>
             </div>
             <p className="text-gray-500 max-w-sm mb-6 leading-relaxed">
-              Dedicados a crear experiencias mágicas para los más pequeños de la casa. El mejor parque de bolas de la comunidad.
+              Dedicados a crear experiencias mágicas para los más pequeños de la casa. El mejor parque de bolas de Algemesí.
             </p>
-            <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 bg-white shadow rounded-full flex items-center justify-center hover:bg-blue-500 hover:text-white transition-all">FB</a>
-              <a href="#" className="w-10 h-10 bg-white shadow rounded-full flex items-center justify-center hover:bg-pink-500 hover:text-white transition-all">IG</a>
-              <a href="#" className="w-10 h-10 bg-white shadow rounded-full flex items-center justify-center hover:bg-blue-400 hover:text-white transition-all">TW</a>
-            </div>
           </div>
           
           <div>
@@ -42,8 +37,8 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="border-t border-gray-200 pt-8 flex flex-col md:row items-center justify-between gap-4 text-gray-400 text-sm">
-          <p>© 2025 Juga i Celebra S.L. Todos los derechos reservados.</p>
-          <p>Diseñado con ❤️ por el equipo creativo.</p>
+          <p>© 2026 Juga i Celebra. Todos los derechos reservados.</p>
+          <p>Diseñado con ❤️ para la comunidad de Algemesí.</p>
         </div>
       </div>
     </footer>

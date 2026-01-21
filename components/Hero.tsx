@@ -1,115 +1,148 @@
-import React from "react";
+
+import React from 'react';
 
 const Hero: React.FC = () => {
+  const colors = {
+    orange: '#FF5722',
+    teal: '#00BFA5',
+    pink: '#E91E63',
+    purple: '#9C27B0',
+    yellow: '#FFC107',
+    green: '#4CAF50',
+    red: '#F44336'
+  };
+
+  const scrollToReservar = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const element = document.getElementById('reservar');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <div className="relative h-screen flex items-center justify-center overflow-hidden bg-black font-['Baloo_2']">
-      {/* Elementos Decorativos: Globos Gigantes con Movimiento */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Globo Naranja Izquierda - Gigante */}
-        <div className="absolute top-[10%] left-[5%] text-[180px] animate-float opacity-90 drop-shadow-[0_0_30px_rgba(255,87,34,0.4)]">
-          🎈
-        </div>
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black font-['Baloo_2']">
+      
+      {/* CAPA DE CONFETI ANIMADO */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        {[...Array(20)].map((_, i) => {
+          const size = Math.random() * 20 + 10;
+          const left = Math.random() * 100;
+          const duration = Math.random() * 10 + 5;
+          const delay = Math.random() * 5;
+          const color = Object.values(colors)[Math.floor(Math.random() * Object.values(colors).length)];
+          const shapes = ['circle', 'star', 'squiggle'];
+          const shape = shapes[Math.floor(Math.random() * shapes.length)];
 
-        {/* Globo Cian Derecha - Gigante */}
-        <div className="absolute top-[15%] right-[5%] text-[160px] animate-float-delayed opacity-90 drop-shadow-[0_0_30px_rgba(0,188,212,0.4)]">
-          🎈
-        </div>
-
-        {/* Globo Amarillo Abajo - Gigante */}
-        <div className="absolute bottom-[10%] left-[10%] text-[140px] animate-float-slow opacity-80 drop-shadow-[0_0_30px_rgba(255,235,59,0.4)]">
-          🎈
-        </div>
-
-        {/* Globo Rosa Abajo Derecha */}
-        <div className="absolute bottom-[20%] right-[12%] text-[120px] animate-float opacity-85 drop-shadow-[0_0_30px_rgba(233,30,99,0.4)]">
-          🎈
-        </div>
-
-        {/* Confeti y Formas */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 flex gap-12 opacity-80">
-          <span
-            className="text-orange-500 text-6xl animate-spin"
-            style={{ animationDuration: "5s" }}
-          >
-            ✨
-          </span>
-          <span className="text-yellow-400 text-5xl rotate-12">⭐</span>
-          <span className="text-pink-500 text-6xl -rotate-12 animate-pulse">
-            〰️
-          </span>
-        </div>
-
-        {[...Array(25)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full opacity-40 animate-pulse"
-            style={{
-              width: `${Math.random() * 15 + 8}px`,
-              height: `${Math.random() * 15 + 8}px`,
-              backgroundColor: ["#ff5722", "#00bcd4", "#4caf50", "#e91e63", "#facc15"][
-                Math.floor(Math.random() * 5)
-              ],
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-            }}
-          />
-        ))}
+          return (
+            <div 
+              key={i}
+              className="absolute animate-confetti-fall"
+              style={{
+                left: `${left}%`,
+                top: `-10%`,
+                animationDuration: `${duration}s`,
+                animationDelay: `-${delay}s`,
+                opacity: 0.6
+              }}
+            >
+              {shape === 'circle' && (
+                <div className="rounded-full" style={{ width: size/2, height: size/2, backgroundColor: color }}></div>
+              )}
+              {shape === 'star' && (
+                <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+                  <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
+                </svg>
+              )}
+              {shape === 'squiggle' && (
+                <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="3" strokeLinecap="round">
+                  <path d="M3 12c3-6 9-6 12 0s9 6 12 0" />
+                </svg>
+              )}
+            </div>
+          );
+        })}
       </div>
 
-      <div className="relative z-10 text-center px-4 max-w-7xl">
-        {/* LOGO CENTRAL (IMAGEN) */}
-        <div className="mb-6 flex flex-col items-center animate-[zoomIn_1s_ease-out]">
-          <div className="relative">
-            <img
-              src="/images/logo-jugaicelebra.jpg"
-              alt="Juga i Celebra"
-              className="mx-auto w-[280px] md:w-[520px] rounded-3xl shadow-[0_0_60px_rgba(255,255,255,0.15)]"
-            />
+      {/* GLOBOS VECTORIALES ANIMADOS */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute top-[10%] left-[5%] md:left-[15%] animate-float opacity-90">
+          <svg width="120" height="160" viewBox="0 0 100 130" className="drop-shadow-[0_0_30px_rgba(255,87,34,0.5)] scale-75 md:scale-110">
+            <ellipse cx="50" cy="45" rx="40" ry="45" fill={colors.orange} />
+            <path d="M50 90 Q50 110 40 130" stroke="white" strokeWidth="2" fill="none" opacity="0.5" />
+          </svg>
+        </div>
+        <div className="absolute top-[15%] right-[5%] md:right-[15%] animate-float-delayed opacity-90">
+          <svg width="100" height="140" viewBox="0 0 100 130" className="drop-shadow-[0_0_30px_rgba(0,191,165,0.5)] scale-75 md:scale-100">
+            <ellipse cx="50" cy="45" rx="35" ry="40" fill={colors.teal} />
+            <path d="M50 85 Q50 105 60 125" stroke="white" strokeWidth="2" fill="none" opacity="0.5" />
+          </svg>
+        </div>
+      </div>
 
-            {/* Globos flotando alrededor del logo */}
-            <div className="pointer-events-none absolute -top-6 -left-8 text-5xl animate-float opacity-90">
-              🎈
+      <div className="relative z-10 text-center px-4 w-full flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center gap-0 md:gap-2 animate-[zoomIn_0.8s_ease-out]">
+          <div className="flex items-end justify-center">
+            <div className="text-7xl sm:text-9xl md:text-[160px] lg:text-[200px] font-black tracking-tighter flex items-end">
+              <span style={{ color: colors.orange }}>J</span>
+              <span style={{ color: colors.teal }}>u</span>
+              <span style={{ color: colors.yellow }}>g</span>
+              <span style={{ color: colors.pink }}>a</span>
             </div>
-            <div className="pointer-events-none absolute -top-10 -right-6 text-4xl animate-float-delayed opacity-85">
-              🎈
-            </div>
-            <div className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 text-4xl animate-float-slow opacity-80">
-              🎈
-            </div>
+            <span className="text-4xl sm:text-6xl md:text-[100px] lg:text-[120px] font-black ml-2 mb-2 md:mb-6" style={{ color: colors.red }}>i</span>
           </div>
 
-          <div className="mt-10 space-y-3">
-            <p className="text-3xl md:text-5xl text-[#d7ccc8] font-medium tracking-wide">
+          <div className="text-7xl sm:text-9xl md:text-[160px] lg:text-[200px] font-black tracking-tighter leading-[0.8] flex justify-center">
+            <span style={{ color: colors.purple }}>C</span>
+            <span style={{ color: colors.teal }}>e</span>
+            <span style={{ color: colors.orange }}>l</span>
+            <span style={{ color: colors.pink }}>e</span>
+            <span style={{ color: colors.teal }}>b</span>
+            <span style={{ color: colors.orange }}>r</span>
+            <span style={{ color: colors.green }}>a</span>
+          </div>
+
+          <div className="mt-8 md:mt-12 space-y-2 md:space-y-4">
+            <p className="text-xl sm:text-3xl md:text-5xl text-[#D7CCC8] font-bold tracking-tight opacity-90 drop-shadow-lg">
               Espai per a esdeveniments
             </p>
-            <p className="text-5xl md:text-8xl font-black tracking-widest uppercase bg-gradient-to-r from-orange-400 via-yellow-200 to-pink-500 bg-clip-text text-transparent">
+            <p className="text-4xl sm:text-6xl md:text-8xl text-white font-black tracking-wide uppercase drop-shadow-[0_4px_15px_rgba(0,0,0,0.5)]">
               Algemesí
             </p>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-8 justify-center mt-16 animate-[fadeInUp_1.2s_ease-out_0.6s] opacity-0 [animation-fill-mode:forwards]">
-          <a
-            href="#reservar"
-            className="bg-white text-black px-12 py-5 rounded-[25px] text-2xl font-black transition-all shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:scale-110 active:scale-95 flex items-center justify-center gap-3 border-4 border-transparent hover:border-orange-500"
+        <div className="flex flex-col sm:flex-row gap-4 md:gap-8 justify-center mt-12 md:mt-24 w-full max-w-2xl px-4 animate-[fadeInUp_1s_ease-out_0.5s] opacity-0 [animation-fill-mode:forwards]">
+          <button 
+            onClick={scrollToReservar}
+            className="flex-1 bg-white text-black px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3 border-4 border-transparent hover:border-orange-500 cursor-pointer"
           >
-            🗓️ CALENDARI 2026
-          </a>
-
-          <a
-            href="https://wa.me/34699106393"
+            🗓️ RESERVAR 2026
+          </button>
+          <a 
+            href="https://wa.me/34669106393"
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-[#25D366] text-white px-12 py-5 rounded-[25px] text-2xl font-black transition-all shadow-[0_0_30px_rgba(37,211,102,0.3)] hover:scale-110 active:scale-95 flex items-center justify-center gap-3"
+            className="flex-1 bg-[#25D366] text-white px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3"
           >
-            <svg className="w-8 h-8 fill-current" viewBox="0 0 24 24">
-              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.891 11.891-11.891 3.181 0 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.481 8.403 0 6.556-5.332 11.891-11.891 11.891-2.002 0-3.971-.505-5.717-1.46l-6.276 1.678zm6.33-3.692c1.472.873 3.123 1.335 4.805 1.335 5.23 0 9.487-4.258 9.487-9.488 0-2.536-.988-4.92-2.783-6.715-1.794-1.795-4.18-2.783-6.715-2.783-5.232 0-9.489 4.258-9.489 9.488 0 1.777.494 3.511 1.428 5.013l-.934 3.41 3.493-.933zm9.648-5.79c-.27-.135-1.59-.785-1.838-.875-.246-.09-.427-.135-.607.135-.18.27-.697.875-.855 1.056-.158.18-.316.203-.585.068-.27-.135-1.14-.42-2.172-1.34-.802-.716-1.345-1.6-1.502-1.87-.157-.27-.017-.417.118-.552.122-.122.27-.315.405-.473.135-.157.18-.27.27-.45.09-.18.045-.337-.022-.473-.067-.135-.607-1.462-.832-2.002-.22-.529-.441-.458-.607-.466-.157-.008-.337-.008-.517-.008s-.473.067-.72.337c-.247.27-.945.922-.945 2.25s.967 2.61 1.102 2.812c.135.202 1.902 2.903 4.608 4.069.644.277 1.146.442 1.538.567.647.206 1.235.177 1.7.108.518-.077 1.59-.652 1.815-1.282.225-.63.225-1.17.157-1.282-.067-.113-.247-.18-.517-.315z" />
-            </svg>
-            WHATSAPP
+            💬 WHATSAPP
           </a>
         </div>
       </div>
+      
+      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+
+      <style>{`
+        @keyframes confetti-fall {
+          0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+        .animate-confetti-fall {
+          animation: confetti-fall linear infinite;
+        }
+      `}</style>
     </div>
   );
 };

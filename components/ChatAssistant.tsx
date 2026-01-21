@@ -23,7 +23,6 @@ const ChatAssistant: React.FC = () => {
 
   return (
     <div className="fixed bottom-6 right-6 z-[100]">
-      {/* Trigger Button */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
         className="w-16 h-16 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl flex items-center justify-center text-3xl transition-transform hover:scale-110"
@@ -31,20 +30,19 @@ const ChatAssistant: React.FC = () => {
         {isOpen ? '✕' : '✨'}
       </button>
 
-      {/* Chat Window */}
       {isOpen && (
         <div className="absolute bottom-20 right-0 w-[350px] sm:w-[400px] bg-white rounded-3xl shadow-2xl overflow-hidden animate-[fadeInUp_0.3s_ease-out] border border-blue-100">
           <div className="bg-blue-600 p-6 text-white">
-            <h3 className="text-xl font-bold">Assistent de Festes</h3>
-            <p className="text-blue-100 text-sm">T'ajude a planificar el cumple perfecte!</p>
+            <h3 className="text-xl font-bold">Asistente de Fiestas</h3>
+            <p className="text-blue-100 text-sm">¡Te ayudo a planificar el cumple perfecto!</p>
           </div>
           
           <div className="p-6 max-h-[450px] overflow-y-auto">
             {!response ? (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <p className="text-gray-600 text-sm">Digue'm uns detalls i et diré quin pack triar:</p>
+                <p className="text-gray-600 text-sm">Dime unos detalles y te daré una recomendación:</p>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase">Edat del peque</label>
+                  <label className="block text-xs font-bold text-gray-400 uppercase">Edad del cumpleañero/a</label>
                   <input 
                     type="number" 
                     value={formData.age}
@@ -53,7 +51,7 @@ const ChatAssistant: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase">Número de nens/es</label>
+                  <label className="block text-xs font-bold text-gray-400 uppercase">Número de niños/as</label>
                   <input 
                     type="number" 
                     value={formData.kids}
@@ -62,12 +60,12 @@ const ChatAssistant: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase">Què li agrada? (Superherois, Pirates...)</label>
+                  <label className="block text-xs font-bold text-gray-400 uppercase">¿Qué le gusta? (Superhéroes, Piratas...)</label>
                   <input 
                     type="text" 
                     value={formData.interests}
                     onChange={(e) => setFormData({...formData, interests: e.target.value})}
-                    placeholder="Ex: Dinosauris i futbol"
+                    placeholder="Ej: Dinosaurios y fútbol"
                     className="w-full border-b-2 border-gray-100 py-2 focus:border-blue-500 outline-none transition-colors"
                   />
                 </div>
@@ -75,7 +73,7 @@ const ChatAssistant: React.FC = () => {
                   disabled={loading}
                   className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all disabled:bg-gray-400"
                 >
-                  {loading ? 'Calculant màgia...' : 'Obtenir Recomanació!'}
+                  {loading ? 'Calculando magia...' : '¡Obtener Recomendación!'}
                 </button>
               </form>
             ) : (
@@ -87,14 +85,14 @@ const ChatAssistant: React.FC = () => {
                   onClick={() => {setResponse(null); setFormData({age: 5, kids: 10, interests: ''})}}
                   className="w-full py-2 text-blue-600 font-bold hover:underline"
                 >
-                  Provar una altra configuració
+                  Probar otra configuración
                 </button>
                 <a 
                   href="#contacto"
                   onClick={() => setIsOpen(false)}
                   className="block w-full bg-orange-500 text-center text-white py-3 rounded-xl font-bold hover:bg-orange-600 shadow-md"
                 >
-                  Vull reservar açò!
+                  ¡Quiero reservar esto!
                 </a>
               </div>
             )}
