@@ -1,0 +1,7 @@
+{
+  "name": "Juga i Celebra - Parque de Bolas",
+  "description": "Una web profesional e interactiva para el parque de bolas Juga i Celebra, con animaciones modernas y asistente IA para planificación de cumpleaños.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
