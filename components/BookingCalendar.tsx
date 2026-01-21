@@ -23,7 +23,7 @@ const BookingCalendar: React.FC = () => {
     kids: '15',
     notes: '',
     rentalType: '80', 
-    cleaning: false
+    cleaning: false // Se mantiene en false ya que no es seleccionable en el flujo de pago
   });
 
   const [cardData, setCardData] = useState({
@@ -46,7 +46,8 @@ const BookingCalendar: React.FC = () => {
   ];
 
   const basePrice = parseFloat(formData.rentalType.split('_')[0]);
-  const cleaningPrice = formData.cleaning ? CLEANING_FEE : 0;
+  // La limpieza ahora es "A consultar", por lo que no se suma al total de la pasarela de pago
+  const cleaningPrice = 0; 
   const totalPrice = basePrice + cleaningPrice;
   const depositToPay = totalPrice / 2;
 
@@ -76,7 +77,7 @@ const BookingCalendar: React.FC = () => {
         status: (row[statusIdx] || "").trim().toUpperCase()
       }));
 
-      // FILTRO SOLICITADO
+      // FILTRO SOLICITADO: reservedDates = rows.filter(r => r.status === 'RESERVADO').map(r => r.date)
       const reservedDates = rows.filter(r => r.status === 'RESERVADO').map(r => r.date);
 
       setBookedDates(new Set(reservedDates));
@@ -114,10 +115,10 @@ const BookingCalendar: React.FC = () => {
     const body = new URLSearchParams({
       action: "new",
       date: selectedISO || "",
-      status: "RESERVADO", // CAMBIO EXACTO: De PENDIENTE a RESERVADO
+      status: "RESERVADO", 
       name: formData.name,
       phone: formData.phone,
-      notes: `WEB_RESERVA | Pago Tarjeta (${depositToPay}€) | ${formData.rentalType} | Limpieza: ${formData.cleaning ? 'SI' : 'NO'} | Fianza: ${SECURITY_DEPOSIT}€`,
+      notes: `WEB_RESERVA | Pago Tarjeta (${depositToPay}€) | ${formData.rentalType} | Limpieza: A CONSULTAR | Fianza: ${SECURITY_DEPOSIT}€`,
       kids: formData.kids,
       formatted_date: selectedDate || "",
     }).toString();
@@ -133,7 +134,7 @@ const BookingCalendar: React.FC = () => {
       setSubmitted(true);
       setIsSubmitting(false);
 
-      const waMsg = `¡Hola! He reservado el día ${selectedDate}.\n👤: ${formData.name}\n💰 Pago Reserva (50%): ${depositToPay}€\n🧹 Servicio Limpieza: ${formData.cleaning ? 'SÍ (60€)' : 'NO'}\n🏦 Cuenta: ${BANK_ACCOUNT}\n⚠️ Recordatorio: Fianza de ${SECURITY_DEPOSIT}€ en efectivo el día del evento.`;
+      const waMsg = `¡Hola! He reservado el día ${selectedDate}.\n👤: ${formData.name}\n💰 Pago Reserva (50%): ${depositToPay}€\n🏦 Cuenta: ${BANK_ACCOUNT}\n⚠️ Recordatorio: Fianza de ${SECURITY_DEPOSIT}€ en efectivo y Limpieza (60€) a consultar.`;
       window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(waMsg)}`, "_blank");
     } catch (err) {
       alert("Error al registrar la reserva. Contacta por WhatsApp.");
@@ -183,7 +184,6 @@ const BookingCalendar: React.FC = () => {
               const isPast = checkDate < today || checkDate < businessMinDate;
               const iso = `2026-${(month + 1).toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`;
               
-              // Lógica de deshabilitado solicitada: disabledDate = reservedDates.includes(dateSelected)
               const isBooked = bookedDates.has(iso);
               const isSelected = selectedISO === iso;
               
@@ -271,23 +271,20 @@ const BookingCalendar: React.FC = () => {
                     ))}
                   </div>
 
-                  {/* SERVICIO DE LIMPIEZA 60€ - DESTACADO EN DATOS DEL EVENTO */}
-                  <div 
-                    onClick={() => setFormData({...formData, cleaning: !formData.cleaning})}
-                    className={`p-6 rounded-3xl border-2 transition-all cursor-pointer flex items-center justify-between group ${formData.cleaning ? 'bg-green-600 border-green-600 text-white shadow-lg' : 'bg-white border-blue-100 hover:border-blue-400'}`}
-                  >
+                  {/* SECCIÓN SERVICIO DE LIMPIEZA - AHORA SOLO INFORMATIVA */}
+                  <div className="p-6 rounded-3xl border-2 border-blue-100 bg-white flex items-center justify-between group cursor-default opacity-80">
                     <div className="flex items-center gap-4">
-                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-3xl transition-all ${formData.cleaning ? 'bg-white/20' : 'bg-blue-50'}`}>
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center text-3xl bg-blue-50">
                         🧼
                       </div>
                       <div>
-                        <p className={`font-black text-lg ${formData.cleaning ? 'text-white' : 'text-gray-800'}`}>SERVICIO DE LIMPIEZA (+60€)</p>
-                        <p className={`text-xs font-bold ${formData.cleaning ? 'text-green-50' : 'text-gray-400'}`}>Opcional: Nosotros nos encargamos de todo al terminar</p>
+                        <p className="font-black text-lg text-gray-800">SERVICIO DE LIMPIEZA</p>
+                        <p className="text-xs font-black text-orange-500 uppercase tracking-tighter">60€ - A consultar con el local</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                       <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center ${formData.cleaning ? 'bg-white border-white text-green-600' : 'border-gray-300'}`}>
-                         {formData.cleaning && <span className="font-black">✓</span>}
+                       <div className="w-6 h-6 rounded-lg border-2 border-gray-200 flex items-center justify-center bg-gray-50">
+                         <span className="text-gray-300 font-black text-xs">?</span>
                        </div>
                     </div>
                   </div>
@@ -315,13 +312,14 @@ const BookingCalendar: React.FC = () => {
                  <h5 className="text-xs font-black text-blue-400 uppercase mb-4 tracking-widest">Resumen de tu selección</h5>
                  <div className="space-y-2 text-gray-700 font-bold">
                     <p className="flex justify-between"><span>Alquiler Base:</span> <span>{basePrice}€</span></p>
-                    {formData.cleaning && <p className="flex justify-between text-green-600"><span>Servicio Limpieza:</span> <span>+60€</span></p>}
+                    <p className="flex justify-between text-gray-400 italic text-sm"><span>Servicio Limpieza:</span> <span>A consultar</span></p>
                     <div className="h-px bg-blue-200 my-4"></div>
                     <p className="flex justify-between text-xl text-gray-800 font-black"><span>Total Alquiler:</span> <span>{totalPrice}€</span></p>
                     <p className="flex justify-between text-blue-600 text-3xl font-black pt-2"><span>PAGO RESERVA:</span> <span>{depositToPay.toFixed(2)}€</span></p>
                     <div className="bg-white/80 p-5 rounded-2xl mt-6 border border-blue-200 text-xs text-gray-500 leading-relaxed shadow-sm">
                        <p className="text-blue-800 font-black mb-1">📋 INFORMACIÓN ADICIONAL:</p>
                        <p>• La fianza de <strong>{SECURITY_DEPOSIT}€</strong> se abona en efectivo el día del evento.</p>
+                       <p>• El servicio de limpieza de <strong>60€</strong> debe solicitarse aparte.</p>
                        <p>• Al confirmar, enviaremos los datos a la hoja de cálculo como <strong>RESERVADO</strong>.</p>
                     </div>
                  </div>
