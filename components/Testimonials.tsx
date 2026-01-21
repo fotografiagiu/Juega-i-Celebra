@@ -3,7 +3,7 @@
 import Testimonials from "./components/Testimonials";
 const reviews = [
   { name: 'Laura García', text: 'El millor lloc per celebrar l\'aniversari de la meua filla. Les monitores són encantadores i el pastís estava boníssim.', rating: 5 },
-  { name: 'Marc Soler', text: 'Instal·lacions molt netes i segures. El millor és que pots prendre alguna cosa mentre veus als nens jugar.', rating: 4 },
+  { name: 'Marc Soler', text: 'Instal·lacions molt netes i segures. El millor és que pots prendre alguna cosa mentre veus als nens jugar.', rating: 5 },
   // Fixed unescaped single quote in 'anar-se\'n'
   { name: 'Sara Montiel', text: 'El meu fill no volia anar-se\'n de la piscina de boles. Vam celebrar el cumple VIP i va meréixer molt la pena.', rating: 5 },
 ];
