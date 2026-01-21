@@ -36,7 +36,7 @@ export default function App() {
           </section>
         )}
 
-        {false && (
+        {true && (
           <section id="reservar" className="py-20 bg-gray-50/50">
             <BookingCalendar />
           </section>
