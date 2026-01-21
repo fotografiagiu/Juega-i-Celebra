@@ -42,7 +42,7 @@ export default function App() {
           </section>
         )}
 
-        {false && (
+        {true && (
           <section id="por-que-nosotros" className="py-20">
             <Features />
           </section>
