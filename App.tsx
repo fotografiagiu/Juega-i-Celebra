@@ -29,51 +29,36 @@ export default function App() {
           <Hero />
         </section>
 
-        {/* ACTIVA UNO A UNO cambiando true/false */}
-        {true && (
-          <section id="servicios">
-            <Services />
-          </section>
-        )}
+        <section id="servicios">
+          <Services />
+        </section>
 
-        {true && (
-          <section id="reservar" className="py-20 bg-gray-50/50">
-            <BookingCalendar />
-          </section>
-        )}
+        <section id="reservar" className="py-20 bg-gray-50/50">
+          <BookingCalendar />
+        </section>
 
-        {true && (
-          <section id="por-que-nosotros" className="py-20">
-            <Features />
-          </section>
-        )}
+        <section id="por-que-nosotros" className="py-20">
+          <Features />
+        </section>
 
-        {true && (
-          <section id="galeria" className="py-20 bg-yellow-50/50">
-            <Gallery />
-          </section>
-        )}
+        <section id="galeria" className="py-20 bg-yellow-50/50">
+          <Gallery />
+        </section>
 
-        {true && (
-          <section id="tarifas" className="py-20">
-            <Pricing />
-          </section>
-        )}
+        <section id="tarifas" className="py-20">
+          <Pricing />
+        </section>
 
-        {true && (
-          <section id="opiniones" className="py-20 bg-purple-50/30">
-            <Testimonials />
-          </section>
-        )}
+        <section id="opiniones" className="py-20 bg-purple-50/30">
+          <Testimonials />
+        </section>
 
-        {true && (
-          <section id="contacto" className="py-20">
-            <Contact />
-          </section>
-        )}
+        <section id="contacto" className="py-20">
+          <Contact />
+        </section>
       </main>
 
-      {true && <Footer />}
+      <Footer />
     </div>
   );
 }
