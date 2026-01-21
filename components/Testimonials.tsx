@@ -1,5 +1,5 @@
 
-import React from 'react';
+
 
 const reviews = [
   { name: 'Laura García', text: 'El millor lloc per celebrar l\'aniversari de la meua filla. Les monitores són encantadores i el pastís estava boníssim.', rating: 5 },
