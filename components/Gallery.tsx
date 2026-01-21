@@ -12,15 +12,3 @@ export default function Galeria() {
     </section>
   );
 }
-.galeria {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
-}
-
-.galeria img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  border-radius: 14px;
-}
