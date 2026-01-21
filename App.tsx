@@ -1,4 +1,3 @@
-import ChatAssistant from "./components/ChatAssistant";
 import React, { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -60,7 +59,6 @@ export default function App() {
       </main>
 
       <Footer />
-      {typeof window !== "undefined" && <ChatAssistant />}
     </div>
   );
 }
