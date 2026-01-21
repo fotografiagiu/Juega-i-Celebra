@@ -73,7 +73,7 @@ export default function App() {
         )}
       </main>
 
-      {false && <Footer />}
+      {true && <Footer />}
     </div>
   );
 }
