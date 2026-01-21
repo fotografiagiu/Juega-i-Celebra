@@ -3,50 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Juga i Celebra | Parc de Boles i Aniversaris Algemesí</title>
-
-    <!-- Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Quicksand:wght@300;500;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Tailwind CDN (válido mientras no uses config propia) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <style>
-      body {
-        font-family: 'Quicksand', sans-serif;
-      }
-      h1, h2, h3, h4 {
-        font-family: 'Baloo 2', cursive;
-      }
-      .bubble-bg {
-        background-color: #f0f9ff;
-        background-image: radial-gradient(#bae6fd 1px, transparent 1px);
-        background-size: 20px 20px;
-      }
-      @keyframes float {
-        0%, 100% { transform: translateY(0) rotate(0deg); }
-        50% { transform: translateY(-30px) rotate(5deg); }
-      }
-      .animate-float {
-        animation: float 4s ease-in-out infinite;
-      }
-      .animate-float-delayed {
-        animation: float 5s ease-in-out infinite 1s;
-      }
-      .animate-float-slow {
-        animation: float 7s ease-in-out infinite 0.5s;
-      }
-    </style>
+    <title>Juga i Celebra</title>
   </head>
-
   <body>
     <div id="root"></div>
-
-    <!-- ⚠️ ESTE SCRIPT ES CLAVE -->
-    <!-- Vite reemplaza esto automáticamente en producción -->
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
