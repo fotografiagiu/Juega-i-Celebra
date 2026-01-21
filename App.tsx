@@ -48,7 +48,7 @@ export default function App() {
           </section>
         )}
 
-        {false && (
+        {true && (
           <section id="galeria" className="py-20 bg-yellow-50/50">
             <Gallery />
           </section>
