@@ -1,71 +1,11 @@
 
-import React, { useState, useEffect } from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Services from './components/Services';
-import Features from './components/Features';
-import Gallery from './components/Gallery';
-import Pricing from './components/Pricing';
-import Testimonials from './components/Testimonials';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
-import ChatAssistant from './components/ChatAssistant';
-import BookingCalendar from './components/BookingCalendar';
-
-const App: React.FC = () => {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
+function App() {
   return (
-    <div className="min-h-screen bg-white text-gray-800 overflow-x-hidden">
-      <Navbar scrolled={scrolled} />
-      
-      <main>
-        <section id="inicio">
-          <Hero />
-        </section>
-
-        <section id="servicios">
-          <Services />
-        </section>
-
-        <section id="reservar" className="py-20 bg-gray-50/50">
-          <BookingCalendar />
-        </section>
-
-        <section id="por-que-nosotros" className="py-20">
-          <Features />
-        </section>
-
-        <section id="galeria" className="py-20 bg-yellow-50/50">
-          <Gallery />
-        </section>
-
-        <section id="tarifas" className="py-20">
-          <Pricing />
-        </section>
-
-        <section id="opiniones" className="py-20 bg-purple-50/30">
-          <Testimonials />
-        </section>
-
-        <section id="contacto" className="py-20">
-          <Contact />
-        </section>
-      </main>
-
-      <Footer />
-      <ChatAssistant />
+    <div style={{ padding: 40 }}>
+      <h1>Juga i Celebra</h1>
+      <p>Si ves esto, React funciona correctamente.</p>
     </div>
   );
-};
+}
 
-// Added missing default export to resolve import error in index.tsx
 export default App;
