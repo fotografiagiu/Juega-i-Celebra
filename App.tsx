@@ -54,7 +54,7 @@ export default function App() {
           </section>
         )}
 
-        {false && (
+        {true && (
           <section id="tarifas" className="py-20">
             <Pricing />
           </section>
