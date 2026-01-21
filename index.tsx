@@ -1,70 +1,52 @@
-import React, { useEffect, useState } from "react";
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Services from "./components/Services";
-import Features from "./components/Features";
-import Gallery from "./components/Gallery";
-import Pricing from "./components/Pricing";
-import Testimonials from "./components/Testimonials";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
-import BookingCalendar from "./components/BookingCalendar";
+<!DOCTYPE html>
+<html lang="ca">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Juga i Celebra | Parc de Boles i Aniversaris Algemesí</title>
 
-// OJO: de momento NO montamos ChatAssistant
-// import ChatAssistant from "./components/ChatAssistant";
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Quicksand:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
 
-export default function App() {
-  const [scrolled, setScrolled] = useState(false);
+    <!-- Tailwind CDN (válido mientras no uses config propia) -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    <style>
+      body {
+        font-family: 'Quicksand', sans-serif;
+      }
+      h1, h2, h3, h4 {
+        font-family: 'Baloo 2', cursive;
+      }
+      .bubble-bg {
+        background-color: #f0f9ff;
+        background-image: radial-gradient(#bae6fd 1px, transparent 1px);
+        background-size: 20px 20px;
+      }
+      @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-30px) rotate(5deg); }
+      }
+      .animate-float {
+        animation: float 4s ease-in-out infinite;
+      }
+      .animate-float-delayed {
+        animation: float 5s ease-in-out infinite 1s;
+      }
+      .animate-float-slow {
+        animation: float 7s ease-in-out infinite 0.5s;
+      }
+    </style>
+  </head>
 
-  return (
-    <div className="min-h-screen bg-white text-gray-800 overflow-x-hidden">
-      <Navbar scrolled={scrolled} />
+  <body>
+    <div id="root"></div>
 
-      <main>
-        <section id="inicio">
-          <Hero />
-        </section>
-
-        <section id="servicios">
-          <Services />
-        </section>
-
-        <section id="reservar" className="py-20 bg-gray-50/50">
-          <BookingCalendar />
-        </section>
-
-        <section id="por-que-nosotros" className="py-20">
-          <Features />
-        </section>
-
-        <section id="galeria" className="py-20 bg-yellow-50/50">
-          <Gallery />
-        </section>
-
-        <section id="tarifas" className="py-20">
-          <Pricing />
-        </section>
-
-        <section id="opiniones" className="py-20 bg-purple-50/30">
-          <Testimonials />
-        </section>
-
-        <section id="contacto" className="py-20">
-          <Contact />
-        </section>
-      </main>
-
-      <Footer />
-
-      {/* NO por ahora */}
-      {/* <ChatAssistant /> */}
-    </div>
-  );
-}
+    <!-- ⚠️ ESTE SCRIPT ES CLAVE -->
+    <!-- Vite reemplaza esto automáticamente en producción -->
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
