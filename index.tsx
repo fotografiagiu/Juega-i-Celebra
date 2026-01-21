@@ -1,16 +1,75 @@
+import React, { useEffect, useState } from "react";
 
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import Services from "./components/Services";
+import BookingCalendar from "./components/BookingCalendar";
+import Features from "./components/Features";
+import Gallery from "./components/Gallery";
+import Pricing from "./components/Pricing";
+import Testimonials from "./components/Testimonials";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
+import ChatAssistant from "./components/ChatAssistant";
 
-const rootElement = document.getElementById('root');
-if (!rootElement) {
-  throw new Error("Could not find root element to mount to");
-}
+const App: React.FC = () => {
+  const [scrolled, setScrolled] = useState(false);
 
-const root = ReactDOM.createRoot(rootElement);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-white text-gray-800 overflow-x-hidden">
+      <Navbar scrolled={scrolled} />
+
+      <main>
+        <section id="inicio">
+          <Hero />
+        </section>
+
+        <section id="servicios">
+          <Services />
+        </section>
+
+        <section id="reservar" className="py-20 bg-gray-50/50">
+          <BookingCalendar />
+        </section>
+
+        <section id="por-que-nosotros" className="py-20">
+          <Features />
+        </section>
+
+        <section id="galeria" className="py-20 bg-yellow-50/50">
+          <Gallery />
+        </section>
+
+        <section id="tarifas" className="py-20">
+          <Pricing />
+        </section>
+
+        <section id="opiniones" className="py-20 bg-purple-50/30">
+          <Testimonials />
+        </section>
+
+        <section id="contacto" className="py-20">
+          <Contact />
+        </section>
+      </main>
+
+      <Footer />
+      <ChatAssistant />
+    </div>
+  );
+};
+
+export default App;
