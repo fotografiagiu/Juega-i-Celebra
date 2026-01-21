@@ -66,7 +66,7 @@ export default function App() {
           </section>
         )}
 
-        {false && (
+        {true && (
           <section id="contacto" className="py-20">
             <Contact />
           </section>
