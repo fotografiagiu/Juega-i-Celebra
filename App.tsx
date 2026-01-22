@@ -49,7 +49,7 @@ const App: React.FC = () => {
           <Gallery />
         </section>
 
-        <section id="tarifas" className="py-20">
+        <section id="tarifas" className="py-20 scroll-mt-28"">
           <Pricing />
         </section>
 
