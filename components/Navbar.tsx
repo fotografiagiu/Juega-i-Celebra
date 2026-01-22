@@ -8,7 +8,6 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // IMPORTANTE: usa SIEMPRE "reservar" (debe existir en App.tsx como id="reservar")
   const navLinks = [
     { name: 'Inicio', id: 'inicio' },
     { name: 'Servicios', id: 'servicios' },
@@ -17,115 +16,95 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
     { name: 'Contacto', id: 'contacto' },
   ];
 
-  // Scroll con offset para que el navbar fixed NO tape el inicio de la sección
-  const handleScroll = (id: string) => {
+  const scrollToSection = (id: string) => {
     setIsOpen(false);
 
-    const el = document.getElementById(id);
+    const el = window.document.getElementById(id);
     if (!el) {
-      console.warn(`No encuentro el id="${id}" en la página`);
+      console.warn(`No existe el id: ${id}`);
       return;
     }
 
-    const NAVBAR_OFFSET = 110; // ajusta si tu navbar es más alto/bajo
-    const y = el.getBoundingClientRect().top + window.scrollY - NAVBAR_OFFSET;
+    const NAVBAR_HEIGHT = 120; // ajustado a tu diseño
+    const y =
+      el.getBoundingClientRect().top +
+      window.pageYOffset -
+      NAVBAR_HEIGHT;
 
-    window.scrollTo({ top: y, behavior: 'smooth' });
+    window.scrollTo({
+      top: y,
+      behavior: 'smooth',
+    });
   };
 
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled ? 'bg-black/90 backdrop-blur-md shadow-lg py-2' : 'bg-transparent py-4'
+      className={`fixed top-0 left-0 w-full z-[9999] transition-all duration-300 ${
+        scrolled
+          ? 'bg-black/90 backdrop-blur-md shadow-lg py-2'
+          : 'bg-transparent py-4'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          {/* Logo */}
           <div
-            onClick={() => handleScroll('inicio')}
-            className="flex-shrink-0 flex items-center gap-2 group cursor-pointer"
+            onClick={() => scrollToSection('inicio')}
+            className="cursor-pointer text-white font-black text-xl"
           >
-            <span className="text-3xl font-extrabold tracking-tight flex gap-1">
-              <span className="text-orange-500">J</span>
-              <span className="text-cyan-400">u</span>
-              <span className="text-green-500">g</span>
-              <span className="text-pink-500">a</span>
-              <span className="text-white mx-1">i</span>
-              <span className="text-purple-500">C</span>
-              <span className="text-orange-400">e</span>
-              <span className="text-cyan-500">l</span>
-              <span className="text-pink-400">e</span>
-              <span className="text-green-400">b</span>
-              <span className="text-yellow-500">r</span>
-              <span className="text-orange-500">a</span>
-            </span>
+            JugaiCelebra
           </div>
 
           {/* Desktop */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-6">
-              {navLinks.map((link) => (
-                <button
-                  key={link.name}
-                  onClick={() => handleScroll(link.id)}
-                  className="px-3 py-2 rounded-md text-sm font-bold transition-colors text-white hover:text-yellow-300 drop-shadow-sm cursor-pointer bg-transparent border-none"
-                >
-                  {link.name}
-                </button>
-              ))}
-
+          <div className="hidden md:flex items-center gap-6">
+            {navLinks.map((link) => (
               <button
-                onClick={() => handleScroll('reservar')}
-                className="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-2 rounded-full font-bold hover:from-pink-500 hover:to-orange-500 transition-all shadow-md transform hover:scale-105 cursor-pointer border-none"
+                key={link.id}
+                onClick={() => scrollToSection(link.id)}
+                className="text-white font-bold hover:text-yellow-300"
               >
-                Reservar 2026
+                {link.name}
               </button>
-            </div>
-          </div>
+            ))}
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-white p-2">
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                {isOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+            <button
+              onClick={() => scrollToSection('reservar')}
+              className="bg-orange-500 text-white px-6 py-2 rounded-full font-bold hover:scale-105 transition"
+            >
+              Reservar 2026
             </button>
           </div>
+
+          {/* Mobile */}
+          <button
+            className="md:hidden text-white"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            ☰
+          </button>
         </div>
       </div>
 
-      {/* Mobile dropdown */}
-      <div
-        className={`md:hidden absolute w-full bg-black transition-all duration-300 shadow-xl ${
-          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
-        }`}
-      >
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      {/* Mobile menu */}
+      {isOpen && (
+        <div className="md:hidden bg-black text-white px-6 py-4 space-y-4">
           {navLinks.map((link) => (
             <button
-              key={link.name}
-              onClick={() => handleScroll(link.id)}
-              className="block w-full text-left px-3 py-4 text-base font-bold text-white hover:text-cyan-400 border-b border-gray-800 bg-transparent border-none cursor-pointer"
+              key={link.id}
+              onClick={() => scrollToSection(link.id)}
+              className="block w-full text-left font-bold"
             >
               {link.name}
             </button>
           ))}
 
-          <div className="mt-4 px-3">
-            <button
-              onClick={() => handleScroll('reservar')}
-              className="block w-full text-center bg-orange-500 text-white px-6 py-3 rounded-xl font-bold border-none cursor-pointer"
-            >
-              Reservar 2026
-            </button>
-          </div>
+          <button
+            onClick={() => scrollToSection('reservar')}
+            className="w-full bg-orange-500 py-3 rounded-xl font-bold"
+          >
+            Reservar 2026
+          </button>
         </div>
-      </div>
+      )}
     </nav>
   );
 };
