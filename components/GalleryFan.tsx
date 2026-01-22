@@ -50,24 +50,26 @@ function FanStack({
 
 export default function GalleryFan() {
   // ✅ IMPORTANTE: estas rutas apuntan a /public/gallery/...
-  const groups: Group[] = [
-    {
-      id: "bolas",
-      title: "Parque de bolas",
-      subtitle: "Zona de juego",
-      slides: Array.from({ length: 10 }, (_, i) => ({
-        src: `/gallery/bolas-${String(i + 1).padStart(2, "0")}.jpg`,
-      })),
-    },
-    {
-      id: "local",
-      title: "El local",
-      subtitle: "Mesas, cocina, aseo y zonas comunes",
-      slides: Array.from({ length: 10 }, (_, i) => ({
-        src: `/gallery/local-${String(i + 1).padStart(2, "0")}.jpg`,
-      })),
-    },
-  ];
+ const groups = [
+  {
+    id: "bolas",
+    title: "Parque de bolas",
+    subtitle: "Zona de juego",
+    slides: Array.from({ length: 10 }, (_, i) => ({
+      src: `/gallery/Galeria${i + 1}.jpeg`,
+      title: `Parque de bolas ${i + 1}`,
+    })),
+  },
+  {
+    id: "local",
+    title: "El local",
+    subtitle: "Cocina, mesas y aseos",
+    slides: Array.from({ length: 11 }, (_, i) => ({
+      src: `/gallery/Galeria${i + 11}.jpeg`,
+      title: `Local ${i + 11}`,
+    })),
+  },
+];
 
   const [open, setOpen] = useState(false);
   const [activeGroup, setActiveGroup] = useState(0);
