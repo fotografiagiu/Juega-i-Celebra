@@ -12,10 +12,11 @@
     "@google/genai": "^1.37.0",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "stripe": "^20.2.0",
     "yet-another-react-lightbox": "^3.28.0"
   },
   "devDependencies": {
-    "@types/node": "^22.14.0",
+    "@types/node": "^22.19.7",
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
