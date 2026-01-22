@@ -8,6 +8,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  // IMPORTANTE: usa SIEMPRE "reserva" (no "reservar")
   const navLinks = [
     { name: 'Inicio', id: 'inicio' },
     { name: 'Servicios', id: 'servicios' },
@@ -16,19 +17,31 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
     { name: 'Contacto', id: 'contacto' },
   ];
 
+  // Scroll con offset para que el navbar fixed NO tape el inicio de la sección
   const handleScroll = (id: string) => {
     setIsOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+
+    const el = document.getElementById(id);
+    if (!el) {
+      console.warn(`No encuentro el id="${id}" en la página`);
+      return;
     }
+
+    const NAVBAR_OFFSET = 110; // ajusta si tu navbar es más alto/bajo
+    const y = el.getBoundingClientRect().top + window.scrollY - NAVBAR_OFFSET;
+
+    window.scrollTo({ top: y, behavior: 'smooth' });
   };
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-black/90 backdrop-blur-md shadow-lg py-2' : 'bg-transparent py-4'}`}>
+    <nav
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        scrolled ? 'bg-black/90 backdrop-blur-md shadow-lg py-2' : 'bg-transparent py-4'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          <div 
+          <div
             onClick={() => handleScroll('inicio')}
             className="flex-shrink-0 flex items-center gap-2 group cursor-pointer"
           >
@@ -47,18 +60,20 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
               <span className="text-orange-500">a</span>
             </span>
           </div>
-          
+
+          {/* Desktop */}
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-6">
               {navLinks.map((link) => (
                 <button
                   key={link.name}
                   onClick={() => handleScroll(link.id)}
-                  className={`px-3 py-2 rounded-md text-sm font-bold transition-colors text-white hover:text-yellow-300 drop-shadow-sm cursor-pointer bg-transparent border-none`}
+                  className="px-3 py-2 rounded-md text-sm font-bold transition-colors text-white hover:text-yellow-300 drop-shadow-sm cursor-pointer bg-transparent border-none"
                 >
                   {link.name}
                 </button>
               ))}
+
               <button
                 onClick={() => handleScroll('reserva')}
                 className="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-2 rounded-full font-bold hover:from-pink-500 hover:to-orange-500 transition-all shadow-md transform hover:scale-105 cursor-pointer border-none"
@@ -68,11 +83,9 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
             </div>
           </div>
 
+          {/* Mobile menu button */}
           <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-white p-2"
-            >
+            <button onClick={() => setIsOpen(!isOpen)} className="text-white p-2">
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isOpen ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -85,7 +98,12 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
         </div>
       </div>
 
-      <div className={`md:hidden absolute w-full bg-black transition-all duration-300 shadow-xl ${isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+      {/* Mobile dropdown */}
+      <div
+        className={`md:hidden absolute w-full bg-black transition-all duration-300 shadow-xl ${
+          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+        }`}
+      >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {navLinks.map((link) => (
             <button
@@ -96,8 +114,9 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
               {link.name}
             </button>
           ))}
+
           <div className="mt-4 px-3">
-             <button
+            <button
               onClick={() => handleScroll('reserva')}
               className="block w-full text-center bg-orange-500 text-white px-6 py-3 rounded-xl font-bold border-none cursor-pointer"
             >
@@ -111,3 +130,4 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
 };
 
 export default Navbar;
+
