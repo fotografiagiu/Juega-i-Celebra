@@ -61,25 +61,22 @@ export default function GalleryFan() {
   // ✅ IMPORTANTE: tus imágenes están en /public/gallery y se sirven como /gallery/...
   // En tu repo se llaman Galeria1.jpeg ... Galeria21.jpeg
   const groups: Group[] = [
+      {
+  id: "bolas",
+  title: "Parque de bolas",
+  subtitle: "Zona de juego",
+  slides: [
+    ...Array.from({ length: 10 }, (_, i) => ({
+      src: `/gallery/Galeria${i + 1}.jpeg`, // 1..10
+      title: `Parque de bolas ${i + 1}`,
+    })),
     {
-      id: "bolas",
-      title: "Parque de bolas",
-      subtitle: "Zona de juego",
-      slides: Array.from({ length: 10 }, (_, i) => ({
-        src: `/gallery/Galeria${i + 1}.jpeg`,
-        title: `Parque de bolas ${i + 1}`,
-      })),
+      src: `/gallery/Galeria21.jpeg`,
+      title: `Parque de bolas 21`,
     },
-    {
-      id: "local",
-      title: "El local",
-      subtitle: "Mesas, cocina, aseo y zonas comunes",
-      slides: Array.from({ length: 11 }, (_, i) => ({
-        src: `/gallery/Galeria${i + 11}.jpeg`, // 11..20
-        title: `Local ${i + 11}`,
-      })),
-    },
-  ];
+  ],
+},
+
 
   const [open, setOpen] = useState(false);
   const [activeGroup, setActiveGroup] = useState<number>(0);
