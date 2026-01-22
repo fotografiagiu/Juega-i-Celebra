@@ -11,7 +11,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
   const navLinks = [
     { name: 'Inicio', id: 'inicio' },
     { name: 'Servicios', id: 'servicios' },
-    { name: 'Calendario', id: 'reservar' },
+    { name: 'Calendario', id: 'reserva' },
     { name: 'Tarifas', id: 'tarifas' },
     { name: 'Contacto', id: 'contacto' },
   ];
@@ -98,7 +98,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
           ))}
           <div className="mt-4 px-3">
              <button
-              onClick={() => handleScroll('reservar')}
+              onClick={() => handleScroll('reserva')}
               className="block w-full text-center bg-orange-500 text-white px-6 py-3 rounded-xl font-bold border-none cursor-pointer"
             >
               Reserva 2026
