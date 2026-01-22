@@ -75,7 +75,7 @@ export default function GalleryFan() {
       title: "El local",
       subtitle: "Mesas, cocina, aseo y zonas comunes",
       slides: Array.from({ length: 11 }, (_, i) => ({
-        src: `/gallery/Galeria${i + 11}.jpeg`, // 11..21
+        src: `/gallery/Galeria${i + 11}.jpeg`, // 11..20
         title: `Local ${i + 11}`,
       })),
     },
