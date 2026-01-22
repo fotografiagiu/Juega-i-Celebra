@@ -8,11 +8,11 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // IMPORTANTE: usa SIEMPRE "reserva" (no "reservar")
+  // IMPORTANTE: usa SIEMPRE "reservar" (no "reservar")
   const navLinks = [
     { name: 'Inicio', id: 'inicio' },
     { name: 'Servicios', id: 'servicios' },
-    { name: 'Calendario', id: 'reserva' },
+    { name: 'Calendario', id: 'reservar' },
     { name: 'Tarifas', id: 'tarifas' },
     { name: 'Contacto', id: 'contacto' },
   ];
@@ -75,10 +75,10 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
               ))}
 
               <button
-                onClick={() => handleScroll('reserva')}
+                onClick={() => handleScroll('reservar')}
                 className="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-2 rounded-full font-bold hover:from-pink-500 hover:to-orange-500 transition-all shadow-md transform hover:scale-105 cursor-pointer border-none"
               >
-                Reserva 2026
+                Reservar 2026
               </button>
             </div>
           </div>
@@ -117,10 +117,10 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
 
           <div className="mt-4 px-3">
             <button
-              onClick={() => handleScroll('reserva')}
+              onClick={() => handleScroll('')}
               className="block w-full text-center bg-orange-500 text-white px-6 py-3 rounded-xl font-bold border-none cursor-pointer"
             >
-              Reserva 2026
+              Reservar 2026
             </button>
           </div>
         </div>
