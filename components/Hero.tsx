@@ -12,9 +12,9 @@ const Hero: React.FC = () => {
     red: '#F44336'
   };
 
-  const scrollToReservar = (e: React.MouseEvent) => {
+  const scrollToReservas = (e: React.MouseEvent) => {
     e.preventDefault();
-    const element = document.getElementById('reservar');
+    const element = document.getElementById('reservas');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
@@ -22,8 +22,8 @@ const Hero: React.FC = () => {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black font-['Baloo_2']">
-      
-      {/* CAPA DE CONFETI ANIMADO */}
+
+      {/* CONFETI */}
       <div className="absolute inset-0 pointer-events-none z-0">
         {[...Array(20)].map((_, i) => {
           const size = Math.random() * 20 + 10;
@@ -35,7 +35,7 @@ const Hero: React.FC = () => {
           const shape = shapes[Math.floor(Math.random() * shapes.length)];
 
           return (
-            <div 
+            <div
               key={i}
               className="absolute animate-confetti-fall"
               style={{
@@ -47,7 +47,10 @@ const Hero: React.FC = () => {
               }}
             >
               {shape === 'circle' && (
-                <div className="rounded-full" style={{ width: size/2, height: size/2, backgroundColor: color }}></div>
+                <div
+                  className="rounded-full"
+                  style={{ width: size / 2, height: size / 2, backgroundColor: color }}
+                />
               )}
               {shape === 'star' && (
                 <svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
@@ -55,7 +58,7 @@ const Hero: React.FC = () => {
                 </svg>
               )}
               {shape === 'squiggle' && (
-                <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="3" strokeLinecap="round">
+                <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="3">
                   <path d="M3 12c3-6 9-6 12 0s9 6 12 0" />
                 </svg>
               )}
@@ -64,24 +67,10 @@ const Hero: React.FC = () => {
         })}
       </div>
 
-      {/* GLOBOS VECTORIALES ANIMADOS */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-[10%] left-[5%] md:left-[15%] animate-float opacity-90">
-          <svg width="120" height="160" viewBox="0 0 100 130" className="drop-shadow-[0_0_30px_rgba(255,87,34,0.5)] scale-75 md:scale-110">
-            <ellipse cx="50" cy="45" rx="40" ry="45" fill={colors.orange} />
-            <path d="M50 90 Q50 110 40 130" stroke="white" strokeWidth="2" fill="none" opacity="0.5" />
-          </svg>
-        </div>
-        <div className="absolute top-[15%] right-[5%] md:right-[15%] animate-float-delayed opacity-90">
-          <svg width="100" height="140" viewBox="0 0 100 130" className="drop-shadow-[0_0_30px_rgba(0,191,165,0.5)] scale-75 md:scale-100">
-            <ellipse cx="50" cy="45" rx="35" ry="40" fill={colors.teal} />
-            <path d="M50 85 Q50 105 60 125" stroke="white" strokeWidth="2" fill="none" opacity="0.5" />
-          </svg>
-        </div>
-      </div>
-
+      {/* CONTENIDO */}
       <div className="relative z-10 text-center px-4 w-full flex flex-col items-center justify-center">
-        <div className="flex flex-col items-center gap-0 md:gap-2 animate-[zoomIn_0.8s_ease-out]">
+
+        <div className="animate-[zoomIn_0.8s_ease-out]">
           <div className="flex items-end justify-center">
             <div className="text-7xl sm:text-9xl md:text-[160px] lg:text-[200px] font-black tracking-tighter flex items-end">
               <span style={{ color: colors.orange }}>J</span>
@@ -89,10 +78,15 @@ const Hero: React.FC = () => {
               <span style={{ color: colors.yellow }}>g</span>
               <span style={{ color: colors.pink }}>a</span>
             </div>
-            <span className="text-4xl sm:text-6xl md:text-[100px] lg:text-[120px] font-black ml-2 mb-2 md:mb-6" style={{ color: colors.red }}>i</span>
+            <span
+              className="text-4xl sm:text-6xl md:text-[100px] lg:text-[120px] font-black ml-2 mb-2 md:mb-6"
+              style={{ color: colors.red }}
+            >
+              i
+            </span>
           </div>
 
-          <div className="text-7xl sm:text-9xl md:text-[160px] lg:text-[200px] font-black tracking-tighter leading-[0.8] flex justify-center">
+          <div className="text-7xl sm:text-9xl md:text-[160px] lg:text-[200px] font-black leading-[0.8] flex justify-center">
             <span style={{ color: colors.purple }}>C</span>
             <span style={{ color: colors.teal }}>e</span>
             <span style={{ color: colors.orange }}>l</span>
@@ -102,41 +96,40 @@ const Hero: React.FC = () => {
             <span style={{ color: colors.green }}>a</span>
           </div>
 
-          <div className="mt-8 md:mt-12 space-y-2 md:space-y-4">
-            <p className="text-xl sm:text-3xl md:text-5xl text-[#D7CCC8] font-bold tracking-tight opacity-90 drop-shadow-lg">
+          <div className="mt-8 space-y-4">
+            <p className="text-xl md:text-5xl text-[#D7CCC8] font-bold">
               Espai per a esdeveniments
             </p>
-            <p className="text-4xl sm:text-6xl md:text-8xl text-white font-black tracking-wide uppercase drop-shadow-[0_4px_15px_rgba(0,0,0,0.5)]">
+            <p className="text-4xl md:text-8xl text-white font-black uppercase">
               Algemesí
             </p>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 md:gap-8 justify-center mt-12 md:mt-24 w-full max-w-2xl px-4 animate-[fadeInUp_1s_ease-out_0.5s] opacity-0 [animation-fill-mode:forwards]">
-          <button 
-            onClick={scrollToReservar}
-            className="flex-1 bg-white text-black px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3 border-4 border-transparent hover:border-orange-500 cursor-pointer"
+        {/* BOTONES */}
+        <div className="flex flex-col sm:flex-row gap-6 mt-16 w-full max-w-2xl px-4 animate-[fadeInUp_1s_ease-out_0.5s] opacity-0 [animation-fill-mode:forwards]">
+          <button
+            onClick={scrollToReservas}
+            className="flex-1 bg-white text-black px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black shadow-2xl hover:scale-105 transition-all border-4 border-transparent hover:border-orange-500"
           >
             🗓️ RESERVAR 2026
           </button>
-          <a 
+
+          <a
             href="https://wa.me/34669106393"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 bg-[#25D366] text-white px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3"
+            className="flex-1 bg-[#25D366] text-white px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black shadow-2xl hover:scale-105 transition-all"
           >
             💬 WHATSAPP
           </a>
         </div>
       </div>
-      
-      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
 
       <style>{`
         @keyframes confetti-fall {
           0% { transform: translateY(0) rotate(0deg); opacity: 0; }
           10% { opacity: 1; }
-          90% { opacity: 1; }
           100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
         }
         .animate-confetti-fall {
