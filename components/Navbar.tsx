@@ -60,7 +60,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                 </button>
               ))}
               <button
-                onClick={() => handleScroll('reservar')}
+                onClick={() => handleScroll('reserva')}
                 className="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-2 rounded-full font-bold hover:from-pink-500 hover:to-orange-500 transition-all shadow-md transform hover:scale-105 cursor-pointer border-none"
               >
                 Reserva 2026
