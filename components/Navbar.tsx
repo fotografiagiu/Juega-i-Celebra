@@ -8,7 +8,7 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // IMPORTANTE: usa SIEMPRE "reservar" (no "reservar")
+  // IMPORTANTE: usa SIEMPRE "reservar" (debe existir en App.tsx como id="reservar")
   const navLinks = [
     { name: 'Inicio', id: 'inicio' },
     { name: 'Servicios', id: 'servicios' },
@@ -41,6 +41,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
+          {/* Logo */}
           <div
             onClick={() => handleScroll('inicio')}
             className="flex-shrink-0 flex items-center gap-2 group cursor-pointer"
@@ -117,7 +118,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
 
           <div className="mt-4 px-3">
             <button
-              onClick={() => handleScroll('')}
+              onClick={() => handleScroll('reservar')}
               className="block w-full text-center bg-orange-500 text-white px-6 py-3 rounded-xl font-bold border-none cursor-pointer"
             >
               Reservar 2026
@@ -130,4 +131,3 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
 };
 
 export default Navbar;
-
