@@ -15,11 +15,18 @@ function FanStack({
   const preview = useMemo(() => slides.slice(0, 6), [slides]);
 
   return (
-    <div className="fanScene" aria-label="Abrir galería">
+    <div
+      className="fanScene"
+      role="button"
+      tabIndex={0}
+      onClick={() => onOpen(0)}
+      onKeyDown={(e) => e.key === "Enter" && onOpen(0)}
+      aria-label="Abrir galería"
+    >
       <div className="fanFrame">
         <div className="fanFloat">
           {preview.map((s, i) => {
-            // igual que antes, abanico “controlado”
+            // Abanico “controlado” (como antes)
             const rotate = -12 + i * 4;
             const x = i * 16;
             const y = i * 5;
@@ -33,7 +40,10 @@ function FanStack({
                   transform: `translate(${x}px, ${y}px) rotate(${rotate}deg)`,
                   zIndex: 10 + i,
                 }}
-                onClick={() => onOpen(i)}
+                onClick={(ev) => {
+                  ev.stopPropagation();
+                  onOpen(i);
+                }}
                 aria-label={`Abrir foto ${i + 1}`}
               >
                 <img src={s.src} alt={s.title ?? `Foto ${i + 1}`} loading="lazy" />
@@ -42,8 +52,16 @@ function FanStack({
           })}
 
           <div className="fanGlow" />
+
           <div className="fanBottomBar">
-            <button type="button" className="fanBtn" onClick={() => onOpen(0)}>
+            <button
+              type="button"
+              className="fanBtn"
+              onClick={(ev) => {
+                ev.stopPropagation();
+                onOpen(0);
+              }}
+            >
               Ver galería
               <span className="fanBtnIcon">↗</span>
             </button>
@@ -55,6 +73,8 @@ function FanStack({
 }
 
 export default function GalleryFan() {
+  // ✅ Tus fotos reales en /public/gallery:
+  // Galeria1.jpeg ... Galeria21.jpeg
   const groups: Group[] = [
     {
       id: "bolas",
@@ -180,7 +200,7 @@ const css = `
   white-space: nowrap;
 }
 
-/* Escena 3D */
+/* Escena / marco 3D */
 .fanScene{
   perspective: 1100px;
 }
@@ -195,6 +215,7 @@ const css = `
     inset 0 1px 0 rgba(255,255,255,.08);
   transform: rotateX(6deg);
   transition: transform .35s ease, box-shadow .35s ease;
+  cursor: pointer;
 }
 @media (hover:hover){
   .fanFrame:hover{
@@ -205,7 +226,7 @@ const css = `
   }
 }
 
-/* Movimiento sutil “impactante” sin ser pesado */
+/* Movimiento sutil */
 .fanFloat{
   position: relative;
   height: 260px;
@@ -222,7 +243,7 @@ const css = `
   50% { transform: translateY(-6px); }
 }
 
-/* Abanico como antes */
+/* Abanico */
 .fanCard{
   position: absolute;
   width: 180px;
@@ -250,19 +271,19 @@ const css = `
   }
 }
 
-/* Glow moderno */
+/* Glow elegante a juego */
 .fanGlow{
   position:absolute;
   inset:-40px;
   background:
-    radial-gradient(circle at 20% 20%, rgba(0,191,165,.22), rgba(0,0,0,0) 45%),
-    radial-gradient(circle at 80% 70%, rgba(255,87,34,.18), rgba(0,0,0,0) 52%);
+    radial-gradient(circle at 25% 20%, rgba(0,191,165,.18), rgba(0,0,0,0) 48%),
+    radial-gradient(circle at 80% 75%, rgba(255,138,101,.14), rgba(0,0,0,0) 55%);
   pointer-events:none;
   mix-blend-mode: screen;
-  opacity: .9;
+  opacity: .75;
 }
 
-/* Barra inferior con botón bonito */
+/* Barra + botón bonito */
 .fanBottomBar{
   position:absolute;
   left: 14px;
@@ -278,13 +299,15 @@ const css = `
   align-items:center;
   gap: 10px;
   border: none;
-  padding: 10px 14px;
+  padding: 10px 16px;
   border-radius: 999px;
-  color: #0B0F14;
-  font-weight: 700;
-  letter-spacing: .2px;
-  background: linear-gradient(135deg, #00BFA5, #FF5722);
-  box-shadow: 0 14px 30px rgba(0,0,0,.30);
+  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: .3px;
+  background: linear-gradient(135deg, #00BFA5 0%, #26C6DA 55%, #FF8A65 100%);
+  box-shadow: 
+    0 10px 26px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.25);
   cursor:pointer;
   transform: translateZ(0);
   transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
@@ -296,7 +319,8 @@ const css = `
   align-items:center;
   justify-content:center;
   border-radius: 999px;
-  background: rgba(255,255,255,.22);
+  background: rgba(255,255,255,.18);
+  backdrop-filter: blur(4px);
 }
 @media (hover:hover){
   .fanBtn:hover{
