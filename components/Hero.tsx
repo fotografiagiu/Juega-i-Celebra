@@ -162,7 +162,6 @@ const Hero: React.FC = () => {
           </a>
 
           <a
-            <a
   href="https://wa.me/34669106393?text=Hola%20%F0%9F%91%8B%0AHe%20realizado%20una%20reserva%20en%20Juga%20i%20Celebra%20a%20trav%C3%A9s%20de%20la%20web.%0ASi%20necesit%C3%A1is%20algo%20m%C3%A1s%20por%20mi%20parte%2C%20quedo%20atento%2Fa.%0AGracias%20%F0%9F%98%8A"
   target="_blank"
   rel="noopener noreferrer"
