@@ -152,29 +152,26 @@ const Hero: React.FC = () => {
           </div>
         </div>
 
-        {/* BOTONES (VISIBLES) */}
-        <div className="fade-in-up flex flex-col sm:flex-row gap-4 md:gap-8 justify-center mt-12 md:mt-24 w-full max-w-2xl px-4">
-          <a
-            href="#reservar"
-            className="flex-1 bg-white text-black px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3 border-4 border-transparent hover:border-orange-500 cursor-pointer"
-          >
-            🗓️ RESERVAR 2026
-          </a>
+       {/* BOTONES (VISIBLES) */}
+<div className="fade-in-up flex flex-col sm:flex-row gap-4 md:gap-8 justify-center mt-12 md:mt-24 w-full max-w-2xl px-4">
+
+  <button
+    onClick={scrollToReservar}
+    className="flex-1 bg-white text-black px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3 border-4 border-transparent hover:border-orange-500 cursor-pointer"
+  >
+    🗓️ RESERVAR 2026
+  </button>
+
   <a
-  href={whatsappUrl}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="flex-1 bg-[#25D366] text-white px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3"
->
-  💬 WHATSAPP
-</a>
+    href={whatsappUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="flex-1 bg-[#25D366] text-white px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3"
+  >
+    💬 WHATSAPP
+  </a>
 
-          >
-            💬 WHATSAPP
-          </a>
-        </div>
-      </div>
-
+</div>
       {/* TEXTURA */}
       <div className="absolute inset-0 z-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
 
