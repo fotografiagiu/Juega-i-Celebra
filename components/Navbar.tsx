@@ -1,112 +1,51 @@
 
-import React, { useState } from 'react';
+const getScrollContainer = (): HTMLElement => {
+  // El elemento que realmente hace scroll en la página (en SPAs suele ser un contenedor)
+  // 1) Si existe un contenedor típico "root" o "app", úsalo si es scrollable
+  const candidates = [
+    document.getElementById("root"),
+    document.getElementById("__next"),
+    document.querySelector("main"),
+    document.querySelector("#app"),
+    document.querySelector("[data-scroll-container]"),
+  ].filter(Boolean) as HTMLElement[];
 
-interface NavbarProps {
-  scrolled: boolean;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const navLinks = [
-    { name: 'Inicio', id: 'inicio' },
-    { name: 'Servicios', id: 'servicios' },
-    { name: 'Calendario', id: 'reservar' },
-    { name: 'Tarifas', id: 'tarifas' },
-    { name: 'Contacto', id: 'contacto' },
-  ];
-
-  const scrollToSection = (id: string) => {
-    setIsOpen(false);
-
-    const el = window.document.getElementById(id);
-    if (!el) {
-      console.warn(`No existe el id: ${id}`);
-      return;
-    }
-
-    const NAVBAR_HEIGHT = 120; // ajustado a tu diseño
-    const y =
-      el.getBoundingClientRect().top +
-      window.pageYOffset -
-      NAVBAR_HEIGHT;
-
-    window.scrollTo({
-      top: y,
-      behavior: 'smooth',
-    });
+  const isScrollable = (el: HTMLElement) => {
+    const style = window.getComputedStyle(el);
+    const oy = style.overflowY;
+    return (oy === "auto" || oy === "scroll") && el.scrollHeight > el.clientHeight;
   };
 
-  return (
-    <nav
-      className={`fixed top-0 left-0 w-full z-[9999] transition-all duration-300 ${
-        scrolled
-          ? 'bg-black/90 backdrop-blur-md shadow-lg py-2'
-          : 'bg-transparent py-4'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
-          <div
-            onClick={() => scrollToSection('inicio')}
-            className="cursor-pointer text-white font-black text-xl"
-          >
-            JugaiCelebra
-          </div>
+  for (const el of candidates) {
+    if (isScrollable(el)) return el;
+  }
 
-          {/* Desktop */}
-          <div className="hidden md:flex items-center gap-6">
-            {navLinks.map((link) => (
-              <button
-                key={link.id}
-                onClick={() => scrollToSection(link.id)}
-                className="text-white font-bold hover:text-yellow-300"
-              >
-                {link.name}
-              </button>
-            ))}
+  // 2) fallback: busca el primer contenedor scrollable desde body hacia abajo
+  const all = Array.from(document.querySelectorAll<HTMLElement>("*"));
+  const first = all.find(isScrollable);
+  if (first) return first;
 
-            <button
-              onClick={() => scrollToSection('reservar')}
-              className="bg-orange-500 text-white px-6 py-2 rounded-full font-bold hover:scale-105 transition"
-            >
-              Reservar 2026
-            </button>
-          </div>
-
-          {/* Mobile */}
-          <button
-            className="md:hidden text-white"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            ☰
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      {isOpen && (
-        <div className="md:hidden bg-black text-white px-6 py-4 space-y-4">
-          {navLinks.map((link) => (
-            <button
-              key={link.id}
-              onClick={() => scrollToSection(link.id)}
-              className="block w-full text-left font-bold"
-            >
-              {link.name}
-            </button>
-          ))}
-
-          <button
-            onClick={() => scrollToSection('reservar')}
-            className="w-full bg-orange-500 py-3 rounded-xl font-bold"
-          >
-            Reservar 2026
-          </button>
-        </div>
-      )}
-    </nav>
-  );
+  // 3) último recurso
+  return (document.scrollingElement as HTMLElement) || document.documentElement;
 };
 
-export default Navbar;
+const handleScroll = (id: string) => {
+  setIsOpen(false);
+
+  const target = document.getElementById(id);
+  if (!target) {
+    console.warn(`No encuentro el id="${id}"`);
+    return;
+  }
+
+  const container = getScrollContainer();
+  const NAVBAR_OFFSET = 120;
+
+  const containerRect = container.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+
+  const top = (targetRect.top - containerRect.top) + container.scrollTop - NAVBAR_OFFSET;
+
+  container.scrollTo({ top, behavior: "smooth" });
+};
+
