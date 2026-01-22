@@ -10,12 +10,14 @@ const Hero: React.FC = () => {
     green: "#4CAF50",
     red: "#F44336",
   };
-  const whatsappText = `Hola 👋
-He realizado una reserva en Juga i Celebra a través de la web.
-Si necesitáis algo más por mi parte, quedo atento/a.
-Gracias 😊`;
+  const whatsappText =
+  "Hola \uD83D\uDC4B\n" +
+  "He realizado una reserva en Juga i Celebra a través de la web.\n" +
+  "Si necesitáis algo más por mi parte, quedo atento/a.\n" +
+  "Gracias \uD83D\uDE0A";
 
-  const whatsappUrl = `https://wa.me/34669106393?text=${encodeURIComponent(whatsappText)}`;
+const whatsappUrl = `https://wa.me/34669106393?text=${encodeURIComponent(whatsappText)}`;
+
 
   // ✅ Scroll controlado (evita problemas con navbar fixed)
   const scrollToReservar = (e: React.MouseEvent) => {
