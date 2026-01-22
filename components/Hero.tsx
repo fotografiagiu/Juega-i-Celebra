@@ -1,4 +1,3 @@
-
 import React from "react";
 
 const Hero: React.FC = () => {
@@ -10,6 +9,21 @@ const Hero: React.FC = () => {
     yellow: "#FFC107",
     green: "#4CAF50",
     red: "#F44336",
+  };
+
+  // ✅ WhatsApp con mensaje (post-reserva)
+  const whatsappUrl =
+    "https://wa.me/34669106393?text=Hola%20%F0%9F%91%8B%0AHe%20realizado%20una%20reserva%20en%20Juga%20i%20Celebra%20a%20trav%C3%A9s%20de%20la%20web.%0ASi%20necesit%C3%A1is%20algo%20m%C3%A1s%20por%20mi%20parte%2C%20quedo%20atento%2Fa.%0AGracias%20%F0%9F%98%8A";
+
+  // ✅ Scroll controlado (evita problemas con navbar fixed)
+  const scrollToReservar = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const el = document.getElementById("reservar");
+    if (!el) return;
+
+    const NAVBAR_OFFSET = 110; // ajusta si tu navbar es más alto/bajo
+    const y = el.getBoundingClientRect().top + window.scrollY - NAVBAR_OFFSET;
+    window.scrollTo({ top: y, behavior: "smooth" });
   };
 
   return (
@@ -152,30 +166,30 @@ const Hero: React.FC = () => {
           </div>
         </div>
 
-       {/* BOTONES (VISIBLES) */}
-<div className="fade-in-up flex flex-col sm:flex-row gap-4 md:gap-8 justify-center mt-12 md:mt-24 w-full max-w-2xl px-4">
+        {/* BOTONES */}
+        <div className="fade-in-up flex flex-col sm:flex-row gap-4 md:gap-8 justify-center mt-12 md:mt-24 w-full max-w-2xl px-4">
+          <button
+            onClick={scrollToReservar}
+            className="flex-1 bg-white text-black px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3 border-4 border-transparent hover:border-orange-500 cursor-pointer"
+          >
+            🗓️ RESERVAR 2026
+          </button>
 
-  <button
-    onClick={scrollToReservar}
-    className="flex-1 bg-white text-black px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3 border-4 border-transparent hover:border-orange-500 cursor-pointer"
-  >
-    🗓️ RESERVAR 2026
-  </button>
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 bg-[#25D366] text-white px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3"
+          >
+            💬 WHATSAPP
+          </a>
+        </div>
+      </div>
 
-  <a
-    href={whatsappUrl}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="flex-1 bg-[#25D366] text-white px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3"
-  >
-    💬 WHATSAPP
-  </a>
-
-</div>
       {/* TEXTURA */}
       <div className="absolute inset-0 z-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
 
-      {/* CSS EN LÍNEA: TODO LO QUE FALTABA */}
+      {/* CSS EN LÍNEA */}
       <style>{`
         @keyframes confetti-fall {
           0% { transform: translateY(0) rotate(0deg); opacity: 0; }
