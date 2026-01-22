@@ -14,13 +14,13 @@ const Hero: React.FC = () => {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black font-['Baloo_2']">
-      {/* CAPA DE CONFETI ANIMADO */}
+      {/* CONFETI */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        {[...Array(20)].map((_, i) => {
-          const size = Math.random() * 20 + 10;
+        {[...Array(22)].map((_, i) => {
+          const size = Math.random() * 18 + 10;
           const left = Math.random() * 100;
-          const duration = Math.random() * 10 + 5;
-          const delay = Math.random() * 5;
+          const duration = Math.random() * 9 + 6;
+          const delay = Math.random() * 6;
           const color =
             Object.values(colors)[
               Math.floor(Math.random() * Object.values(colors).length)
@@ -31,13 +31,13 @@ const Hero: React.FC = () => {
           return (
             <div
               key={i}
-              className="absolute animate-confetti-fall"
+              className="absolute confetti-fall"
               style={{
                 left: `${left}%`,
-                top: `-10%`,
+                top: `-12%`,
                 animationDuration: `${duration}s`,
                 animationDelay: `-${delay}s`,
-                opacity: 0.6,
+                opacity: 0.75,
               }}
             >
               {shape === "circle" && (
@@ -67,7 +67,7 @@ const Hero: React.FC = () => {
                   strokeWidth="3"
                   strokeLinecap="round"
                 >
-                  <path d="M3 12c3-6 9-6 12 0s9 6 12 0" />
+                  <path d="M2 12c4-7 10-7 14 0s10 7 14 0" />
                 </svg>
               )}
             </div>
@@ -75,47 +75,48 @@ const Hero: React.FC = () => {
         })}
       </div>
 
-      {/* GLOBOS VECTORIALES ANIMADOS */}
+      {/* GLOBOS */}
       <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-[10%] left-[5%] md:left-[15%] animate-float opacity-90">
+        <div className="absolute top-[9%] left-[5%] md:left-[14%] float opacity-95">
           <svg
-            width="120"
-            height="160"
+            width="140"
+            height="180"
             viewBox="0 0 100 130"
-            className="drop-shadow-[0_0_30px_rgba(255,87,34,0.5)] scale-75 md:scale-110"
+            className="drop-shadow-[0_0_30px_rgba(255,87,34,0.55)] scale-75 md:scale-110"
           >
             <ellipse cx="50" cy="45" rx="40" ry="45" fill={colors.orange} />
             <path
-              d="M50 90 Q50 110 40 130"
+              d="M50 90 Q50 112 40 130"
               stroke="white"
               strokeWidth="2"
               fill="none"
-              opacity="0.5"
+              opacity="0.55"
             />
           </svg>
         </div>
 
-        <div className="absolute top-[15%] right-[5%] md:right-[15%] animate-float-delayed opacity-90">
+        <div className="absolute top-[14%] right-[5%] md:right-[14%] float-delayed opacity-95">
           <svg
-            width="100"
-            height="140"
+            width="120"
+            height="160"
             viewBox="0 0 100 130"
-            className="drop-shadow-[0_0_30px_rgba(0,191,165,0.5)] scale-75 md:scale-100"
+            className="drop-shadow-[0_0_30px_rgba(0,191,165,0.55)] scale-75 md:scale-100"
           >
             <ellipse cx="50" cy="45" rx="35" ry="40" fill={colors.teal} />
             <path
-              d="M50 85 Q50 105 60 125"
+              d="M50 85 Q50 108 60 125"
               stroke="white"
               strokeWidth="2"
               fill="none"
-              opacity="0.5"
+              opacity="0.55"
             />
           </svg>
         </div>
       </div>
 
+      {/* CONTENIDO */}
       <div className="relative z-10 text-center px-4 w-full flex flex-col items-center justify-center">
-        <div className="flex flex-col items-center gap-0 md:gap-2 animate-[zoomIn_0.8s_ease-out]">
+        <div className="zoom-in flex flex-col items-center gap-0 md:gap-2">
           <div className="flex items-end justify-center">
             <div className="text-7xl sm:text-9xl md:text-[160px] lg:text-[200px] font-black tracking-tighter flex items-end">
               <span style={{ color: colors.orange }}>J</span>
@@ -145,15 +146,14 @@ const Hero: React.FC = () => {
             <p className="text-xl sm:text-3xl md:text-5xl text-[#D7CCC8] font-bold tracking-tight opacity-90 drop-shadow-lg">
               Espai per a esdeveniments
             </p>
-            <p className="text-4xl sm:text-6xl md:text-8xl text-white font-black tracking-wide uppercase drop-shadow-[0_4px_15px_rgba(0,0,0,0.5)]">
+            <p className="text-4xl sm:text-6xl md:text-8xl text-white font-black tracking-wide uppercase drop-shadow-[0_4px_15px_rgba(0,0,0,0.55)]">
               Algemesí
             </p>
           </div>
         </div>
 
-        {/* BOTONES */}
-        <div className="flex flex-col sm:flex-row gap-4 md:gap-8 justify-center mt-12 md:mt-24 w-full max-w-2xl px-4 animate-[fadeInUp_1s_ease-out_0.5s] opacity-0 [animation-fill-mode:forwards]">
-          {/* ✅ SCROLL QUE FUNCIONA: anchor */}
+        {/* BOTONES (VISIBLES) */}
+        <div className="fade-in-up flex flex-col sm:flex-row gap-4 md:gap-8 justify-center mt-12 md:mt-24 w-full max-w-2xl px-4">
           <a
             href="#reservar"
             className="flex-1 bg-white text-black px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3 border-4 border-transparent hover:border-orange-500 cursor-pointer"
@@ -172,32 +172,38 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
+      {/* TEXTURA */}
       <div className="absolute inset-0 z-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
 
-      {/* ANIMACIONES */}
+      {/* CSS EN LÍNEA: TODO LO QUE FALTABA */}
       <style>{`
         @keyframes confetti-fall {
           0% { transform: translateY(0) rotate(0deg); opacity: 0; }
           10% { opacity: 1; }
           90% { opacity: 1; }
-          100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+          100% { transform: translateY(115vh) rotate(720deg); opacity: 0; }
         }
-        .animate-confetti-fall {
-          animation: confetti-fall linear infinite;
-        }
+        .confetti-fall { animation: confetti-fall linear infinite; }
 
         @keyframes float {
           0% { transform: translateY(0px); }
           50% { transform: translateY(-18px); }
           100% { transform: translateY(0px); }
         }
-        .animate-float {
-          animation: float 5s ease-in-out infinite;
+        .float { animation: float 5.2s ease-in-out infinite; }
+        .float-delayed { animation: float 6.1s ease-in-out infinite; animation-delay: 0.9s; }
+
+        @keyframes zoomIn {
+          0% { transform: scale(0.96); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
         }
-        .animate-float-delayed {
-          animation: float 6s ease-in-out infinite;
-          animation-delay: 1s;
+        .zoom-in { animation: zoomIn .8s ease-out both; }
+
+        @keyframes fadeInUp {
+          0% { transform: translateY(14px); opacity: 0; }
+          100% { transform: translateY(0); opacity: 1; }
         }
+        .fade-in-up { animation: fadeInUp .9s ease-out .35s both; }
       `}</style>
     </div>
   );
