@@ -3,13 +3,7 @@ import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 
 type Slide = { src: string; title?: string };
-
-type Group = {
-  id: string;
-  title: string;
-  subtitle?: string;
-  slides: Slide[];
-};
+type Group = { id: string; title: string; subtitle?: string; slides: Slide[] };
 
 function FanStack({
   slides,
@@ -18,40 +12,43 @@ function FanStack({
   slides: Slide[];
   onOpen: (index: number) => void;
 }) {
-  const preview = useMemo(() => slides.slice(0, 7), [slides]); // 7 cartas = más wow
+  const preview = useMemo(() => slides.slice(0, 6), [slides]);
 
   return (
-    <div className="fanWrap" role="button" tabIndex={0} onClick={() => onOpen(0)} onKeyDown={(e) => e.key === "Enter" && onOpen(0)}>
-      {preview.map((s, i) => {
-        // valores "cerrado" (default)
-        const rotate = -10 + i * 3;
-        const x = i * 10;
-        const y = i * 4;
+    <div className="fanScene" aria-label="Abrir galería">
+      <div className="fanFrame">
+        <div className="fanFloat">
+          {preview.map((s, i) => {
+            // igual que antes, abanico “controlado”
+            const rotate = -12 + i * 4;
+            const x = i * 16;
+            const y = i * 5;
 
-        return (
-          <button
-            key={s.src}
-            type="button"
-            className="fanCard"
-            style={{
-              transform: `translate(${x}px, ${y}px) rotate(${rotate}deg)`,
-              zIndex: 10 + i,
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              onOpen(i);
-            }}
-            aria-label={`Abrir foto ${i + 1}`}
-          >
-            <img src={s.src} alt={s.title ?? `Foto ${i + 1}`} loading="lazy" />
-          </button>
-        );
-      })}
+            return (
+              <button
+                key={s.src}
+                type="button"
+                className="fanCard"
+                style={{
+                  transform: `translate(${x}px, ${y}px) rotate(${rotate}deg)`,
+                  zIndex: 10 + i,
+                }}
+                onClick={() => onOpen(i)}
+                aria-label={`Abrir foto ${i + 1}`}
+              >
+                <img src={s.src} alt={s.title ?? `Foto ${i + 1}`} loading="lazy" />
+              </button>
+            );
+          })}
 
-      <div className="fanOverlay" />
-      <div className="fanCTA">
-        <span className="fanCTATitle">Ver galería</span>
-        <span className="fanCTASub">Haz clic para ampliar</span>
+          <div className="fanGlow" />
+          <div className="fanBottomBar">
+            <button type="button" className="fanBtn" onClick={() => onOpen(0)}>
+              Ver galería
+              <span className="fanBtnIcon">↗</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -183,83 +180,129 @@ const css = `
   white-space: nowrap;
 }
 
-/* FAN */
-.fanWrap{
+/* Escena 3D */
+.fanScene{
+  perspective: 1100px;
+}
+.fanFrame{
+  position: relative;
+  border-radius: 18px;
+  padding: 14px;
+  background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(0,0,0,.10));
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow:
+    0 18px 40px rgba(0,0,0,.25),
+    inset 0 1px 0 rgba(255,255,255,.08);
+  transform: rotateX(6deg);
+  transition: transform .35s ease, box-shadow .35s ease;
+}
+@media (hover:hover){
+  .fanFrame:hover{
+    transform: rotateX(2deg) rotateY(-2deg) translateY(-2px);
+    box-shadow:
+      0 26px 60px rgba(0,0,0,.34),
+      inset 0 1px 0 rgba(255,255,255,.10);
+  }
+}
+
+/* Movimiento sutil “impactante” sin ser pesado */
+.fanFloat{
   position: relative;
   height: 260px;
   border-radius: 16px;
-  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.08), rgba(0,0,0,.10));
-  border: 1px dashed rgba(255,255,255,.14);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor: pointer;
-  user-select: none;
+  background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.10), rgba(0,0,0,.12));
   overflow: hidden;
+  animation: floaty 4.2s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce){
+  .fanFloat{ animation: none; }
+}
+@keyframes floaty{
+  0%,100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
 }
 
+/* Abanico como antes */
 .fanCard{
   position: absolute;
-  width: 190px;
-  height: 240px;
+  width: 180px;
+  height: 230px;
   border: none;
   padding: 0;
   background: transparent;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 12px 26px rgba(0,0,0,.28);
   cursor: pointer;
-  transition: transform .28s ease, box-shadow .28s ease, filter .28s ease;
+  box-shadow: 0 12px 26px rgba(0,0,0,.28);
+  transition: transform .20s ease, box-shadow .20s ease, filter .20s ease;
 }
 .fanCard img{
   width: 100%;
   height: 100%;
   object-fit: cover;
   display:block;
-  filter: saturate(1.03) contrast(1.03);
+  filter: saturate(1.02) contrast(1.02);
 }
-
-/* Hover: el abanico se abre (solo desktop) */
 @media (hover:hover){
-  .fanWrap:hover .fanCard{
-    box-shadow: 0 18px 36px rgba(0,0,0,.38);
+  .fanCard:hover{
+    box-shadow: 0 18px 38px rgba(0,0,0,.38);
+    filter: saturate(1.06) contrast(1.05);
   }
-  .fanWrap:hover .fanCard:nth-child(1){ transform: translate(-40px, 16px) rotate(-22deg) scale(1.02); }
-  .fanWrap:hover .fanCard:nth-child(2){ transform: translate(-20px, 10px) rotate(-14deg) scale(1.02); }
-  .fanWrap:hover .fanCard:nth-child(3){ transform: translate(0px, 6px) rotate(-6deg) scale(1.02); }
-  .fanWrap:hover .fanCard:nth-child(4){ transform: translate(20px, 6px) rotate(2deg) scale(1.02); }
-  .fanWrap:hover .fanCard:nth-child(5){ transform: translate(40px, 10px) rotate(10deg) scale(1.02); }
-  .fanWrap:hover .fanCard:nth-child(6){ transform: translate(60px, 16px) rotate(18deg) scale(1.02); }
-  .fanWrap:hover .fanCard:nth-child(7){ transform: translate(80px, 22px) rotate(26deg) scale(1.02); }
 }
 
-.fanOverlay{
+/* Glow moderno */
+.fanGlow{
   position:absolute;
-  inset:0;
-  background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,.38) 100%);
+  inset:-40px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,191,165,.22), rgba(0,0,0,0) 45%),
+    radial-gradient(circle at 80% 70%, rgba(255,87,34,.18), rgba(0,0,0,0) 52%);
   pointer-events:none;
+  mix-blend-mode: screen;
+  opacity: .9;
 }
 
-.fanCTA{
+/* Barra inferior con botón bonito */
+.fanBottomBar{
   position:absolute;
   left: 14px;
+  right: 14px;
   bottom: 12px;
   display:flex;
-  flex-direction:column;
-  gap: 2px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(0,0,0,.28);
-  backdrop-filter: blur(6px);
+  justify-content:flex-end;
   pointer-events:none;
 }
-.fanCTATitle{
-  font-size: 13px;
+.fanBtn{
+  pointer-events:auto;
+  display:inline-flex;
+  align-items:center;
+  gap: 10px;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: #0B0F14;
+  font-weight: 700;
   letter-spacing: .2px;
+  background: linear-gradient(135deg, #00BFA5, #FF5722);
+  box-shadow: 0 14px 30px rgba(0,0,0,.30);
+  cursor:pointer;
+  transform: translateZ(0);
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
 }
-.fanCTASub{
-  font-size: 12px;
-  opacity: .75;
+.fanBtnIcon{
+  display:inline-flex;
+  width: 22px;
+  height: 22px;
+  align-items:center;
+  justify-content:center;
+  border-radius: 999px;
+  background: rgba(255,255,255,.22);
+}
+@media (hover:hover){
+  .fanBtn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(0,0,0,.40);
+    filter: brightness(1.03);
+  }
 }
 `;
