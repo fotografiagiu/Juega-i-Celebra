@@ -36,7 +36,7 @@ const BookingCalendar: React.FC = () => {
 
   // ✅ Tu endpoint de Google Apps Script (PON AQUÍ EL NUEVO QUE HAS GENERADO)
   const WEB_APP_ENDPOINT =
-    "https://script.google.com/macros/s/AKfycbyy9m3JiY7CZUUe5zLj4884FpH0mKO7jnWM6ZHCMwJRUK9la-4nOcv57hHh-wOHoFhs/exec";
+    "https://script.google.com/macros/s/AKfycbw_mTR8MsfkzXEOnwGQBZwnLdzGBE2JcIpg5HCjlAsHh7qUUi7N-ZiEJMrQ5udJ4EXI/exec";
 
   // ⚠️ Festivos 2026 (YYYY-MM-DD)
   // - Si un día está aquí => se trata como "festivo" (tarifas de fin de semana)
