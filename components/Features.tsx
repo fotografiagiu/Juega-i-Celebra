@@ -50,7 +50,7 @@ const Features: React.FC = () => {
               'Espacio amplio para cumpleaños, comuniones, jubilaciones y reuniones.',
               'Mesas y sillas para adultos y niños.',
               'Local cómodo y luminoso para organizar el evento a tu manera.',
-              'Ubicación: Avinguda País Valencià 5 (Algemesí).'
+              'Ubicación: Avinguda País Valencià 58 (Algemesí).'
             ].map((item, i) => (
               <li key={i} className="flex items-center gap-3 text-gray-700 font-semibold">
                 <span className="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">
