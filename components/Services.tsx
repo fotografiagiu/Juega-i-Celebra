@@ -9,10 +9,11 @@ const services = [
     color: 'bg-blue-100 text-blue-600'
   },
   {
-    title: 'Cumpleaños Temáticos',
-    desc: 'Fiestas 100% personalizadas. Nos encargamos de todo: merienda, tarta artesana, juegos guiados y la mayor diversión de Algemesí.',
-    icon: '🎂',
+    title: 'Celebraciones',
+    desc: 'Alquiler de espacio para fiestas infantiles y eventos familiares. Un local amplio y cómodo para que organices la celebración a tu manera.',
+    icon: '🎉',
     color: 'bg-pink-100 text-pink-600'
+
   },
   {
     title: 'Zona Baby Segura',
