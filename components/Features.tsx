@@ -65,7 +65,7 @@ const Features: React.FC = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <a
               href="#contacto"
-              className="inline-flex items-center justify-center bg-green-500 text-white px-8 py-4 rounded-full font-black shadow-lg hover:bg-green-600 transition-all"
+              className="inline-flex items-center justify-center bg-blue-600 text-white px-8 py-4 rounded-full font-black shadow-lg hover:bg-blue-700 transition-all"
             >
               Contactar ahora
             </a>
