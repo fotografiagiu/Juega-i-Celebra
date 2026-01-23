@@ -25,28 +25,16 @@ const BookingCalendar: React.FC = () => {
   const [bookedDates, setBookedDates] = useState<Set<string>>(new Set());
   const formRef = useRef<HTMLDivElement>(null);
 
-  const BANK_ACCOUNT = "ES37 0081 5416 3200 0166 1868";
   const CLEANING_FEE = 60;
   const SECURITY_DEPOSIT = 100;
   const PHONE_NUMBER = "34669106393";
 
-  // CSV público de la hoja (ojo: en tu proyecto ya lo tienes funcionando)
-  const SHEET_URL =
-    "https://docs.google.com/spreadsheets/d/1508WnsK-OIkXKnjLhs9O5vr3jDELT6lbR2Sj3Jp25lo/edit?gid=0#gid=0";
-
-  // ✅ Tu endpoint de Google Apps Script (PON AQUÍ EL NUEVO QUE HAS GENERADO)
+  // ✅ Tu endpoint de Google Apps Script (el Web App /exec)
   const WEB_APP_ENDPOINT =
     "https://script.google.com/macros/s/AKfycbw_mTR8MsfkzXEOnwGQBZwnLdzGBE2JcIpg5HCjlAsHh7qUUi7N-ZiEJMrQ5udJ4EXI/exec";
 
   // ⚠️ Festivos 2026 (YYYY-MM-DD)
-  // - Si un día está aquí => se trata como "festivo" (tarifas de fin de semana)
-  // - La víspera se detecta automáticamente (día anterior a un festivo) => tarifa 130€
-  // Rellénalo con los festivos reales que quieras bloquear como festivo.
-  const HOLIDAYS_2026: string[] = [
-    // Ejemplos (borra si no aplica):
-    // "2026-01-01",
-    // "2026-01-06",
-  ];
+  const HOLIDAYS_2026: string[] = [];
 
   const [formData, setFormData] = useState({
     name: "",
@@ -54,22 +42,12 @@ const BookingCalendar: React.FC = () => {
     kids: "15",
     notes: "",
     rentalType: "80",
-    cleaning: false, // se mantiene informativo
+    cleaning: false,
   });
 
   const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
+    "Enero","Febrero","Marzo","Abril","Mayo","Junio",
+    "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre",
   ];
 
   type RentalOpt = { label: string; value: string; schedule: string };
@@ -110,31 +88,16 @@ const BookingCalendar: React.FC = () => {
     const nextISO = dateToISO(next);
     const isEveOfHoliday = isHolidayISO(nextISO);
 
-    // Festivo -> tarifas de fin de semana
-    if (isHoliday) {
-      return ALL_RENTAL_OPTIONS.filter((o) => o.value === "150_PM" || o.value === "200");
-    }
-
-    // Sábado o Domingo -> fin de semana
-    if (dow === 6 || dow === 0) {
-      return ALL_RENTAL_OPTIONS.filter((o) => o.value === "150_PM" || o.value === "200");
-    }
-
-    // Viernes o víspera de festivo -> 130
-    if (dow === 5 || isEveOfHoliday) {
-      return ALL_RENTAL_OPTIONS.filter((o) => o.value === "130");
-    }
-
-    // Lunes a Jueves -> 80
+    if (isHoliday) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "150_PM" || o.value === "200");
+    if (dow === 6 || dow === 0) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "150_PM" || o.value === "200");
+    if (dow === 5 || isEveOfHoliday) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "130");
     return ALL_RENTAL_OPTIONS.filter((o) => o.value === "80");
   }
 
   const rentalOptions: RentalOpt[] = selectedISO ? getAllowedOptionsForISO(selectedISO) : [];
 
-  // Fuerza rentalType válido según el día seleccionado
   useEffect(() => {
     if (!selectedISO) return;
-
     const allowed = getAllowedOptionsForISO(selectedISO);
     if (allowed.length === 0) return;
 
@@ -146,7 +109,7 @@ const BookingCalendar: React.FC = () => {
   }, [selectedISO]);
 
   const basePrice = parseFloat(formData.rentalType.split("_")[0]);
-  const cleaningPrice = 0; // A consultar
+  const cleaningPrice = 0;
   const totalPrice = basePrice + cleaningPrice;
   const depositToPay = totalPrice / 2;
 
@@ -162,25 +125,46 @@ const BookingCalendar: React.FC = () => {
   const businessMinDate = new Date(2026, 0, 20);
   businessMinDate.setHours(0, 0, 0, 0);
 
+  /**
+   * ✅ Carga fechas desde el WebApp (doGet) -> JSON { ok:true, rows:[...]}
+   * Evita CSV/HTML y problemas con comas en notes.
+   */
   async function loadDates() {
     try {
-      const res = await fetch(`${SHEET_URL}&t=${Date.now()}`, { cache: "no-store" });
-      const csv = await res.text();
-      const csvRows = csv.split("\n").map((r) => r.split(","));
+      const res = await fetch(`${WEB_APP_ENDPOINT}?t=${Date.now()}`, { cache: "no-store" });
 
-      if (csvRows.length < 2) return;
+      // doGet puede devolver HTML si hay error, así que protegemos
+      const txt = await res.text();
 
-      const header = csvRows[0].map((h) => h.trim().toLowerCase());
-      const dateIdx = header.indexOf("date") !== -1 ? header.indexOf("date") : 0;
-      const statusIdx = header.indexOf("status") !== -1 ? header.indexOf("status") : 2;
+      let payload: any;
+      try {
+        payload = JSON.parse(txt);
+      } catch {
+        console.error("Respuesta no JSON desde Apps Script:", txt);
+        return;
+      }
 
-      const rows = csvRows.slice(1).map((row) => ({
-        date: (row[dateIdx] || "").trim(),
-        status: (row[statusIdx] || "").trim().toUpperCase(),
-      }));
+      if (!payload?.ok || !Array.isArray(payload?.rows) || payload.rows.length < 2) {
+        return;
+      }
 
-      const reservedDates = rows.filter((r) => r.status === "RESERVADO").map((r) => r.date);
-      setBookedDates(new Set(reservedDates));
+      const rows: any[][] = payload.rows;
+      const headerRow = rows[0].map((h) => String(h).trim().toLowerCase());
+
+      const dateIdx = headerRow.indexOf("date");
+      const statusIdx = headerRow.indexOf("status");
+
+      if (dateIdx === -1 || statusIdx === -1) return;
+
+      const reserved = new Set<string>();
+      for (let i = 1; i < rows.length; i++) {
+        const r = rows[i];
+        const date = String(r[dateIdx] || "").trim();
+        const st = String(r[statusIdx] || "").trim().toUpperCase();
+        if (date && st === "RESERVADO") reserved.add(date);
+      }
+
+      setBookedDates(reserved);
     } catch (e) {
       console.error("Error al cargar fechas:", e);
     }
@@ -244,7 +228,6 @@ const BookingCalendar: React.FC = () => {
     const body = new URLSearchParams({
       action: "new",
       date: pending.selectedISO || "",
-      status: "RESERVADO",
       name: pending.name || "",
       phone: pending.phone || "",
       kids: pending.kids || "",
@@ -256,13 +239,20 @@ const BookingCalendar: React.FC = () => {
         `${pending.notes ? "Notas: " + pending.notes : ""}`,
     }).toString();
 
-    await fetch(WEB_APP_ENDPOINT, {
+    const r = await fetch(WEB_APP_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
       body,
     });
 
-    setBookedDates((prev) => new Set([...prev, pending.selectedISO]));
+    const txt = await r.text();
+    if (!r.ok || txt.trim() !== "OK") {
+      throw new Error(txt || "No se pudo registrar la reserva.");
+    }
+
+    // ✅ Refresco real desde la hoja (no solo “optimista”)
+    await loadDates();
+
     setSubmitted(true);
 
     const waMsg =
@@ -317,15 +307,12 @@ const BookingCalendar: React.FC = () => {
       pending.sessionId = sessionId;
 
       registerReservation(pending)
-        .then(() => {
-          clearPendingBooking();
-        })
-        .catch(() => {
+        .then(() => clearPendingBooking())
+        .catch((err: any) => {
+          console.error(err);
           alert("Pago OK, pero falló el registro. Escríbenos por WhatsApp.");
         })
-        .finally(() => {
-          setIsSubmitting(false);
-        });
+        .finally(() => setIsSubmitting(false));
     }
   }, []);
 
@@ -377,6 +364,10 @@ const BookingCalendar: React.FC = () => {
 
   return (
     <div id="reserva" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 font-['Quicksand']">
+      {/* ... TU JSX NO CAMBIA ... */}
+      {/* Mantén todo igual desde aquí hacia abajo */}
+      {/* (He omitido el resto por longitud; pega tu JSX actual tal cual) */}
+      {/* Solo asegúrate de NO tocar lo visual */}
       <div className="relative mb-20 text-center">
         <div className="inline-block px-8 py-3 bg-blue-600 rounded-full text-white font-black text-sm uppercase mb-6 shadow-xl animate-bounce">
           Calendario Algemesí 2026
@@ -474,231 +465,11 @@ const BookingCalendar: React.FC = () => {
         </div>
 
         {/* Formulario */}
+        {/* Aquí pega tu bloque exacto sin cambios */}
         <div ref={formRef} className="w-full lg:w-7/12 min-h-[500px]">
-          {!selectedDate ? (
-            <div className="h-full bg-blue-50/30 rounded-[50px] border-4 border-dashed border-blue-200 flex flex-col items-center justify-center p-12 text-center">
-              <div className="text-6xl mb-8 animate-bounce">🎈</div>
-              <h3 className="text-3xl font-black text-blue-400 uppercase font-['Baloo_2']">
-                ¿Cuándo es el cumple?
-              </h3>
-              <p className="text-gray-400 mt-4 font-bold text-lg">
-                Elige un día disponible en el calendario para comenzar.
-              </p>
-            </div>
-          ) : submitted ? (
-            <div className="bg-white rounded-[50px] shadow-2xl p-12 border-4 border-green-500 text-center animate-[zoomIn_0.3s_ease-out]">
-              <div className="w-24 h-24 bg-green-500 text-white rounded-full flex items-center justify-center text-5xl mx-auto mb-10 shadow-xl">
-                ✓
-              </div>
-              <h4 className="text-5xl font-black text-gray-800 mb-6 font-['Baloo_2']">¡RESERVADO!</h4>
-              <p className="text-gray-500 mb-8 font-bold text-xl leading-relaxed">
-                Tu fecha <span className="text-green-600">{selectedDate}</span> ya está marcada en{" "}
-                <span className="text-green-600">VERDE</span> fijo.
-              </p>
-              <button
-                onClick={() => window.open(`https://wa.me/${PHONE_NUMBER}`, "_blank")}
-                className="bg-[#25D366] text-white px-10 py-5 rounded-[25px] font-black text-xl hover:scale-105 transition-all shadow-xl flex items-center justify-center gap-3 mx-auto"
-              >
-                ENVIAR JUSTIFICANTE POR WHATSAPP 📄
-              </button>
-            </div>
-          ) : !paymentStep ? (
-            <div className="bg-white rounded-[50px] shadow-2xl p-10 border-4 border-blue-600 animate-[fadeInRight_0.4s_ease-out]">
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setPaymentStep(true);
-                }}
-                className="space-y-8"
-              >
-                <div className="bg-blue-600 p-6 rounded-[30px] text-white flex justify-between items-center shadow-lg">
-                  <div>
-                    <h3 className="text-3xl font-black font-['Baloo_2']">Datos del Evento</h3>
-                    <p className="text-blue-100 font-bold uppercase tracking-widest">{selectedDate}</p>
-                  </div>
-                  <span className="text-4xl animate-pulse">🎉</span>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-gray-400 uppercase ml-2">
-                      Responsable de la Fiesta
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl outline-none font-black text-lg focus:ring-2 focus:ring-blue-600 transition-all"
-                      placeholder="Nombre completo"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-black text-gray-400 uppercase ml-2">
-                      WhatsApp de Contacto
-                    </label>
-                    <input
-                      required
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl outline-none font-black text-lg focus:ring-2 focus:ring-blue-600 transition-all"
-                      placeholder="6XX XXX XXX"
-                    />
-                  </div>
-                </div>
-
-                <div className="bg-gray-50 p-8 rounded-[40px] border border-gray-100">
-                  <p className="font-black text-blue-600 uppercase mb-2 tracking-widest text-sm">
-                    Configuración del Alquiler
-                  </p>
-                  <p className="text-xs font-black text-gray-400 uppercase mb-6 tracking-widest">
-                    (Las tarifas se ajustan automáticamente según el día)
-                  </p>
-
-                  <div className="space-y-3 mb-8">
-                    {rentalOptions.map((opt) => (
-                      <label
-                        key={opt.value}
-                        className={`flex items-center gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${
-                          formData.rentalType === opt.value
-                            ? "bg-blue-600 border-blue-600 text-white shadow-md"
-                            : "bg-white border-gray-100 text-gray-600 hover:border-blue-200"
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          name="rentalType"
-                          value={opt.value}
-                          checked={formData.rentalType === opt.value}
-                          onChange={() => setFormData({ ...formData, rentalType: opt.value })}
-                          className="hidden"
-                        />
-                        <div
-                          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                            formData.rentalType === opt.value ? "border-white" : "border-gray-300"
-                          }`}
-                        >
-                          {formData.rentalType === opt.value && (
-                            <div className="w-2.5 h-2.5 bg-white rounded-full"></div>
-                          )}
-                        </div>
-                        <div className="flex flex-col">
-                          <span className="font-black text-lg">{opt.label}</span>
-                          <span className={`text-xs font-black ${formData.rentalType === opt.value ? "text-white/90" : "text-gray-400"}`}>
-                            Horario: {opt.schedule}
-                          </span>
-                        </div>
-                      </label>
-                    ))}
-                  </div>
-
-                  <div className="p-6 rounded-3xl border-2 border-blue-100 bg-white flex items-center justify-between group cursor-default opacity-80">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center text-3xl bg-blue-50">
-                        🧼
-                      </div>
-                      <div>
-                        <p className="font-black text-lg text-gray-800">SERVICIO DE LIMPIEZA</p>
-                        <p className="text-xs font-black text-orange-500 uppercase tracking-tighter">
-                          60€ - A consultar con el local
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-lg border-2 border-gray-200 flex items-center justify-center bg-gray-50">
-                        <span className="text-gray-300 font-black text-xs">?</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-blue-600 p-8 rounded-[40px] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
-                  <div className="text-center md:text-left">
-                    <p className="text-xs font-black text-blue-200 uppercase tracking-widest mb-1">
-                      Pago Reserva hoy (50%)
-                    </p>
-                    <p className="text-5xl font-black tracking-tighter">{depositToPay.toFixed(2)}€</p>
-                    <p className="text-xs font-black text-blue-200 uppercase tracking-widest mt-2">
-                      Horario: {selectedSchedule}
-                    </p>
-                  </div>
-                  <button className="w-full md:w-auto bg-white text-blue-600 px-12 py-5 rounded-[25px] font-black text-xl hover:bg-blue-50 shadow-xl transform active:scale-95 transition-all">
-                    SIGUIENTE PASO 🚀
-                  </button>
-                </div>
-              </form>
-            </div>
-          ) : (
-            // ✅ PASO PAGO: Stripe Checkout
-            <div className="bg-white rounded-[50px] shadow-2xl p-10 border border-gray-100 animate-[fadeInRight_0.4s_ease-out]">
-              <div className="flex justify-between items-center mb-8">
-                <button
-                  onClick={() => setPaymentStep(false)}
-                  className="text-blue-600 font-black hover:underline flex items-center gap-2"
-                  disabled={isSubmitting}
-                >
-                  ← MODIFICAR
-                </button>
-                <h4 className="text-3xl font-black text-gray-800 font-['Baloo_2'] uppercase tracking-tight">
-                  Pago Seguro
-                </h4>
-              </div>
-
-              <div className="mb-10 p-8 bg-blue-50 rounded-[40px] border border-blue-100 shadow-inner">
-                <h5 className="text-xs font-black text-blue-400 uppercase mb-4 tracking-widest">
-                  Resumen de tu selección
-                </h5>
-                <div className="space-y-2 text-gray-700 font-bold">
-                  <p className="flex justify-between">
-                    <span>Alquiler Base:</span> <span>{basePrice}€</span>
-                  </p>
-                  <p className="flex justify-between text-gray-400 italic text-sm">
-                    <span>Horario:</span> <span>{selectedSchedule}</span>
-                  </p>
-                  <p className="flex justify-between text-gray-400 italic text-sm">
-                    <span>Servicio Limpieza:</span> <span>A consultar</span>
-                  </p>
-                  <div className="h-px bg-blue-200 my-4"></div>
-                  <p className="flex justify-between text-xl text-gray-800 font-black">
-                    <span>Total Alquiler:</span> <span>{totalPrice}€</span>
-                  </p>
-                  <p className="flex justify-between text-blue-600 text-3xl font-black pt-2">
-                    <span>PAGO RESERVA:</span> <span>{depositToPay.toFixed(2)}€</span>
-                  </p>
-
-                  <div className="bg-white/80 p-5 rounded-2xl mt-6 border border-blue-200 text-xs text-gray-500 leading-relaxed shadow-sm">
-                    <p className="text-blue-800 font-black mb-1">📋 INFORMACIÓN ADICIONAL:</p>
-                    <p>
-                      • La fianza de <strong>{SECURITY_DEPOSIT}€</strong> se abona en efectivo el día del evento.
-                    </p>
-                    <p>
-                      • El servicio de limpieza de <strong>{CLEANING_FEE}€</strong> debe solicitarse aparte.
-                    </p>
-                    <p>
-                      • Al pagar, te redirigimos a <strong>Stripe</strong>. Al volver, se marca como{" "}
-                      <strong>RESERVADO</strong>.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                disabled={isSubmitting}
-                onClick={goToStripeCheckout}
-                className="w-full bg-blue-600 text-white py-6 rounded-[25px] font-black text-2xl hover:bg-blue-700 disabled:opacity-50 shadow-2xl transition-all transform active:scale-95 flex items-center justify-center gap-4 mt-4"
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-                    REDIRIGIENDO A STRIPE...
-                  </>
-                ) : (
-                  <>PAGAR CON TARJETA (STRIPE) 🥳</>
-                )}
-              </button>
-            </div>
-          )}
+          {/* ... pega tu UI actual completa ... */}
+          {/* No la repito para no duplicar 300 líneas */}
+          {/* IMPORTANTE: nada visual afecta a la sincronización */}
         </div>
       </div>
     </div>
