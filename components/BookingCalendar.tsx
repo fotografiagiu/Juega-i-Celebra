@@ -34,7 +34,7 @@ const BookingCalendar: React.FC = () => {
 
   // ✅ Tu endpoint de Google Apps Script
   const WEB_APP_ENDPOINT =
-    "https://script.google.com/macros/s/AKfycbz_DOb29XxVv8HJXy5uaog4WEBUomPg23QNL4vbyVFGedI20nj-4BpI5MlvaNFVZTgBhA/exec";
+    "https://script.google.com/macros/s/AKfycbx6JXimtGEdFPmHOcwfrPi5N21-3YAAH-TJnKcc7IyehfpWyuCKVVbS-cZeBvIAOMeL/exec";
 
   const [formData, setFormData] = useState({
     name: "",
