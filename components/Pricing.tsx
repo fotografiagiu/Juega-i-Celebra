@@ -11,7 +11,7 @@ const tiers = [
   },
   {
     name: 'Tarde / Viernes',
-    price: '150€',
+    price: '130€',
     unit: '/día',
     features: ['Viernes (Víspera festivo)', 'Fin de semana (15:00-22:00)', 'Fiesta de cumpleaños 10', 'Fianza de 100€ (Efectivo)', 'Servicio limpieza (+60€)'],
     color: 'border-orange-400 scale-105 shadow-2xl relative',
