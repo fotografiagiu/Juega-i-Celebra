@@ -32,7 +32,7 @@ const BookingCalendar: React.FC = () => {
 
   // CSV público de la hoja (ojo: en tu proyecto ya lo tienes funcionando)
   const SHEET_URL =
-    "https://docs.google.com/spreadsheets/d/1508WnsK-OIkXKnjLhs9O5vr3jDELT6lbR2Sj3Jp25lo/export?format=csv&gid=0";
+    "https://docs.google.com/spreadsheets/d/1508WnsK-OIkXKnjLhs9O5vr3jDELT6lbR2Sj3Jp25lo/edit?gid=0#gid=0";
 
   // ✅ Tu endpoint de Google Apps Script (PON AQUÍ EL NUEVO QUE HAS GENERADO)
   const WEB_APP_ENDPOINT =
