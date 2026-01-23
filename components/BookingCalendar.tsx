@@ -142,9 +142,50 @@ const BookingCalendar: React.FC = () => {
   const businessMinDate = new Date(2026, 0, 20);
   businessMinDate.setHours(0, 0, 0, 0);
 
+  /** ✅ Normaliza cualquier formato de fecha del Sheet a YYYY-MM-DD (FECHA LOCAL)
+   * Caso típico: "2026-01-20T23:00:00.000Z" -> en España es 2026-01-21
+   */
+  function normalizeSheetDateToISO(v: any): string | null {
+    if (v === null || v === undefined) return null;
+
+    // Si ya es YYYY-MM-DD
+    if (typeof v === "string") {
+      const s = v.trim();
+      if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+
+      // ISO datetime u otros: parse y saca fecha local
+      const d = new Date(s);
+      if (!Number.isNaN(d.getTime())) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return `${y}-${m}-${day}`;
+      }
+
+      // fallback: intenta cortar por T (si trae)
+      if (s.includes("T")) {
+        const cut = s.split("T")[0];
+        if (/^\d{4}-\d{2}-\d{2}$/.test(cut)) return cut;
+      }
+
+      return null;
+    }
+
+    // Si viniera como número/Date (raro pero posible)
+    const d = new Date(v);
+    if (!Number.isNaN(d.getTime())) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    }
+
+    return null;
+  }
+
   /**
    * ✅ Lee la hoja desde Apps Script y devuelve Set de fechas ocupadas
-   * Bloquea tanto RESERVADO como PENDIENTE
+   * Bloquea RESERVADO (y si algún día usas PENDIENTE, también)
    */
   async function fetchBookedSet(): Promise<Set<string>> {
     const res = await fetch(`${WEB_APP_ENDPOINT}?t=${Date.now()}`, { cache: "no-store" });
@@ -161,9 +202,9 @@ const BookingCalendar: React.FC = () => {
 
     const s = new Set<string>();
     for (let i = 1; i < rows.length; i++) {
-      const date = String(rows[i][iDate] || "").trim();
+      const iso = normalizeSheetDateToISO(rows[i][iDate]);
       const st = String(rows[i][iStatus] || "").trim().toUpperCase();
-      if (date && (st === "RESERVADO" || st === "PENDIENTE")) s.add(date);
+      if (iso && (st === "RESERVADO" || st === "PENDIENTE")) s.add(iso);
     }
     return s;
   }
@@ -232,18 +273,21 @@ const BookingCalendar: React.FC = () => {
   }
 
   async function registerReservation(pending: PendingBooking) {
+    // ✅ Solo enviamos campos mínimos seguros (alineados con cualquier backend simple):
+    // action, date, name, phone, notes
+    const notesPack =
+      `WEB_RESERVA | Pago Stripe (señal) | Session: ${pending.sessionId || ""} | ` +
+      `Señal: ${pending.depositToPay}€ | Tarifa: ${pending.rentalType} | Horario: ${selectedSchedule} | ` +
+      `Niños: ${pending.kids || "-"} | ` +
+      `Limpieza: A CONSULTAR | Fianza: ${SECURITY_DEPOSIT}€ | Total alquiler: ${pending.totalPrice}€ | ` +
+      `${pending.notes ? "Notas: " + pending.notes : ""}`;
+
     const body = new URLSearchParams({
       action: "new",
       date: pending.selectedISO || "",
       name: pending.name || "",
       phone: pending.phone || "",
-      kids: pending.kids || "",
-      formatted_date: pending.selectedDate || "",
-      notes:
-        `WEB_RESERVA | Pago Stripe (señal) | Session: ${pending.sessionId || ""} | ` +
-        `Señal: ${pending.depositToPay}€ | Tarifa: ${pending.rentalType} | Horario: ${selectedSchedule} | ` +
-        `Limpieza: A CONSULTAR | Fianza: ${SECURITY_DEPOSIT}€ | Total alquiler: ${pending.totalPrice}€ | ` +
-        `${pending.notes ? "Notas: " + pending.notes : ""}`,
+      notes: notesPack,
     }).toString();
 
     const r = await fetch(WEB_APP_ENDPOINT, {
@@ -257,8 +301,12 @@ const BookingCalendar: React.FC = () => {
       throw new Error(txt || "ERROR registrando en Google Sheet.");
     }
 
-    await loadDates();
+    // ✅ Verde inmediato
+    setBookedDates((prev) => new Set([...prev, pending.selectedISO]));
     setSubmitted(true);
+
+    // ✅ Recarga real desde Sheet por si hay normalizaciones
+    await loadDates();
 
     const waMsg =
       `¡Hola! He reservado el día ${pending.selectedDate}.\n` +
@@ -266,6 +314,7 @@ const BookingCalendar: React.FC = () => {
       `💳 Pago Reserva (Stripe): ${pending.depositToPay}€\n` +
       `📅 Tarifa: ${pending.rentalType}\n` +
       `🕒 Horario: ${selectedSchedule}\n` +
+      `👶 Niños: ${pending.kids || "-"}\n` +
       `⚠️ Recordatorio: Fianza de ${SECURITY_DEPOSIT}€ en efectivo y Limpieza (${CLEANING_FEE}€) a consultar.\n` +
       `🧾 Session: ${pending.sessionId || "-"}`;
 
