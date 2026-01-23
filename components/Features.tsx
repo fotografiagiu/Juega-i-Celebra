@@ -81,8 +81,13 @@ const Features: React.FC = () => {
               md:-bottom-6 md:-left-6 md:p-6
             "
           >
+          <p className="text-2xl md:text-3xl font-black text-blue-600">+150 m²</p>
+            <p className="text-gray-500 font-bold text-sm md:text-base">
+              para tu evento
+            </p>
+          </div>
+        </div>
         
-
         {/* TEXTO PARQUE */}
         <div className="lg:w-1/2">
           <h2 className="text-4xl font-extrabold text-blue-600 mb-6">
