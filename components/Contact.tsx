@@ -73,7 +73,7 @@ const Contact: React.FC = () => {
               <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-2xl">⏰</div>
               <div>
                 <p className="font-bold text-lg">Horario</p>
-                <p className="text-blue-100">Lunes a Domingo: 10:00 - 21:00</p>
+                <p className="text-blue-100">Lunes a Domingo: 10:00 - 21:30</p>
               </div>
             </div>
           </div>
