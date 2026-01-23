@@ -2,9 +2,8 @@ import React from 'react';
 
 const Features: React.FC = () => {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 space-y-24">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
 
-      {/* ===== BLOQUE 1 · EL LOCAL ===== */}
       <div className="flex flex-col lg:flex-row items-center gap-12">
 
         {/* IMAGEN LOCAL */}
@@ -18,7 +17,7 @@ const Features: React.FC = () => {
             className="relative rounded-[40px] shadow-2xl z-10 object-cover"
           />
 
-          {/* BADGE SOLO AQUÍ */}
+          {/* BADGE */}
           <div
             className="
               absolute z-20 bg-white shadow-xl border-l-4 border-blue-500
@@ -34,24 +33,24 @@ const Features: React.FC = () => {
           </div>
         </div>
 
-        {/* TEXTO LOCAL */}
+        {/* TEXTO */}
         <div className="lg:w-1/2">
           <h2 className="text-4xl font-extrabold text-blue-600 mb-6">
-            Un espacio pensado para tu <span className="text-orange-500">evento</span>
+            El local para tu <span className="text-orange-500">evento</span>
           </h2>
 
           <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-            Un local amplio, cómodo y versátil donde puedes organizar celebraciones familiares,
-            reuniones o eventos privados con total libertad.
+            Un espacio en Algemesí pensado para celebraciones familiares, reuniones
+            y eventos privados. Tú decides el plan, nosotros ponemos el sitio.
           </p>
 
-          <ul className="space-y-4">
+          <ul className="space-y-4 mb-10">
             {[
               'Aforo autorizado para un máximo de 48 personas.',
-              'Mesas y sillas disponibles para adultos y niños.',
-              'Televisión y zona común para reuniones o celebraciones.',
-              'Espacio diáfano y luminoso.',
-              'Ideal para cumpleaños, reuniones y eventos familiares.'
+              'Espacio amplio para cumpleaños, comuniones, jubilaciones y reuniones.',
+              'Mesas y sillas para adultos y niños.',
+              'Local cómodo y luminoso para organizar el evento a tu manera.',
+              'Ubicación: Avinguda País Valencià 5 (Algemesí).'
             ].map((item, i) => (
               <li key={i} className="flex items-center gap-3 text-gray-700 font-semibold">
                 <span className="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">
@@ -61,48 +60,25 @@ const Features: React.FC = () => {
               </li>
             ))}
           </ul>
-        </div>
-      </div>
 
-      {/* ===== BLOQUE 2 · PARQUE DE BOLAS ===== */}
-      <div className="flex flex-col-reverse lg:flex-row items-center gap-12">
+          {/* BOTONES */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <a
+              href="#contacto"
+              className="inline-flex items-center justify-center bg-green-500 text-white px-8 py-4 rounded-full font-black shadow-lg hover:bg-green-600 transition-all"
+            >
+              Contactar ahora
+            </a>
 
-        {/* TEXTO PARQUE */}
-        <div className="lg:w-1/2">
-          <h2 className="text-4xl font-extrabold text-blue-600 mb-6">
-            Parque de bolas y <span className="text-orange-500">diversión</span>
-          </h2>
-
-          <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-            Un espacio de juego diseñado para que los peques disfruten al máximo
-            mientras queman energía en un entorno seguro.
-          </p>
-
-          <ul className="space-y-4">
-            {[
-              'Parque de bolas con toboganes y obstáculos.',
-              'Estructura acolchada y cerrada para mayor seguridad.',
-              'Zona pensada para el juego libre y activo.',
-              'Ideal para cumpleaños infantiles.',
-              'Diversión garantizada durante toda la celebración.'
-            ].map((item, i) => (
-              <li key={i} className="flex items-center gap-3 text-gray-700 font-semibold">
-                <span className="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">
-                  ✓
-                </span>
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* IMAGEN PARQUE (SIN BADGE) */}
-        <div className="lg:w-1/2 relative">
-          <img
-            src="/gallery/Galeria21.jpeg"
-            alt="Parque de bolas Juga i Celebra"
-            className="relative rounded-[40px] shadow-2xl z-10 object-cover"
-          />
+            <a
+              href="https://wa.me/34669106393"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center bg-green-500 text-white px-8 py-4 rounded-full font-black shadow-lg hover:bg-green-600 transition-all"
+            >
+              WhatsApp
+            </a>
+          </div>
         </div>
       </div>
 
