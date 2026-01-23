@@ -29,12 +29,24 @@ const BookingCalendar: React.FC = () => {
   const CLEANING_FEE = 60;
   const SECURITY_DEPOSIT = 100;
   const PHONE_NUMBER = "34669106393";
+
+  // CSV público de la hoja (ojo: en tu proyecto ya lo tienes funcionando)
   const SHEET_URL =
     "https://docs.google.com/spreadsheets/d/1508WnsK-OIkXKnjLhs9O5vr3jDELT6lbR2Sj3Jp25lo/export?format=csv&gid=0";
 
-  // ✅ Tu endpoint de Google Apps Script
+  // ✅ Tu endpoint de Google Apps Script (PON AQUÍ EL NUEVO QUE HAS GENERADO)
   const WEB_APP_ENDPOINT =
     "https://script.google.com/macros/s/AKfycbx6JXimtGEdFPmHOcwfrPi5N21-3YAAH-TJnKcc7IyehfpWyuCKVVbS-cZeBvIAOMeL/exec";
+
+  // ⚠️ Festivos 2026 (YYYY-MM-DD)
+  // - Si un día está aquí => se trata como "festivo" (tarifas de fin de semana)
+  // - La víspera se detecta automáticamente (día anterior a un festivo) => tarifa 130€
+  // Rellénalo con los festivos reales que quieras bloquear como festivo.
+  const HOLIDAYS_2026: string[] = [
+    // Ejemplos (borra si no aplica):
+    // "2026-01-01",
+    // "2026-01-06",
+  ];
 
   const [formData, setFormData] = useState({
     name: "",
@@ -60,17 +72,86 @@ const BookingCalendar: React.FC = () => {
     "Diciembre",
   ];
 
-  const rentalOptions = [
-    { label: "Lunes a Jueves (80€)", value: "80" },
-    { label: "Viernes / Víspera de festivo (150€)", value: "150" },
-    { label: "Sábado, domingo y festivos (15:00-22:00) (150€)", value: "150_PM" },
-    { label: "Sábado, domingo y festivos (10:00-22:00) (200€)", value: "200" },
+  type RentalOpt = { label: string; value: string; schedule: string };
+
+  const ALL_RENTAL_OPTIONS: RentalOpt[] = [
+    { label: "Lunes a Jueves (80€)", value: "80", schedule: "10:00–21:30" },
+    { label: "Viernes / Víspera de festivo (130€)", value: "130", schedule: "10:00–21:30" },
+    { label: "Sábado, domingo y festivos (15:00–21:30) (150€)", value: "150_PM", schedule: "15:00–21:30" },
+    { label: "Sábado, domingo y festivos (10:00–21:30) (200€)", value: "200", schedule: "10:00–21:30" },
   ];
+
+  function isoToDate(iso: string) {
+    const [y, m, d] = iso.split("-").map((n) => parseInt(n, 10));
+    const dt = new Date(y, m - 1, d);
+    dt.setHours(0, 0, 0, 0);
+    return dt;
+  }
+
+  function dateToISO(dt: Date) {
+    const y = dt.getFullYear();
+    const m = String(dt.getMonth() + 1).padStart(2, "0");
+    const d = String(dt.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+
+  function isHolidayISO(iso: string) {
+    return HOLIDAYS_2026.includes(iso);
+  }
+
+  function getAllowedOptionsForISO(iso: string): RentalOpt[] {
+    const dt = isoToDate(iso);
+    const dow = dt.getDay(); // 0=Dom,1=Lun,...6=Sáb
+
+    const isHoliday = isHolidayISO(iso);
+
+    const next = new Date(dt);
+    next.setDate(next.getDate() + 1);
+    const nextISO = dateToISO(next);
+    const isEveOfHoliday = isHolidayISO(nextISO);
+
+    // Festivo -> tarifas de fin de semana
+    if (isHoliday) {
+      return ALL_RENTAL_OPTIONS.filter((o) => o.value === "150_PM" || o.value === "200");
+    }
+
+    // Sábado o Domingo -> fin de semana
+    if (dow === 6 || dow === 0) {
+      return ALL_RENTAL_OPTIONS.filter((o) => o.value === "150_PM" || o.value === "200");
+    }
+
+    // Viernes o víspera de festivo -> 130
+    if (dow === 5 || isEveOfHoliday) {
+      return ALL_RENTAL_OPTIONS.filter((o) => o.value === "130");
+    }
+
+    // Lunes a Jueves -> 80
+    return ALL_RENTAL_OPTIONS.filter((o) => o.value === "80");
+  }
+
+  const rentalOptions: RentalOpt[] = selectedISO ? getAllowedOptionsForISO(selectedISO) : [];
+
+  // Fuerza rentalType válido según el día seleccionado
+  useEffect(() => {
+    if (!selectedISO) return;
+
+    const allowed = getAllowedOptionsForISO(selectedISO);
+    if (allowed.length === 0) return;
+
+    const allowedValues = new Set(allowed.map((o) => o.value));
+    if (!allowedValues.has(formData.rentalType)) {
+      setFormData((prev) => ({ ...prev, rentalType: allowed[0].value }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedISO]);
 
   const basePrice = parseFloat(formData.rentalType.split("_")[0]);
   const cleaningPrice = 0; // A consultar
   const totalPrice = basePrice + cleaningPrice;
   const depositToPay = totalPrice / 2;
+
+  const selectedOpt = ALL_RENTAL_OPTIONS.find((o) => o.value === formData.rentalType);
+  const selectedSchedule = selectedOpt?.schedule || "-";
 
   const getToday = () => {
     const d = new Date();
@@ -170,7 +251,7 @@ const BookingCalendar: React.FC = () => {
       formatted_date: pending.selectedDate || "",
       notes:
         `WEB_RESERVA | Pago Stripe (señal) | Session: ${pending.sessionId || ""} | ` +
-        `Señal: ${pending.depositToPay}€ | Tarifa: ${pending.rentalType} | ` +
+        `Señal: ${pending.depositToPay}€ | Tarifa: ${pending.rentalType} | Horario: ${selectedSchedule} | ` +
         `Limpieza: A CONSULTAR | Fianza: ${SECURITY_DEPOSIT}€ | Total alquiler: ${pending.totalPrice}€ | ` +
         `${pending.notes ? "Notas: " + pending.notes : ""}`,
     }).toString();
@@ -189,6 +270,7 @@ const BookingCalendar: React.FC = () => {
       `👤: ${pending.name}\n` +
       `💳 Pago Reserva (Stripe): ${pending.depositToPay}€\n` +
       `📅 Tarifa: ${pending.rentalType}\n` +
+      `🕒 Horario: ${selectedSchedule}\n` +
       `⚠️ Recordatorio: Fianza de ${SECURITY_DEPOSIT}€ en efectivo y Limpieza (${CLEANING_FEE}€) a consultar.\n` +
       `🧾 Session: ${pending.sessionId || "-"}`;
 
@@ -203,12 +285,10 @@ const BookingCalendar: React.FC = () => {
 
     if (!paid) return;
 
-    // Limpia la URL (queda más pro)
     const cleanUrl = window.location.pathname + window.location.hash;
     window.history.replaceState({}, "", cleanUrl);
 
     if (paid === "0") {
-      // Cancelado
       setPaymentStep(true);
       return;
     }
@@ -216,13 +296,11 @@ const BookingCalendar: React.FC = () => {
     if (paid === "1") {
       const pending = readPendingBooking();
 
-      // Si no hay pending, no podemos registrar (se perdió el estado)
       if (!pending) {
         alert("Pago recibido, pero no se encontró la reserva pendiente. Escríbenos por WhatsApp.");
         return;
       }
 
-      // Rellena estados por si la UI se quedó atrás
       setSelectedISO(pending.selectedISO);
       setSelectedDate(pending.selectedDate);
       setFormData((prev) => ({
@@ -236,7 +314,6 @@ const BookingCalendar: React.FC = () => {
       setPaymentStep(false);
       setIsSubmitting(true);
 
-      // Guarda sessionId y registra
       pending.sessionId = sessionId;
 
       registerReservation(pending)
@@ -262,7 +339,6 @@ const BookingCalendar: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      // Guardamos la reserva pendiente ANTES de salir a Stripe
       savePendingBooking();
 
       const r = await fetch("/api/create-checkout-session", {
@@ -295,10 +371,7 @@ const BookingCalendar: React.FC = () => {
     }
   }
 
-  const daysArr = Array.from(
-    { length: new Date(2026, month + 1, 0).getDate() },
-    (_, i) => i + 1
-  );
+  const daysArr = Array.from({ length: new Date(2026, month + 1, 0).getDate() }, (_, i) => i + 1);
   const firstDay = new Date(2026, month, 1).getDay();
   const blanks = Array.from({ length: firstDay === 0 ? 6 : firstDay - 1 }, (_, i) => i);
 
@@ -354,9 +427,7 @@ const BookingCalendar: React.FC = () => {
               checkDate.setHours(0, 0, 0, 0);
               const today = getToday();
               const isPast = checkDate < today || checkDate < businessMinDate;
-              const iso = `2026-${(month + 1).toString().padStart(2, "0")}-${d
-                .toString()
-                .padStart(2, "0")}`;
+              const iso = `2026-${(month + 1).toString().padStart(2, "0")}-${d.toString().padStart(2, "0")}`;
 
               const isBooked = bookedDates.has(iso);
               const isSelected = selectedISO === iso;
@@ -478,9 +549,13 @@ const BookingCalendar: React.FC = () => {
                 </div>
 
                 <div className="bg-gray-50 p-8 rounded-[40px] border border-gray-100">
-                  <p className="font-black text-blue-600 uppercase mb-6 tracking-widest text-sm">
+                  <p className="font-black text-blue-600 uppercase mb-2 tracking-widest text-sm">
                     Configuración del Alquiler
                   </p>
+                  <p className="text-xs font-black text-gray-400 uppercase mb-6 tracking-widest">
+                    (Las tarifas se ajustan automáticamente según el día)
+                  </p>
+
                   <div className="space-y-3 mb-8">
                     {rentalOptions.map((opt) => (
                       <label
@@ -508,7 +583,12 @@ const BookingCalendar: React.FC = () => {
                             <div className="w-2.5 h-2.5 bg-white rounded-full"></div>
                           )}
                         </div>
-                        <span className="font-black text-lg">{opt.label}</span>
+                        <div className="flex flex-col">
+                          <span className="font-black text-lg">{opt.label}</span>
+                          <span className={`text-xs font-black ${formData.rentalType === opt.value ? "text-white/90" : "text-gray-400"}`}>
+                            Horario: {opt.schedule}
+                          </span>
+                        </div>
                       </label>
                     ))}
                   </div>
@@ -539,6 +619,9 @@ const BookingCalendar: React.FC = () => {
                       Pago Reserva hoy (50%)
                     </p>
                     <p className="text-5xl font-black tracking-tighter">{depositToPay.toFixed(2)}€</p>
+                    <p className="text-xs font-black text-blue-200 uppercase tracking-widest mt-2">
+                      Horario: {selectedSchedule}
+                    </p>
                   </div>
                   <button className="w-full md:w-auto bg-white text-blue-600 px-12 py-5 rounded-[25px] font-black text-xl hover:bg-blue-50 shadow-xl transform active:scale-95 transition-all">
                     SIGUIENTE PASO 🚀
@@ -569,6 +652,9 @@ const BookingCalendar: React.FC = () => {
                 <div className="space-y-2 text-gray-700 font-bold">
                   <p className="flex justify-between">
                     <span>Alquiler Base:</span> <span>{basePrice}€</span>
+                  </p>
+                  <p className="flex justify-between text-gray-400 italic text-sm">
+                    <span>Horario:</span> <span>{selectedSchedule}</span>
                   </p>
                   <p className="flex justify-between text-gray-400 italic text-sm">
                     <span>Servicio Limpieza:</span> <span>A consultar</span>
