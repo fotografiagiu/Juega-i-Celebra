@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 type PendingBooking = {
   selectedDate: string;
@@ -15,6 +15,8 @@ type PendingBooking = {
 
 const PENDING_KEY = "juga_pending_booking_v1";
 
+type RentalOpt = { label: string; value: string; schedule: string };
+
 const BookingCalendar: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedISO, setSelectedISO] = useState<string | null>(null);
@@ -29,7 +31,7 @@ const BookingCalendar: React.FC = () => {
   const SECURITY_DEPOSIT = 100;
   const PHONE_NUMBER = "34669106393";
 
-  // ✅ Endpoint Apps Script Web App (mismo para GET (leer) y POST (guardar))
+  // ✅ Tu endpoint Apps Script (GET lee JSON, POST guarda)
   const WEB_APP_ENDPOINT =
     "https://script.google.com/macros/s/AKfycbw_mTR8MsfkzXEOnwGQBZwnLdzGBE2JcIpg5HCjlAsHh7qUUi7N-ZiEJMrQ5udJ4EXI/exec";
 
@@ -42,32 +44,36 @@ const BookingCalendar: React.FC = () => {
     kids: "15",
     notes: "",
     rentalType: "80",
-    cleaning: false, // informativo
+    cleaning: false,
   });
 
-  const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
+  const months = useMemo(
+    () => [
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre",
+    ],
+    []
+  );
 
-  type RentalOpt = { label: string; value: string; schedule: string };
-
-  const ALL_RENTAL_OPTIONS: RentalOpt[] = [
-    { label: "Lunes a Jueves (80€)", value: "80", schedule: "10:00–21:30" },
-    { label: "Viernes / Víspera de festivo (130€)", value: "130", schedule: "10:00–21:30" },
-    { label: "Sábado, domingo y festivos (15:00–21:30) (150€)", value: "150_PM", schedule: "15:00–21:30" },
-    { label: "Sábado, domingo y festivos (10:00–21:30) (200€)", value: "200", schedule: "10:00–21:30" },
-  ];
+  const ALL_RENTAL_OPTIONS: RentalOpt[] = useMemo(
+    () => [
+      { label: "Lunes a Jueves (80€)", value: "80", schedule: "10:00–21:30" },
+      { label: "Viernes / Víspera de festivo (130€)", value: "130", schedule: "10:00–21:30" },
+      { label: "Sábado, domingo y festivos (15:00–21:30) (150€)", value: "150_PM", schedule: "15:00–21:30" },
+      { label: "Sábado, domingo y festivos (10:00–21:30) (200€)", value: "200", schedule: "10:00–21:30" },
+    ],
+    []
+  );
 
   function isoToDate(iso: string) {
     const [y, m, d] = iso.split("-").map((n) => parseInt(n, 10));
@@ -109,7 +115,6 @@ const BookingCalendar: React.FC = () => {
   // Fuerza rentalType válido según el día seleccionado
   useEffect(() => {
     if (!selectedISO) return;
-
     const allowed = getAllowedOptionsForISO(selectedISO);
     if (allowed.length === 0) return;
 
@@ -138,40 +143,35 @@ const BookingCalendar: React.FC = () => {
   businessMinDate.setHours(0, 0, 0, 0);
 
   /**
-   * ✅ Carga fechas reservadas leyendo JSON desde Apps Script (doGet)
-   * Evita CSV y errores por comas/columnas.
+   * ✅ Lee la hoja desde Apps Script y devuelve Set de fechas ocupadas
+   * Bloquea tanto RESERVADO como PENDIENTE
    */
+  async function fetchBookedSet(): Promise<Set<string>> {
+    const res = await fetch(`${WEB_APP_ENDPOINT}?t=${Date.now()}`, { cache: "no-store" });
+    const data = await res.json().catch(() => null);
+
+    if (!data?.ok || !Array.isArray(data?.rows) || data.rows.length < 2) return new Set();
+
+    const rows: any[][] = data.rows;
+    const header = rows[0].map((h) => String(h).trim().toLowerCase());
+    const iDate = header.indexOf("date");
+    const iStatus = header.indexOf("status");
+
+    if (iDate === -1 || iStatus === -1) return new Set();
+
+    const s = new Set<string>();
+    for (let i = 1; i < rows.length; i++) {
+      const date = String(rows[i][iDate] || "").trim();
+      const st = String(rows[i][iStatus] || "").trim().toUpperCase();
+      if (date && (st === "RESERVADO" || st === "PENDIENTE")) s.add(date);
+    }
+    return s;
+  }
+
   async function loadDates() {
     try {
-      const res = await fetch(`${WEB_APP_ENDPOINT}?t=${Date.now()}`, { cache: "no-store" });
-      const txt = await res.text();
-
-      let payload: any;
-      try {
-        payload = JSON.parse(txt);
-      } catch {
-        console.error("Apps Script no devolvió JSON:", txt);
-        return;
-      }
-
-      if (!payload?.ok || !Array.isArray(payload?.rows) || payload.rows.length < 2) return;
-
-      const rows: any[][] = payload.rows;
-      const header = rows[0].map((h) => String(h).trim().toLowerCase());
-
-      const dateIdx = header.indexOf("date");
-      const statusIdx = header.indexOf("status");
-
-      if (dateIdx === -1 || statusIdx === -1) return;
-
-      const reserved = new Set<string>();
-      for (let i = 1; i < rows.length; i++) {
-        const date = String(rows[i][dateIdx] || "").trim();
-        const st = String(rows[i][statusIdx] || "").trim().toUpperCase();
-        if (date && st === "RESERVADO") reserved.add(date);
-      }
-
-      setBookedDates(reserved);
+      const s = await fetchBookedSet();
+      setBookedDates(s);
     } catch (e) {
       console.error("Error al cargar fechas:", e);
     }
@@ -231,11 +231,6 @@ const BookingCalendar: React.FC = () => {
     localStorage.removeItem(PENDING_KEY);
   }
 
-  /**
-   * ✅ Registra en Sheet vía doPost (Apps Script)
-   * - Si no devuelve "OK" -> error.
-   * - Luego recarga fechas reales (loadDates()) para que el verde sea de verdad.
-   */
   async function registerReservation(pending: PendingBooking) {
     const body = new URLSearchParams({
       action: "new",
@@ -259,7 +254,7 @@ const BookingCalendar: React.FC = () => {
 
     const txt = await r.text();
     if (!r.ok || txt.trim() !== "OK") {
-      throw new Error(txt || "No se pudo registrar la reserva.");
+      throw new Error(txt || "ERROR registrando en Google Sheet.");
     }
 
     await loadDates();
@@ -285,7 +280,6 @@ const BookingCalendar: React.FC = () => {
 
     if (!paid) return;
 
-    // Limpia query
     const cleanUrl = window.location.pathname + window.location.hash;
     window.history.replaceState({}, "", cleanUrl);
 
@@ -296,6 +290,7 @@ const BookingCalendar: React.FC = () => {
 
     if (paid === "1") {
       const pending = readPendingBooking();
+
       if (!pending) {
         alert("Pago recibido, pero no se encontró la reserva pendiente. Escríbenos por WhatsApp.");
         return;
@@ -318,25 +313,43 @@ const BookingCalendar: React.FC = () => {
       pending.sessionId = sessionId;
 
       registerReservation(pending)
-        .then(() => clearPendingBooking())
+        .then(() => {
+          clearPendingBooking();
+        })
         .catch((err: any) => {
           console.error(err);
-          alert("Pago OK, pero falló el registro. Escríbenos por WhatsApp.");
+          alert(
+            `Pago OK, pero falló el registro.\n\nMotivo: ${err?.message || "desconocido"}\n\nEscríbenos por WhatsApp con tu justificante.`
+          );
         })
-        .finally(() => setIsSubmitting(false));
+        .finally(() => {
+          setIsSubmitting(false);
+        });
     }
   }, []);
 
   // ✅ Stripe Checkout
   async function goToStripeCheckout() {
     if (!selectedISO || !selectedDate) return;
+
     if (!formData.name || !formData.phone) {
       alert("Completa nombre y WhatsApp antes de pagar.");
       return;
     }
 
     setIsSubmitting(true);
+
     try {
+      // 🔒 Re-chequeo real antes de cobrar
+      const liveSet = await fetchBookedSet();
+      setBookedDates(liveSet);
+
+      if (liveSet.has(selectedISO)) {
+        alert("Esa fecha ya está reservada. Elige otra.");
+        setIsSubmitting(false);
+        return;
+      }
+
       savePendingBooking();
 
       const r = await fetch("/api/create-checkout-session", {
@@ -670,9 +683,16 @@ const BookingCalendar: React.FC = () => {
 
                   <div className="bg-white/80 p-5 rounded-2xl mt-6 border border-blue-200 text-xs text-gray-500 leading-relaxed shadow-sm">
                     <p className="text-blue-800 font-black mb-1">📋 INFORMACIÓN ADICIONAL:</p>
-                    <p>• La fianza de <strong>{SECURITY_DEPOSIT}€</strong> se abona en efectivo el día del evento.</p>
-                    <p>• El servicio de limpieza de <strong>{CLEANING_FEE}€</strong> debe solicitarse aparte.</p>
-                    <p>• Al pagar, te redirigimos a <strong>Stripe</strong>. Al volver, se marca como <strong>RESERVADO</strong>.</p>
+                    <p>
+                      • La fianza de <strong>{SECURITY_DEPOSIT}€</strong> se abona en efectivo el día del evento.
+                    </p>
+                    <p>
+                      • El servicio de limpieza de <strong>{CLEANING_FEE}€</strong> debe solicitarse aparte.
+                    </p>
+                    <p>
+                      • Al pagar, te redirigimos a <strong>Stripe</strong>. Al volver, se marca como{" "}
+                      <strong>RESERVADO</strong>.
+                    </p>
                   </div>
                 </div>
               </div>
