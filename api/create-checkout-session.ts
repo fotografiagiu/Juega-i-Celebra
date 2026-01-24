@@ -5,14 +5,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2024-06-20",
 });
 
-// ✅ Calcula precio base desde rentalType (tu formato actual)
+// ✅ Calcula precio base desde rentalType (ANTI-MANIPULACIÓN)
 function getBasePriceFromRentalType(rentalType: any): number | null {
   const rt = String(rentalType || "").trim();
-
-  // Admitimos "150_PM" o "150" etc.
   const n = Number(rt.split("_")[0]);
 
-  // Solo permitimos los precios reales que usas
+  // Precios reales permitidos
   const allowed = new Set([80, 130, 150, 200]);
   if (!Number.isFinite(n) || !allowed.has(n)) return null;
 
@@ -25,21 +23,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const origin =
-      req.headers.origin ||
-      (req.headers["x-forwarded-proto"] && req.headers["x-forwarded-host"]
-        ? `${req.headers["x-forwarded-proto"]}://${req.headers["x-forwarded-host"]}`
-        : null);
-
-    if (!origin) return res.status(400).json({ error: "Missing origin" });
-
     if (!process.env.STRIPE_SECRET_KEY) {
       return res.status(500).json({ error: "STRIPE_SECRET_KEY missing" });
     }
 
-    // ✅ Lo que llega desde BookingCalendar
-    const { date, formatted_date, name, phone, rentalType, kids, notes } =
-      (req.body || {}) as Record<string, any>;
+    // 📥 Datos desde el frontend
+    const {
+      date,
+      formatted_date,
+      name,
+      phone,
+      rentalType,
+      kids,
+      notes,
+    } = (req.body || {}) as Record<string, any>;
 
     // Validaciones mínimas
     if (!date || typeof date !== "string") {
@@ -52,34 +49,33 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: "Missing phone" });
     }
 
-    // ✅ Calcula importe real en servidor (ANTI-manipulación)
+    // 💰 Precio real calculado en servidor
     const basePrice = getBasePriceFromRentalType(rentalType);
     if (basePrice === null) {
       return res.status(400).json({ error: "Invalid rentalType" });
     }
 
-    const totalPrice = basePrice; // limpieza “a consultar” fuera, fianza fuera
-    const depositExpected = totalPrice / 2; // 50%
+    const totalPrice = basePrice;
+    const depositToPay = totalPrice / 2; // 50%
 
-    // ✅ Modo prueba REAL (sin tocar front):
-    // En Vercel env: STRIPE_FORCE_AMOUNT_CENTS=100 para cobrar 1€.
-    // Luego lo borras y vuelve al importe real automáticamente.
-    const forcedCentsRaw = process.env.STRIPE_FORCE_AMOUNT_CENTS;
-    const forcedCents = forcedCentsRaw ? Number(forcedCentsRaw) : null;
+    // 🧪 FORZADO DE PRUEBA (1€) si existe la env
+    const forced = process.env.STRIPE_FORCE_AMOUNT_CENTS
+      ? Number(process.env.STRIPE_FORCE_AMOUNT_CENTS)
+      : null;
 
-    const unitAmountCents =
-      Number.isFinite(forcedCents as number) && (forcedCents as number) > 0
-        ? Math.round(forcedCents as number)
-        : Math.round(depositExpected * 100);
+    const unitAmount =
+      Number.isFinite(forced as number) && (forced as number) > 0
+        ? Math.round(forced as number)
+        : Math.round(depositToPay * 100);
 
-    if (!Number.isFinite(unitAmountCents) || unitAmountCents <= 0) {
+    if (!Number.isFinite(unitAmount) || unitAmount <= 0) {
       return res.status(400).json({ error: "Invalid amount" });
     }
 
-    const chargedEur = (unitAmountCents / 100).toFixed(2);
-
+    // 🧾 SESIÓN STRIPE
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
+      payment_method_types: ["card"],
 
       line_items: [
         {
@@ -91,28 +87,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 ? `Fecha: ${formatted_date}`
                 : `Fecha: ${date}`,
             },
-            unit_amount: unitAmountCents,
+            unit_amount: unitAmount,
           },
           quantity: 1,
         },
       ],
 
       metadata: {
-        date: String(date || ""),
+        date: String(date),
         formatted_date: String(formatted_date || ""),
-        name: String(name || ""),
-        phone: String(phone || ""),
-        rentalType: String(rentalType || ""),
+        name: String(name),
+        phone: String(phone),
+        rentalType: String(rentalType),
         kids: String(kids || ""),
+        depositToPay_eur: String((unitAmount / 100).toFixed(2)),
         totalPrice_eur: String(totalPrice),
-        deposit_expected_eur: String(depositExpected),
-        charged_eur: String(chargedEur),
-        forced_amount_cents: forcedCentsRaw ? String(forcedCentsRaw) : "",
         notes: String(notes || ""),
       },
 
-      success_url: `${origin}/?paid=1&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/?paid=0`,
+      // ✅ URLs FIJAS (CLAVE DE ESTA PRUEBA)
+      success_url:
+        "https://jugaicelebra.com/?paid=1&session_id={CHECKOUT_SESSION_ID}",
+      cancel_url: "https://jugaicelebra.com/?paid=0",
     });
 
     return res.status(200).json({ url: session.url });
