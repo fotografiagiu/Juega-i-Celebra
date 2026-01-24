@@ -38,15 +38,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // ✅ Lo que llega desde BookingCalendar
-    const {
-      date,
-      formatted_date,
-      name,
-      phone,
-      rentalType,
-      kids,
-      notes,
-    } = (req.body || {}) as Record<string, any>;
+    const { date, formatted_date, name, phone, rentalType, kids, notes } =
+      (req.body || {}) as Record<string, any>;
 
     // Validaciones mínimas
     if (!date || typeof date !== "string") {
@@ -66,27 +59,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const totalPrice = basePrice; // limpieza “a consultar” fuera, fianza fuera
-    const depositToPay = totalPrice / 2; // 50%
+    const depositExpected = totalPrice / 2; // 50%
 
     // ✅ Modo prueba REAL (sin tocar front):
     // En Vercel env: STRIPE_FORCE_AMOUNT_CENTS=100 para cobrar 1€.
     // Luego lo borras y vuelve al importe real automáticamente.
-    const forced = process.env.STRIPE_FORCE_AMOUNT_CENTS
-      ? Number(process.env.STRIPE_FORCE_AMOUNT_CENTS)
-      : null;
+    const forcedCentsRaw = process.env.STRIPE_FORCE_AMOUNT_CENTS;
+    const forcedCents = forcedCentsRaw ? Number(forcedCentsRaw) : null;
 
-    const unitAmount = Number.isFinite(forced as number) && (forced as number) > 0
-      ? Math.round(forced as number)
-      : Math.round(depositToPay * 100);
+    const unitAmountCents =
+      Number.isFinite(forcedCents as number) && (forcedCents as number) > 0
+        ? Math.round(forcedCents as number)
+        : Math.round(depositExpected * 100);
 
-    // Seguridad extra: nunca cobrar 0
-    if (!Number.isFinite(unitAmount) || unitAmount <= 0) {
+    if (!Number.isFinite(unitAmountCents) || unitAmountCents <= 0) {
       return res.status(400).json({ error: "Invalid amount" });
     }
 
+    const chargedEur = (unitAmountCents / 100).toFixed(2);
+
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      payment_method_types: ["card"],
 
       line_items: [
         {
@@ -98,7 +91,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
                 ? `Fecha: ${formatted_date}`
                 : `Fecha: ${date}`,
             },
-            unit_amount: unitAmount,
+            unit_amount: unitAmountCents,
           },
           quantity: 1,
         },
@@ -111,8 +104,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         phone: String(phone || ""),
         rentalType: String(rentalType || ""),
         kids: String(kids || ""),
-        depositToPay_eur: String((unitAmount / 100).toFixed(2)),
         totalPrice_eur: String(totalPrice),
+        deposit_expected_eur: String(depositExpected),
+        charged_eur: String(chargedEur),
+        forced_amount_cents: forcedCentsRaw ? String(forcedCentsRaw) : "",
         notes: String(notes || ""),
       },
 
