@@ -126,46 +126,56 @@ const Pricing: React.FC = () => {
         ))}
       </div>
 
-      {/* CONDICIONES */}
-      <div className="mt-16 bg-gray-50 p-8 rounded-[40px] border border-gray-100 max-w-4xl mx-auto">
-        <h4 className="text-xl font-black text-gray-800 mb-6 font-['Baloo_2'] uppercase tracking-wide">
+      {/* CONDICIONES (mejor móvil) */}
+      <div className="mt-12 sm:mt-16 bg-gray-50 p-5 sm:p-8 rounded-[30px] sm:rounded-[40px] border border-gray-100 max-w-4xl mx-auto">
+        <h4 className="text-lg sm:text-xl font-black text-gray-800 mb-4 sm:mb-6 font-['Baloo_2'] uppercase tracking-wide">
           Condiciones de Reserva
         </h4>
 
-        <ul className="space-y-4 text-sm font-semibold text-gray-600">
+        <ul className="space-y-3 sm:space-y-4 text-[13px] sm:text-sm leading-relaxed sm:leading-relaxed font-semibold text-gray-600">
           <li className="flex items-start gap-3">
-            <span className="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-[10px]">
+            <span className="mt-0.5 sm:mt-0 w-5 h-5 sm:w-5 sm:h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-[10px] flex-shrink-0">
               ✔
             </span>
-            Fianza de <strong>100€</strong>, que se abonará en efectivo en el momento de la entrega de llaves.
+            <span>
+              Fianza de <strong>100€</strong>, que se abonará en efectivo en el momento de la entrega de llaves.
+            </span>
           </li>
 
           <li className="flex items-start gap-3">
-            <span className="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-[10px]">
+            <span className="mt-0.5 sm:mt-0 w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-[10px] flex-shrink-0">
               ✔
             </span>
-            Se devolverá una vez revisado el local y verificado que todo está en perfecto estado.
+            <span>
+              Se devolverá una vez revisado el local y verificado que todo está en perfecto estado.
+            </span>
           </li>
 
           <li className="flex items-start gap-3">
-            <span className="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-[10px]">
+            <span className="mt-0.5 sm:mt-0 w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-[10px] flex-shrink-0">
               ✔
             </span>
-            Servicio de limpieza: <strong>60€</strong> (opcional).
+            <span>
+              Servicio de limpieza: <strong>60€</strong> (opcional).
+            </span>
           </li>
 
           <li className="flex items-start gap-3">
-            <span className="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-[10px]">
+            <span className="mt-0.5 sm:mt-0 w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-[10px] flex-shrink-0">
               ✔
             </span>
-            Las reservas modificadas o canceladas con menos de una semana de antelación no tienen devolución.
+            <span>
+              Las reservas modificadas o canceladas con menos de una semana de antelación no tienen devolución.
+            </span>
           </li>
 
           <li className="flex items-start gap-3">
-            <span className="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-[10px]">
+            <span className="mt-0.5 sm:mt-0 w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-[10px] flex-shrink-0">
               ✔
             </span>
-            En este caso, se retornará el <strong>50%</strong> de la reserva.
+            <span>
+              En este caso, se retornará el <strong>50%</strong> de la reserva.
+            </span>
           </li>
         </ul>
       </div>
