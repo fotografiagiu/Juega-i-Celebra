@@ -43,7 +43,7 @@ const BookingCalendar: React.FC = () => {
     phone: "",
     kids: "15",
     notes: "",
-    rentalType: "80",
+    rentalType: "80", // por defecto
     cleaning: false,
   });
 
@@ -65,12 +65,12 @@ const BookingCalendar: React.FC = () => {
     []
   );
 
+  // ✅ OPCIONES REALES (SIN 200€)
   const ALL_RENTAL_OPTIONS: RentalOpt[] = useMemo(
     () => [
       { label: "Lunes a Jueves (80€)", value: "80", schedule: "10:00–21:30" },
-      { label: "Viernes / Víspera de festivo (130€)", value: "130", schedule: "10:00–21:30" },
-      { label: "Sábado, domingo y festivos (15:00–21:30) (150€)", value: "150_PM", schedule: "15:00–21:30" },
-      { label: "Sábado, domingo y festivos (10:00–21:30) (200€)", value: "200", schedule: "10:00–21:30" },
+      { label: "Viernes / Víspera de festivo (100€)", value: "100", schedule: "10:00–21:30" },
+      { label: "Sábado, domingo y festivos (160€)", value: "160", schedule: "10:00–21:30" },
     ],
     []
   );
@@ -93,6 +93,7 @@ const BookingCalendar: React.FC = () => {
     return HOLIDAYS_2026.includes(iso);
   }
 
+  // ✅ Define qué tarifas se permiten por día
   function getAllowedOptionsForISO(iso: string): RentalOpt[] {
     const dt = isoToDate(iso);
     const dow = dt.getDay(); // 0=Dom,1=Lun,...6=Sáb
@@ -104,9 +105,14 @@ const BookingCalendar: React.FC = () => {
     const nextISO = dateToISO(next);
     const isEveOfHoliday = isHolidayISO(nextISO);
 
-    if (isHoliday) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "150_PM" || o.value === "200");
-    if (dow === 6 || dow === 0) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "150_PM" || o.value === "200");
-    if (dow === 5 || isEveOfHoliday) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "130");
+    // Festivo o finde -> 160
+    if (isHoliday) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "160");
+    if (dow === 6 || dow === 0) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "160");
+
+    // Viernes o víspera -> 100
+    if (dow === 5 || isEveOfHoliday) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "100");
+
+    // Lunes-jueves -> 80
     return ALL_RENTAL_OPTIONS.filter((o) => o.value === "80");
   }
 
@@ -125,13 +131,14 @@ const BookingCalendar: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedISO]);
 
-  const basePrice = parseFloat(formData.rentalType.split("_")[0]);
+  const basePrice = parseFloat(String(formData.rentalType).split("_")[0]); // 80/100/160
   const cleaningPrice = 0; // A consultar
   const totalPrice = basePrice + cleaningPrice;
   const depositToPay = totalPrice / 2;
 
   const selectedOpt = ALL_RENTAL_OPTIONS.find((o) => o.value === formData.rentalType);
   const selectedSchedule = selectedOpt?.schedule || "-";
+  const selectedTarifaLabel = selectedOpt?.label || formData.rentalType;
 
   const getToday = () => {
     const d = new Date();
@@ -148,12 +155,10 @@ const BookingCalendar: React.FC = () => {
   function normalizeSheetDateToISO(v: any): string | null {
     if (v === null || v === undefined) return null;
 
-    // Si ya es YYYY-MM-DD
     if (typeof v === "string") {
       const s = v.trim();
       if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
 
-      // ISO datetime u otros: parse y saca fecha local
       const d = new Date(s);
       if (!Number.isNaN(d.getTime())) {
         const y = d.getFullYear();
@@ -162,7 +167,6 @@ const BookingCalendar: React.FC = () => {
         return `${y}-${m}-${day}`;
       }
 
-      // fallback: intenta cortar por T (si trae)
       if (s.includes("T")) {
         const cut = s.split("T")[0];
         if (/^\d{4}-\d{2}-\d{2}$/.test(cut)) return cut;
@@ -171,7 +175,6 @@ const BookingCalendar: React.FC = () => {
       return null;
     }
 
-    // Si viniera como número/Date (raro pero posible)
     const d = new Date(v);
     if (!Number.isNaN(d.getTime())) {
       const y = d.getFullYear();
@@ -183,10 +186,6 @@ const BookingCalendar: React.FC = () => {
     return null;
   }
 
-  /**
-   * ✅ Lee la hoja desde Apps Script y devuelve Set de fechas ocupadas
-   * Bloquea RESERVADO (y si algún día usas PENDIENTE, también)
-   */
   async function fetchBookedSet(): Promise<Set<string>> {
     const res = await fetch(`${WEB_APP_ENDPOINT}?t=${Date.now()}`, { cache: "no-store" });
     const data = await res.json().catch(() => null);
@@ -273,11 +272,9 @@ const BookingCalendar: React.FC = () => {
   }
 
   async function registerReservation(pending: PendingBooking) {
-    // ✅ Solo enviamos campos mínimos seguros (alineados con cualquier backend simple):
-    // action, date, name, phone, notes
     const notesPack =
       `WEB_RESERVA | Pago Stripe (señal) | Session: ${pending.sessionId || ""} | ` +
-      `Señal: ${pending.depositToPay}€ | Tarifa: ${pending.rentalType} | Horario: ${selectedSchedule} | ` +
+      `Señal: ${pending.depositToPay}€ | Tarifa: ${selectedTarifaLabel} | Horario: ${selectedSchedule} | ` +
       `Niños: ${pending.kids || "-"} | ` +
       `Limpieza: A CONSULTAR | Fianza: ${SECURITY_DEPOSIT}€ | Total alquiler: ${pending.totalPrice}€ | ` +
       `${pending.notes ? "Notas: " + pending.notes : ""}`;
@@ -301,18 +298,16 @@ const BookingCalendar: React.FC = () => {
       throw new Error(txt || "ERROR registrando en Google Sheet.");
     }
 
-    // ✅ Verde inmediato
     setBookedDates((prev) => new Set([...prev, pending.selectedISO]));
     setSubmitted(true);
 
-    // ✅ Recarga real desde Sheet por si hay normalizaciones
     await loadDates();
 
     const waMsg =
       `¡Hola! He reservado el día ${pending.selectedDate}.\n` +
       `👤: ${pending.name}\n` +
       `💳 Pago Reserva (Stripe): ${pending.depositToPay}€\n` +
-      `📅 Tarifa: ${pending.rentalType}\n` +
+      `📅 Tarifa: ${selectedTarifaLabel}\n` +
       `🕒 Horario: ${selectedSchedule}\n` +
       `👶 Niños: ${pending.kids || "-"}\n` +
       `⚠️ Recordatorio: Fianza de ${SECURITY_DEPOSIT}€ en efectivo y Limpieza (${CLEANING_FEE}€) a consultar.\n` +
@@ -377,7 +372,6 @@ const BookingCalendar: React.FC = () => {
     }
   }, []);
 
-  // ✅ Stripe Checkout
   async function goToStripeCheckout() {
     if (!selectedISO || !selectedDate) return;
 
@@ -389,7 +383,6 @@ const BookingCalendar: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // 🔒 Re-chequeo real antes de cobrar
       const liveSet = await fetchBookedSet();
       setBookedDates(liveSet);
 
@@ -431,7 +424,10 @@ const BookingCalendar: React.FC = () => {
     }
   }
 
-  const daysArr = Array.from({ length: new Date(2026, month + 1, 0).getDate() }, (_, i) => i + 1);
+  const daysArr = Array.from(
+    { length: new Date(2026, month + 1, 0).getDate() },
+    (_, i) => i + 1
+  );
   const firstDay = new Date(2026, month, 1).getDay();
   const blanks = Array.from({ length: firstDay === 0 ? 6 : firstDay - 1 }, (_, i) => i);
 
