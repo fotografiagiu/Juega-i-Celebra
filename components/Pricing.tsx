@@ -16,7 +16,7 @@ const tiers = [
   },
   {
     name: 'Tarde / Viernes',
-    price: '130€',
+    price: '100€',
     unit: '/día',
     features: [
       'Viernes / Víspera festivo (10:00-21:30)',
@@ -29,21 +29,10 @@ const tiers = [
     recommended: true
   },
   {
-    name: 'Fin de Semana (Tarde)',
-    price: '150€',
-    unit: '/día',
-    features: [
-      'Sábado/Domingo (15:00-21:30)',
-      'Perfecto para tardes de celebración',
-      'Acceso exclusivo a todo el espacio',
-      'Fianza de 100€ (Efectivo)',
-      'Servicio limpieza (+60€)'
-    ],
-    color: 'border-purple-200'
   },
   {
     name: 'Fin de Semana (Día completo)',
-    price: '200€',
+    price: '160€',
     unit: '/día',
     features: [
       'Sábado/Domingo (10:00-21:30)',
