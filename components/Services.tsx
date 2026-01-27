@@ -45,7 +45,7 @@ const Services: React.FC = () => {
           </h2>
           <div className="w-32 h-2 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto rounded-full mb-8 shadow-sm"></div>
           <p className="text-xl text-gray-800 font-bold max-w-3xl mx-auto bg-white/60 backdrop-blur-xl p-8 rounded-[40px] shadow-sm border border-white/40">
-            En Juega y Celebra hemos diseñado el paraíso del juego. Instalaciones modernas, seguras y pensadas para que cada minuto sea una nueva aventura.
+            En Juga i Celebra hemos diseñado el paraíso del juego. Instalaciones modernas, seguras y pensadas para que cada minuto sea una nueva aventura.
           </p>
         </div>
 
