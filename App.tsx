@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Services from "./components/Services";
-import Features from "./components/Features";
-import Gallery from "./components/Gallery";
-import Pricing from "./components/Pricing";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
-import BookingCalendar from "./components/BookingCalendar";
-import ChatAssistant from "./components/ChatAssistant";
+// ✅ TODO desde src/components (una sola fuente)
+import Navbar from "./src/components/Navbar";
+import Hero from "./src/components/Hero";
+import Services from "./src/components/Services";
+import Features from "./src/components/Features";
+import Gallery from "./src/components/Gallery";
+import Pricing from "./src/components/Pricing";
+import Contact from "./src/components/Contact";
+import Footer from "./src/components/Footer";
+import BookingCalendar from "./src/components/BookingCalendar";
+import ChatAssistant from "./src/components/ChatAssistant";
 
 import LanguageModal from "./src/components/LanguageModal";
 import LanguagePill from "./src/components/LanguagePill";
@@ -27,7 +28,7 @@ const App: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // 1) Cargar idioma una vez
+  // ✅ Cargar idioma una vez
   useEffect(() => {
     const saved = getSavedLang();
     if (saved) {
@@ -39,7 +40,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  // 2) Selección idioma (único sitio donde se guarda)
+  // ✅ Único sitio donde se guarda idioma
   const handleSelectLang = (l: Lang) => {
     setLang(l);
     saveLang(l);
@@ -56,12 +57,12 @@ const App: React.FC = () => {
 
       <LanguagePill current={lang} onClick={() => setShowLangModal(true)} />
 
-      {/* IMPORTANTE: Navbar tiene que aceptar lang y usarlo */}
+      {/* Navbar debe aceptar lang */}
       <Navbar scrolled={scrolled} lang={lang} />
 
       <main>
         <section id="inicio">
-         <Hero lang={lang} />
+          <Hero lang={lang} />
         </section>
 
         <section id="servicios" className="py-20">
