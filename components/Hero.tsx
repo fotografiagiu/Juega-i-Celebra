@@ -1,6 +1,13 @@
 import React from "react";
+import { t, type Lang } from "../src/i18n";
 
-const Hero: React.FC = () => {
+type Props = {
+  lang: Lang;
+};
+
+const Hero: React.FC<Props> = ({ lang }) => {
+  const tr = t(lang);
+
   const colors = {
     orange: "#FF5722",
     teal: "#00BFA5",
@@ -10,14 +17,14 @@ const Hero: React.FC = () => {
     green: "#4CAF50",
     red: "#F44336",
   };
+
   const whatsappText =
-  "Hola \uD83D\uDC4B\n" +
-  "He realizado una reserva en Juga i Celebra a través de la web.\n" +
-  "Si necesitáis algo más por mi parte, quedo atento/a.\n" +
-  "Gracias \uD83D\uDE0A";
+    `${tr.hero.whatsapp.greeting}\n` +
+    `${tr.hero.whatsapp.line1}\n` +
+    `${tr.hero.whatsapp.line2}\n` +
+    `${tr.hero.whatsapp.thanks}`;
 
-const whatsappUrl = `https://wa.me/34669106393?text=${encodeURIComponent(whatsappText)}`;
-
+  const whatsappUrl = `https://wa.me/34669106393?text=${encodeURIComponent(whatsappText)}`;
 
   // ✅ Scroll controlado (evita problemas con navbar fixed)
   const scrollToReservar = (e: React.MouseEvent) => {
@@ -25,7 +32,7 @@ const whatsappUrl = `https://wa.me/34669106393?text=${encodeURIComponent(whatsap
     const el = document.getElementById("reservar");
     if (!el) return;
 
-    const NAVBAR_OFFSET = 110; // ajusta si tu navbar es más alto/bajo
+    const NAVBAR_OFFSET = 110;
     const y = el.getBoundingClientRect().top + window.scrollY - NAVBAR_OFFSET;
     window.scrollTo({ top: y, behavior: "smooth" });
   };
@@ -43,7 +50,7 @@ const whatsappUrl = `https://wa.me/34669106393?text=${encodeURIComponent(whatsap
             Object.values(colors)[
               Math.floor(Math.random() * Object.values(colors).length)
             ];
-          const shapes = ["circle", "star", "squiggle"];
+          const shapes = ["circle", "star", "squiggle"] as const;
           const shape = shapes[Math.floor(Math.random() * shapes.length)];
 
           return (
@@ -162,10 +169,10 @@ const whatsappUrl = `https://wa.me/34669106393?text=${encodeURIComponent(whatsap
 
           <div className="mt-8 md:mt-12 space-y-2 md:space-y-4">
             <p className="text-xl sm:text-3xl md:text-5xl text-[#D7CCC8] font-bold tracking-tight opacity-90 drop-shadow-lg">
-              Espai per a esdeveniments
+              {tr.hero.subtitle}
             </p>
             <p className="text-4xl sm:text-6xl md:text-8xl text-white font-black tracking-wide uppercase drop-shadow-[0_4px_15px_rgba(0,0,0,0.55)]">
-              Algemesí
+              {tr.hero.city}
             </p>
           </div>
         </div>
@@ -176,7 +183,7 @@ const whatsappUrl = `https://wa.me/34669106393?text=${encodeURIComponent(whatsap
             onClick={scrollToReservar}
             className="flex-1 bg-white text-black px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3 border-4 border-transparent hover:border-orange-500 cursor-pointer"
           >
-            🗓️ RESERVAR 2026
+            🗓️ {tr.hero.ctaReserve}
           </button>
 
           <a
@@ -185,7 +192,7 @@ const whatsappUrl = `https://wa.me/34669106393?text=${encodeURIComponent(whatsap
             rel="noopener noreferrer"
             className="flex-1 bg-[#25D366] text-white px-6 py-5 rounded-[25px] text-xl md:text-3xl font-black transition-all shadow-2xl hover:scale-105 active:scale-95 flex items-center justify-center gap-3"
           >
-            💬 WHATSAPP
+            💬 {tr.hero.ctaWhatsapp}
           </a>
         </div>
       </div>
