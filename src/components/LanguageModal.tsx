@@ -4,30 +4,30 @@ export type Lang = "val" | "es";
 
 type Props = {
   open: boolean;
-  onClose: () => void;
   onSelect: (lang: Lang) => void;
 };
 
-const STORAGE_KEY = "juga_lang_v1";
+const STORAGE_KEY = "juga_lang";
 
-const LanguageModal: React.FC<Props> = ({ open, onClose, onSelect }) => {
+const LanguageModal: React.FC<Props> = ({ open, onSelect }) => {
   const [anim, setAnim] = useState(false);
 
   useEffect(() => {
     if (open) {
-      setTimeout(() => setAnim(true), 10);
-    } else {
-      setAnim(false);
+      const t = setTimeout(() => setAnim(true), 10);
+      return () => clearTimeout(t);
     }
+    setAnim(false);
   }, [open]);
 
   useEffect(() => {
     const onEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") choose("val"); // cierre “seguro” eligiendo valencià
     };
     if (open) window.addEventListener("keydown", onEsc);
     return () => window.removeEventListener("keydown", onEsc);
-  }, [open, onClose]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   if (!open) return null;
 
@@ -36,7 +36,6 @@ const LanguageModal: React.FC<Props> = ({ open, onClose, onSelect }) => {
       localStorage.setItem(STORAGE_KEY, lang);
     } catch {}
     onSelect(lang);
-    onClose();
   };
 
   return (
@@ -45,10 +44,10 @@ const LanguageModal: React.FC<Props> = ({ open, onClose, onSelect }) => {
       aria-modal="true"
       role="dialog"
     >
-      {/* Backdrop */}
+      {/* Backdrop (click = valencià por defecto) */}
       <button
-        aria-label="Cerrar"
-        onClick={onClose}
+        aria-label="Tancar"
+        onClick={() => choose("val")}
         className={`absolute inset-0 bg-black/50 transition-opacity ${
           anim ? "opacity-100" : "opacity-0"
         }`}
@@ -73,10 +72,11 @@ const LanguageModal: React.FC<Props> = ({ open, onClose, onSelect }) => {
             </p>
           </div>
 
+          {/* Cerrar = valencià por defecto */}
           <button
-            onClick={onClose}
+            onClick={() => choose("val")}
             className="w-10 h-10 rounded-2xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-black"
-            aria-label="Cerrar modal"
+            aria-label="Tancar modal"
           >
             ✕
           </button>
@@ -114,8 +114,9 @@ const LanguageModal: React.FC<Props> = ({ open, onClose, onSelect }) => {
           <p className="text-xs text-gray-500 font-semibold">
             Guardem la teua elecció en aquest dispositiu.
           </p>
+
           <button
-            onClick={onClose}
+            onClick={() => choose("val")}
             className="text-sm font-black text-blue-600 hover:underline"
           >
             Ara no
