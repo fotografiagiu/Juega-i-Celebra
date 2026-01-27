@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
 
-// ✅ TODO desde src/components (una sola fuente)
-import Navbar from "./src/components/Navbar";
-import Hero from "./src/components/Hero";
-import Services from "./src/components/Services";
-import Features from "./src/components/Features";
-import Gallery from "./src/components/Gallery";
-import Pricing from "./src/components/Pricing";
-import Contact from "./src/components/Contact";
-import Footer from "./src/components/Footer";
-import BookingCalendar from "./src/components/BookingCalendar";
-import ChatAssistant from "./src/components/ChatAssistant";
+// ✅ Tus componentes reales están en /components (RAÍZ)
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import Services from "./components/Services";
+import Features from "./components/Features";
+import Gallery from "./components/Gallery";
+import Pricing from "./components/Pricing";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
+import BookingCalendar from "./components/BookingCalendar";
+import ChatAssistant from "./components/ChatAssistant";
 
+// ✅ Idioma lo tienes en /src
 import LanguageModal from "./src/components/LanguageModal";
 import LanguagePill from "./src/components/LanguagePill";
 import { getSavedLang, saveLang, type Lang } from "./src/i18n";
 
 const App: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
-
   const [lang, setLang] = useState<Lang>("val");
   const [showLangModal, setShowLangModal] = useState(false);
 
@@ -28,19 +28,17 @@ const App: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ✅ Cargar idioma una vez
   useEffect(() => {
     const saved = getSavedLang();
     if (saved) {
       setLang(saved);
       setShowLangModal(false);
     } else {
-      setLang("val"); // predomina valencià
+      setLang("val");       // predomina valencià
       setShowLangModal(true); // pregunta 1ª vez
     }
   }, []);
 
-  // ✅ Único sitio donde se guarda idioma
   const handleSelectLang = (l: Lang) => {
     setLang(l);
     saveLang(l);
@@ -57,7 +55,7 @@ const App: React.FC = () => {
 
       <LanguagePill current={lang} onClick={() => setShowLangModal(true)} />
 
-      {/* Navbar debe aceptar lang */}
+      {/* Navbar/Hero TIENEN que aceptar lang o lo ignoras (pero no rompe) */}
       <Navbar scrolled={scrolled} lang={lang} />
 
       <main>
