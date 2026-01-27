@@ -61,7 +61,7 @@ const App: React.FC = () => {
 
       <main>
         <section id="inicio">
-          <Hero />
+         <Hero lang={lang} />
         </section>
 
         <section id="servicios" className="py-20">
