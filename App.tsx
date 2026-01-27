@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Services from "./components/Services";
-import Features from "./components/Features";
-import Gallery from "./components/Gallery";
-import Pricing from "./components/Pricing";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
-import BookingCalendar from "./components/BookingCalendar";
-import ChatAssistant from "./components/ChatAssistant";
+import Navbar from "./src/components/Navbar";
+import Hero from "./src/components/Hero";
+import Services from "./src/components/Services";
+import Features from "./src/components/Features";
+import Gallery from "./src/components/Gallery";
+import Pricing from "./src/components/Pricing";
+import Contact from "./src/components/Contact";
+import Footer from "./src/components/Footer";
+import BookingCalendar from "./src/components/BookingCalendar";
+import ChatAssistant from "./src/components/ChatAssistant";
 
-import LanguageModal, { type Lang } from "./components/LanguageModal";
-import LanguagePill from "./components/LanguagePill";
+import LanguageModal, { type Lang } from "./src/components/LanguageModal";
+import LanguagePill from "./src/components/LanguagePill";
 
 const LANG_KEY = "juga_lang";
 
@@ -28,6 +28,7 @@ const App: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Modal solo si no hay idioma guardado
   useEffect(() => {
     try {
       const saved = localStorage.getItem(LANG_KEY);
@@ -35,11 +36,9 @@ const App: React.FC = () => {
         setLang(saved as Lang);
         setShowLangModal(false);
       } else {
-        setLang("val");
         setShowLangModal(true);
       }
     } catch {
-      setLang("val");
       setShowLangModal(true);
     }
   }, []);
@@ -54,13 +53,7 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white text-gray-800 overflow-x-hidden">
-      <LanguageModal
-        open={showLangModal}
-        currentLang={lang}
-        onClose={() => setShowLangModal(false)}
-        onSelect={handleSelectLang}
-      />
-
+      <LanguageModal open={showLangModal} onSelect={handleSelectLang} />
       <LanguagePill lang={lang} onOpen={() => setShowLangModal(true)} />
 
       <Navbar scrolled={scrolled} />
