@@ -11,11 +11,9 @@ import Footer from "./components/Footer";
 import BookingCalendar from "./components/BookingCalendar";
 import ChatAssistant from "./components/ChatAssistant";
 
-// ✅ Estos 2 están en /src/components (NO en /components)
-import LanguageModal, { type Lang } from "./src/components/LanguageModal";
+import LanguageModal from "./src/components/LanguageModal";
 import LanguagePill from "./src/components/LanguagePill";
-
-const LANG_KEY = "juga_lang";
+import { getSavedLang, saveLang, type Lang } from "./src/i18n";
 
 const App: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -29,40 +27,36 @@ const App: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // ✅ Modal solo si no hay idioma guardado
+  // 1) Cargar idioma una vez
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(LANG_KEY);
-      if (saved === "val" || saved === "es") {
-        setLang(saved as Lang);
-        setShowLangModal(false);
-      } else {
-        setLang("val");
-        setShowLangModal(true);
-      }
-    } catch {
-      setLang("val");
-      setShowLangModal(true);
+    const saved = getSavedLang();
+    if (saved) {
+      setLang(saved);
+      setShowLangModal(false);
+    } else {
+      setLang("val"); // predomina valencià
+      setShowLangModal(true); // pregunta 1ª vez
     }
   }, []);
 
+  // 2) Selección idioma (único sitio donde se guarda)
   const handleSelectLang = (l: Lang) => {
     setLang(l);
-    try {
-      localStorage.setItem(LANG_KEY, l);
-    } catch {}
+    saveLang(l);
     setShowLangModal(false);
   };
 
   return (
     <div className="min-h-screen bg-white text-gray-800 overflow-x-hidden">
-      {/* Modal */}
-      <LanguageModal open={showLangModal} onSelect={handleSelectLang} />
+      <LanguageModal
+        open={showLangModal}
+        onSelect={handleSelectLang}
+        onClose={() => setShowLangModal(false)}
+      />
 
-      {/* Botón fijo para reabrir */}
-      <LanguagePill lang={lang} onOpen={() => setShowLangModal(true)} />
+      <LanguagePill current={lang} onClick={() => setShowLangModal(true)} />
 
-      {/* Si luego quieres traducir el Navbar, aquí le pasas lang */}
+      {/* IMPORTANTE: Navbar tiene que aceptar lang y usarlo */}
       <Navbar scrolled={scrolled} lang={lang} />
 
       <main>
