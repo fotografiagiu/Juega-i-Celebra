@@ -37,19 +37,18 @@ const LanguageModal: React.FC<Props> = ({ open, currentLang, onClose, onSelect }
       localStorage.setItem(STORAGE_KEY, lang);
     } catch {}
     onSelect(lang);
-    onClose();
   };
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4" aria-modal="true" role="dialog">
-      {/* Backdrop (cierra sin cambiar idioma) */}
+      {/* Backdrop */}
       <button
         aria-label="Tancar"
         onClick={onClose}
         className={`absolute inset-0 bg-black/50 transition-opacity ${anim ? "opacity-100" : "opacity-0"}`}
+        type="button"
       />
 
-      {/* Card */}
       <div
         className={`relative w-full max-w-lg rounded-[28px] bg-white shadow-2xl border border-gray-100 p-7 sm:p-8 transition-all ${
           anim ? "opacity-100 scale-100" : "opacity-0 scale-95"
@@ -64,11 +63,11 @@ const LanguageModal: React.FC<Props> = ({ open, currentLang, onClose, onSelect }
             </p>
           </div>
 
-          {/* Cerrar = solo cerrar */}
           <button
             onClick={onClose}
             className="w-10 h-10 rounded-2xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-black"
             aria-label="Tancar modal"
+            type="button"
           >
             ✕
           </button>
@@ -82,6 +81,7 @@ const LanguageModal: React.FC<Props> = ({ open, currentLang, onClose, onSelect }
                 ? "border-blue-600 bg-blue-600 text-white hover:bg-blue-700"
                 : "border-gray-200 bg-white text-gray-900 hover:bg-gray-50"
             }`}
+            type="button"
           >
             <div className={`text-sm font-black uppercase tracking-widest ${currentLang === "val" ? "text-white/90" : "text-gray-500"}`}>
               {currentLang === "val" ? "Seleccionat" : "Recomanat"}
@@ -99,6 +99,7 @@ const LanguageModal: React.FC<Props> = ({ open, currentLang, onClose, onSelect }
                 ? "border-blue-600 bg-blue-600 text-white hover:bg-blue-700"
                 : "border-gray-200 bg-white text-gray-900 hover:bg-gray-50"
             }`}
+            type="button"
           >
             <div className={`text-sm font-black uppercase tracking-widest ${currentLang === "es" ? "text-white/90" : "text-gray-500"}`}>
               {currentLang === "es" ? "Seleccionado" : "Opción"}
@@ -112,7 +113,7 @@ const LanguageModal: React.FC<Props> = ({ open, currentLang, onClose, onSelect }
 
         <div className="mt-6 flex items-center justify-between gap-3">
           <p className="text-xs text-gray-500 font-semibold">Guardem la teua elecció en aquest dispositiu.</p>
-          <button onClick={onClose} className="text-sm font-black text-blue-600 hover:underline">
+          <button onClick={onClose} className="text-sm font-black text-blue-600 hover:underline" type="button">
             Ara no
           </button>
         </div>
