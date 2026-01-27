@@ -53,3 +53,18 @@ const DICT: Record<Lang, Dict> = {
 export function t(lang: Lang) {
   return DICT[lang] || DICT.val;
 }
+
+export function getSavedLang(): Lang | null {
+  try {
+    const v = localStorage.getItem(LANG_KEY);
+    return v === "val" || v === "es" ? (v as Lang) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveLang(lang: Lang) {
+  try {
+    localStorage.setItem(LANG_KEY, lang);
+  } catch {}
+}
