@@ -28,21 +28,28 @@ const App: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Modal solo si no hay idioma guardado
   useEffect(() => {
-    const saved = localStorage.getItem(LANG_KEY);
-    if (saved === "val" || saved === "es") {
-      setLang(saved as Lang);
-      setShowLangModal(false);
-    } else {
-      setLang("val"); // predomina valenciano
+    try {
+      const saved = localStorage.getItem(LANG_KEY);
+      if (saved === "val" || saved === "es") {
+        setLang(saved as Lang);
+        setShowLangModal(false);
+      } else {
+        setLang("val");
+        setShowLangModal(true);
+      }
+    } catch {
+      setLang("val");
       setShowLangModal(true);
     }
   }, []);
 
   const handleSelectLang = (l: Lang) => {
     setLang(l);
-    localStorage.setItem(LANG_KEY, l);
+    try {
+      localStorage.setItem(LANG_KEY, l);
+    } catch {}
+    setShowLangModal(false);
   };
 
   return (
@@ -54,7 +61,6 @@ const App: React.FC = () => {
         onSelect={handleSelectLang}
       />
 
-      {/* Botón siempre visible para cambiar */}
       <LanguagePill lang={lang} onOpen={() => setShowLangModal(true)} />
 
       <Navbar scrolled={scrolled} />
