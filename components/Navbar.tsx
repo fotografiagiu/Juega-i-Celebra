@@ -1,20 +1,29 @@
-
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
+import type { Lang } from "../src/i18n";
+import { t } from "../src/i18n";
 
 interface NavbarProps {
   scrolled: boolean;
+  lang: Lang;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
+const Navbar: React.FC<NavbarProps> = ({ scrolled, lang }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const navLinks = [
-    { name: "Inicio", href: "#inicio" },
-    { name: "Servicios", href: "#servicios" },
-    { name: "Calendario", href: "#reservar" },
-    { name: "Tarifas", href: "#tarifas" },
-    { name: "Contacto", href: "#contacto" },
-  ];
+  const tr = t(lang);
+
+  const navLinks = useMemo(
+    () => [
+      { name: tr.nav.inicio, href: "#inicio" },
+      { name: tr.nav.servicios, href: "#servicios" },
+      { name: tr.nav.calendario, href: "#reservar" },
+      { name: tr.nav.tarifas, href: "#tarifas" },
+      { name: tr.nav.contacto, href: "#contacto" },
+    ],
+    [tr]
+  );
+
+  const ctaLabel = tr.nav.reservar;
 
   const closeMenu = () => setIsOpen(false);
 
@@ -53,7 +62,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
             <div className="ml-10 flex items-baseline space-x-6">
               {navLinks.map((link) => (
                 <a
-                  key={link.name}
+                  key={link.href}
                   href={link.href}
                   className="px-3 py-2 rounded-md text-sm font-bold transition-colors text-white hover:text-yellow-300 drop-shadow-sm"
                 >
@@ -65,14 +74,18 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                 href="#reservar"
                 className="bg-gradient-to-r from-orange-500 to-pink-500 text-white px-6 py-2 rounded-full font-bold hover:from-pink-500 hover:to-orange-500 transition-all shadow-md transform hover:scale-105"
               >
-                Reservar 2026
+                {ctaLabel}
               </a>
             </div>
           </div>
 
           {/* Mobile button */}
           <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-white p-2" aria-label="Abrir menú">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-white p-2"
+              aria-label="Abrir menú"
+            >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isOpen ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -94,7 +107,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
           {navLinks.map((link) => (
             <a
-              key={link.name}
+              key={link.href}
               href={link.href}
               onClick={closeMenu}
               className="block w-full text-left px-3 py-4 text-base font-bold text-white hover:text-cyan-400 border-b border-gray-800"
@@ -109,7 +122,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
               onClick={closeMenu}
               className="block w-full text-center bg-orange-500 text-white px-6 py-3 rounded-xl font-bold"
             >
-              Reservar 2026
+              {ctaLabel}
             </a>
           </div>
         </div>
