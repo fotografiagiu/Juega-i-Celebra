@@ -1,22 +1,36 @@
 export type Lang = "val" | "es";
 
-export const t = (lang: Lang) => {
-  const isVal = lang === "val";
+export const LANG_KEY = "juga_lang";
 
-  return {
+type Dict = Record<string, any>;
+
+/**
+ * Diccionario mínimo (amplíalo). Estructura:
+ * t(lang).hero.title, t(lang).nav.inicio, etc.
+ */
+const DICT: Record<Lang, Dict> = {
+  val: {
     nav: {
-      inicio: isVal ? "Inici" : "Inicio",
-      servicios: isVal ? "Serveis" : "Servicios",
-      calendario: isVal ? "Calendari" : "Calendario",
-      tarifas: isVal ? "Tarifes" : "Tarifas",
-      contacto: isVal ? "Contacte" : "Contacto",
-      reservar: isVal ? "Reservar 2026" : "Reservar 2026",
+      inicio: "Inici",
+      servicios: "Serveis",
+      calendario: "Calendari",
+      tarifas: "Tarifes",
+      contacto: "Contacte",
+      reservar: "Reservar 2026",
     },
-
-    hero: {
-      subtitle: isVal ? "Espai per a esdeveniments" : "Espacio para eventos",
+  },
+  es: {
+    nav: {
+      inicio: "Inicio",
+      servicios: "Servicios",
+      calendario: "Calendario",
+      tarifas: "Tarifas",
+      contacto: "Contacto",
+      reservar: "Reservar 2026",
     },
-
-    // aquí iremos metiendo más claves según lo que quieras traducir
-  };
+  },
 };
+
+export function t(lang: Lang) {
+  return DICT[lang] || DICT.val;
+}
