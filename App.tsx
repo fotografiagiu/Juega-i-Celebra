@@ -11,8 +11,10 @@ import Footer from "./components/Footer";
 import BookingCalendar from "./components/BookingCalendar";
 import ChatAssistant from "./components/ChatAssistant";
 
-import LanguageModal, { type Lang } from "./src/components/LanguageModal";
+import LanguageModal from "./src/components/LanguageModal";
 import LanguagePill from "./src/components/LanguagePill";
+
+import type { Lang } from "./src/i18n";
 
 const LANG_KEY = "juga_lang";
 
@@ -28,64 +30,75 @@ const App: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Mostrar modal SOLO si no hay idioma guardado
+  // Modal SOLO si no hay idioma guardado
   useEffect(() => {
-    const saved = localStorage.getItem(LANG_KEY);
-    if (saved === "val" || saved === "es") {
-      setLang(saved as Lang);
-      setShowLangModal(false);
-    } else {
+    try {
+      const saved = localStorage.getItem(LANG_KEY);
+      if (saved === "val" || saved === "es") {
+        setLang(saved as Lang);
+        setShowLangModal(false);
+      } else {
+        setShowLangModal(true);
+      }
+    } catch {
       setShowLangModal(true);
     }
   }, []);
 
   const handleSelectLang = (l: Lang) => {
     setLang(l);
-    localStorage.setItem(LANG_KEY, l);
+    try {
+      localStorage.setItem(LANG_KEY, l);
+    } catch {}
     setShowLangModal(false);
   };
 
   return (
     <div className="min-h-screen bg-white text-gray-800 overflow-x-hidden">
-      {/* Modal (solo primera vez o si forzamos abrirlo) */}
-      <LanguageModal open={showLangModal} onSelect={handleSelectLang} />
+      {/* Modal idioma */}
+      <LanguageModal
+        open={showLangModal}
+        onClose={() => setShowLangModal(false)}
+        onSelect={handleSelectLang}
+      />
 
-      {/* Botón visible siempre para cambiar idioma */}
-      <LanguagePill current={lang} onClick={() => setShowLangModal(true)} />
+      {/* Botón visible siempre */}
+      <LanguagePill lang={lang} onOpen={() => setShowLangModal(true)} />
 
-      <Navbar scrolled={scrolled} />
+      <Navbar scrolled={scrolled} lang={lang} />
 
       <main>
         <section id="inicio">
-          <Hero />
+          <Hero lang={lang} />
         </section>
 
         <section id="servicios" className="py-20">
-          <Services />
+          <Services lang={lang} />
         </section>
 
+        {/* 👇 DESTINO DEL BOTÓN */}
         <section id="reservar" className="py-20 bg-gray-50 scroll-mt-28">
-          <BookingCalendar />
+          <BookingCalendar lang={lang} />
         </section>
 
         <section className="py-20">
-          <Features />
+          <Features lang={lang} />
         </section>
 
         <section className="py-20 bg-yellow-50">
-          <Gallery />
+          <Gallery lang={lang} />
         </section>
 
         <section id="tarifas" className="py-20 scroll-mt-28">
-          <Pricing />
+          <Pricing lang={lang} />
         </section>
 
         <section id="contacto" className="py-20">
-          <Contact />
+          <Contact lang={lang} />
         </section>
       </main>
 
-      <Footer />
+      <Footer lang={lang} />
       <ChatAssistant />
     </div>
   );
