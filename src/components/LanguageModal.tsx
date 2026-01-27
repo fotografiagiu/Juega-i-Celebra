@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
-
-export type Lang = "val" | "es";
+import type { Lang } from "../i18n";
 
 type Props = {
   open: boolean;
-  currentLang: Lang;
-  onClose: () => void;
   onSelect: (lang: Lang) => void;
+  onClose: () => void;
 };
 
-const STORAGE_KEY = "juga_lang";
-
-const LanguageModal: React.FC<Props> = ({ open, currentLang, onClose, onSelect }) => {
+const LanguageModal: React.FC<Props> = ({ open, onSelect, onClose }) => {
   const [anim, setAnim] = useState(false);
 
   useEffect(() => {
@@ -32,13 +28,6 @@ const LanguageModal: React.FC<Props> = ({ open, currentLang, onClose, onSelect }
 
   if (!open) return null;
 
-  const choose = (lang: Lang) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, lang);
-    } catch {}
-    onSelect(lang);
-  };
-
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4" aria-modal="true" role="dialog">
       {/* Backdrop */}
@@ -46,9 +35,9 @@ const LanguageModal: React.FC<Props> = ({ open, currentLang, onClose, onSelect }
         aria-label="Tancar"
         onClick={onClose}
         className={`absolute inset-0 bg-black/50 transition-opacity ${anim ? "opacity-100" : "opacity-0"}`}
-        type="button"
       />
 
+      {/* Card */}
       <div
         className={`relative w-full max-w-lg rounded-[28px] bg-white shadow-2xl border border-gray-100 p-7 sm:p-8 transition-all ${
           anim ? "opacity-100 scale-100" : "opacity-0 scale-95"
@@ -67,7 +56,6 @@ const LanguageModal: React.FC<Props> = ({ open, currentLang, onClose, onSelect }
             onClick={onClose}
             className="w-10 h-10 rounded-2xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-black"
             aria-label="Tancar modal"
-            type="button"
           >
             ✕
           </button>
@@ -75,45 +63,27 @@ const LanguageModal: React.FC<Props> = ({ open, currentLang, onClose, onSelect }
 
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <button
-            onClick={() => choose("val")}
-            className={`rounded-[22px] border-2 p-5 text-left shadow-lg transition-all ${
-              currentLang === "val"
-                ? "border-blue-600 bg-blue-600 text-white hover:bg-blue-700"
-                : "border-gray-200 bg-white text-gray-900 hover:bg-gray-50"
-            }`}
-            type="button"
+            onClick={() => onSelect("val")}
+            className="rounded-[22px] border-2 border-blue-600 bg-blue-600 text-white p-5 text-left shadow-lg hover:bg-blue-700 transition-all"
           >
-            <div className={`text-sm font-black uppercase tracking-widest ${currentLang === "val" ? "text-white/90" : "text-gray-500"}`}>
-              {currentLang === "val" ? "Seleccionat" : "Recomanat"}
-            </div>
+            <div className="text-sm font-black uppercase tracking-widest text-white/90">Recomanat</div>
             <div className="text-2xl font-black mt-1">Valencià</div>
-            <div className={`text-sm font-semibold mt-2 ${currentLang === "val" ? "text-white/90" : "text-gray-600"}`}>
-              (Predeterminat)
-            </div>
+            <div className="text-sm font-semibold mt-2 text-white/90">(Predeterminat)</div>
           </button>
 
           <button
-            onClick={() => choose("es")}
-            className={`rounded-[22px] border-2 p-5 text-left shadow-sm transition-all ${
-              currentLang === "es"
-                ? "border-blue-600 bg-blue-600 text-white hover:bg-blue-700"
-                : "border-gray-200 bg-white text-gray-900 hover:bg-gray-50"
-            }`}
-            type="button"
+            onClick={() => onSelect("es")}
+            className="rounded-[22px] border-2 border-gray-200 bg-white text-gray-900 p-5 text-left shadow-sm hover:bg-gray-50 transition-all"
           >
-            <div className={`text-sm font-black uppercase tracking-widest ${currentLang === "es" ? "text-white/90" : "text-gray-500"}`}>
-              {currentLang === "es" ? "Seleccionado" : "Opción"}
-            </div>
+            <div className="text-sm font-black uppercase tracking-widest text-gray-500">Opció</div>
             <div className="text-2xl font-black mt-1">Castellano</div>
-            <div className={`text-sm font-semibold mt-2 ${currentLang === "es" ? "text-white/90" : "text-gray-600"}`}>
-              Cambiar idioma
-            </div>
+            <div className="text-sm font-semibold mt-2 text-gray-600">Cambiar idioma</div>
           </button>
         </div>
 
         <div className="mt-6 flex items-center justify-between gap-3">
           <p className="text-xs text-gray-500 font-semibold">Guardem la teua elecció en aquest dispositiu.</p>
-          <button onClick={onClose} className="text-sm font-black text-blue-600 hover:underline" type="button">
+          <button onClick={onClose} className="text-sm font-black text-blue-600 hover:underline">
             Ara no
           </button>
         </div>
