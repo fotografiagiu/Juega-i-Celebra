@@ -63,7 +63,7 @@ const App: React.FC = () => {
       <LanguagePill lang={lang} onOpen={() => setShowLangModal(true)} />
 
       {/* Si luego quieres traducir el Navbar, aquí le pasas lang */}
-      <Navbar scrolled={scrolled} />
+      <Navbar scrolled={scrolled} lang={lang} />
 
       <main>
         <section id="inicio">
