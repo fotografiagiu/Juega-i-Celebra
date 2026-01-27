@@ -14,13 +14,10 @@ import ChatAssistant from "./components/ChatAssistant";
 import LanguageModal from "./src/components/LanguageModal";
 import LanguagePill from "./src/components/LanguagePill";
 
-import type { Lang } from "./src/i18n";
-
-const LANG_KEY = "juga_lang";
+import { LANG_KEY, type Lang } from "./src/i18n";
 
 const App: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
-
   const [lang, setLang] = useState<Lang>("val");
   const [showLangModal, setShowLangModal] = useState(false);
 
@@ -30,7 +27,6 @@ const App: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Modal SOLO si no hay idioma guardado
   useEffect(() => {
     try {
       const saved = localStorage.getItem(LANG_KEY);
@@ -55,50 +51,47 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white text-gray-800 overflow-x-hidden">
-      {/* Modal idioma */}
       <LanguageModal
         open={showLangModal}
         onClose={() => setShowLangModal(false)}
         onSelect={handleSelectLang}
       />
-
-      {/* Botón visible siempre */}
       <LanguagePill lang={lang} onOpen={() => setShowLangModal(true)} />
 
+      {/* De momento solo pasamos lang a Navbar para ver el cambio ya */}
       <Navbar scrolled={scrolled} lang={lang} />
 
       <main>
         <section id="inicio">
-          <Hero lang={lang} />
+          <Hero />
         </section>
 
         <section id="servicios" className="py-20">
-          <Services lang={lang} />
+          <Services />
         </section>
 
-        {/* 👇 DESTINO DEL BOTÓN */}
         <section id="reservar" className="py-20 bg-gray-50 scroll-mt-28">
-          <BookingCalendar lang={lang} />
+          <BookingCalendar />
         </section>
 
         <section className="py-20">
-          <Features lang={lang} />
+          <Features />
         </section>
 
         <section className="py-20 bg-yellow-50">
-          <Gallery lang={lang} />
+          <Gallery />
         </section>
 
         <section id="tarifas" className="py-20 scroll-mt-28">
-          <Pricing lang={lang} />
+          <Pricing />
         </section>
 
         <section id="contacto" className="py-20">
-          <Contact lang={lang} />
+          <Contact />
         </section>
       </main>
 
-      <Footer lang={lang} />
+      <Footer />
       <ChatAssistant />
     </div>
   );
