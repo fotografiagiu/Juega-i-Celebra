@@ -11,8 +11,8 @@ import Footer from "./components/Footer";
 import BookingCalendar from "./components/BookingCalendar";
 import ChatAssistant from "./components/ChatAssistant";
 
-import LanguageModal, { type Lang } from "./components/LanguageModal";
-import LanguagePill from "./components/LanguagePill";
+import LanguageModal, { type Lang } from "./src/components/LanguageModal";
+import LanguagePill from "./src/components/LanguagePill";
 
 const LANG_KEY = "juga_lang";
 
