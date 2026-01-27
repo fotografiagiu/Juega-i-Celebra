@@ -1,13 +1,8 @@
 export type Lang = "val" | "es";
-
 export const LANG_KEY = "juga_lang";
 
 type Dict = Record<string, any>;
 
-/**
- * Diccionario mínimo (amplíalo). Estructura:
- * t(lang).hero.title, t(lang).nav.inicio, etc.
- */
 const DICT: Record<Lang, Dict> = {
   val: {
     nav: {
@@ -33,4 +28,19 @@ const DICT: Record<Lang, Dict> = {
 
 export function t(lang: Lang) {
   return DICT[lang] || DICT.val;
+}
+
+export function getSavedLang(): Lang | null {
+  try {
+    const v = localStorage.getItem(LANG_KEY);
+    return v === "val" || v === "es" ? (v as Lang) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function saveLang(lang: Lang) {
+  try {
+    localStorage.setItem(LANG_KEY, lang);
+  } catch {}
 }
