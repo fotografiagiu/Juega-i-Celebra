@@ -11,13 +11,14 @@ import Footer from "./components/Footer";
 import BookingCalendar from "./components/BookingCalendar";
 import ChatAssistant from "./components/ChatAssistant";
 
-import LanguageModal from "./src/components/LanguageModal";
-import LanguagePill from "./src/components/LanguagePill";
+import LanguageModal, { type Lang } from "./components/LanguageModal";
+import LanguagePill from "./components/LanguagePill";
 
-import { LANG_KEY, type Lang } from "./src/i18n";
+const LANG_KEY = "juga_lang";
 
 const App: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
+
   const [lang, setLang] = useState<Lang>("val");
   const [showLangModal, setShowLangModal] = useState(false);
 
@@ -27,39 +28,36 @@ const App: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Modal solo si no hay idioma guardado
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(LANG_KEY);
-      if (saved === "val" || saved === "es") {
-        setLang(saved as Lang);
-        setShowLangModal(false);
-      } else {
-        setShowLangModal(true);
-      }
-    } catch {
+    const saved = localStorage.getItem(LANG_KEY);
+    if (saved === "val" || saved === "es") {
+      setLang(saved as Lang);
+      setShowLangModal(false);
+    } else {
+      setLang("val"); // predomina valenciano
       setShowLangModal(true);
     }
   }, []);
 
   const handleSelectLang = (l: Lang) => {
     setLang(l);
-    try {
-      localStorage.setItem(LANG_KEY, l);
-    } catch {}
-    setShowLangModal(false);
+    localStorage.setItem(LANG_KEY, l);
   };
 
   return (
     <div className="min-h-screen bg-white text-gray-800 overflow-x-hidden">
       <LanguageModal
         open={showLangModal}
+        currentLang={lang}
         onClose={() => setShowLangModal(false)}
         onSelect={handleSelectLang}
       />
+
+      {/* Botón siempre visible para cambiar */}
       <LanguagePill lang={lang} onOpen={() => setShowLangModal(true)} />
 
-      {/* De momento solo pasamos lang a Navbar para ver el cambio ya */}
-      <Navbar scrolled={scrolled} lang={lang} />
+      <Navbar scrolled={scrolled} />
 
       <main>
         <section id="inicio">
