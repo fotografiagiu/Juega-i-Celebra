@@ -28,8 +28,13 @@ const LanguageModal: React.FC<Props> = ({ open, onSelect, onClose }) => {
 
   if (!open) return null;
 
+  const choose = (l: Lang) => {
+    onSelect(l);
+    onClose();
+  };
+
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4" aria-modal="true" role="dialog">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center px-4" role="dialog" aria-modal="true">
       {/* Backdrop */}
       <button
         aria-label="Tancar"
@@ -63,7 +68,7 @@ const LanguageModal: React.FC<Props> = ({ open, onSelect, onClose }) => {
 
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <button
-            onClick={() => onSelect("val")}
+            onClick={() => choose("val")}
             className="rounded-[22px] border-2 border-blue-600 bg-blue-600 text-white p-5 text-left shadow-lg hover:bg-blue-700 transition-all"
           >
             <div className="text-sm font-black uppercase tracking-widest text-white/90">Recomanat</div>
@@ -72,7 +77,7 @@ const LanguageModal: React.FC<Props> = ({ open, onSelect, onClose }) => {
           </button>
 
           <button
-            onClick={() => onSelect("es")}
+            onClick={() => choose("es")}
             className="rounded-[22px] border-2 border-gray-200 bg-white text-gray-900 p-5 text-left shadow-sm hover:bg-gray-50 transition-all"
           >
             <div className="text-sm font-black uppercase tracking-widest text-gray-500">Opció</div>
