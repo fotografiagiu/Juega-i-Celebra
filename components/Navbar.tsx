@@ -8,7 +8,6 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ scrolled, lang }) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const L = t(lang);
 
   const navLinks = [
@@ -29,7 +28,6 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled, lang }) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
-          {/* Logo -> Inicio */}
           <a
             href="#inicio"
             onClick={closeMenu}
