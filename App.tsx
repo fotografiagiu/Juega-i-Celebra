@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-import Navbar from "./components/Navbar";
-import Hero from "./components/Hero";
-import Services from "./components/Services";
-import Features from "./components/Features";
-import Gallery from "./components/Gallery";
-import Pricing from "./components/Pricing";
-import Contact from "./components/Contact";
-import Footer from "./components/Footer";
-import BookingCalendar from "./components/BookingCalendar";
-import ChatAssistant from "./components/ChatAssistant";
+import Navbar from "./src/components/Navbar";
+import Hero from "./src/components/Hero";
+import Services from "./src/components/Services";
+import Features from "./src/components/Features";
+import Gallery from "./src/components/Gallery";
+import Pricing from "./src/components/Pricing";
+import Contact from "./src/components/Contact";
+import Footer from "./src/components/Footer";
+import BookingCalendar from "./src/components/BookingCalendar";
+import ChatAssistant from "./src/components/ChatAssistant";
 
-import LanguageModal, { type Lang } from "./components/LanguageModal";
-import LanguagePill from "./components/LanguagePill";
+import LanguageModal, { type Lang } from "./src/components/LanguageModal";
+import LanguagePill from "./src/components/LanguagePill";
+
+const LANG_KEY = "juga_lang";
 
 const App: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
 
-  // 🌍 idioma global
   const [lang, setLang] = useState<Lang>("val");
   const [showLangModal, setShowLangModal] = useState(false);
 
@@ -27,11 +28,12 @@ const App: React.FC = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // 👉 mostrar popup SOLO la primera vez
+  // Mostrar modal SOLO si no hay idioma guardado
   useEffect(() => {
-    const saved = localStorage.getItem("juga_lang");
+    const saved = localStorage.getItem(LANG_KEY);
     if (saved === "val" || saved === "es") {
       setLang(saved as Lang);
+      setShowLangModal(false);
     } else {
       setShowLangModal(true);
     }
@@ -39,24 +41,17 @@ const App: React.FC = () => {
 
   const handleSelectLang = (l: Lang) => {
     setLang(l);
-    localStorage.setItem("juga_lang", l);
+    localStorage.setItem(LANG_KEY, l);
     setShowLangModal(false);
   };
 
   return (
     <div className="min-h-screen bg-white text-gray-800 overflow-x-hidden">
+      {/* Modal (solo primera vez o si forzamos abrirlo) */}
+      <LanguageModal open={showLangModal} onSelect={handleSelectLang} />
 
-      {/* 🌍 POPUP IDIOMA */}
-      <LanguageModal
-        open={showLangModal}
-        onSelect={handleSelectLang}
-      />
-
-      {/* 🌐 BOTÓN FLOTANTE */}
-      <LanguagePill
-        current={lang}
-        onClick={() => setShowLangModal(true)}
-      />
+      {/* Botón visible siempre para cambiar idioma */}
+      <LanguagePill current={lang} onClick={() => setShowLangModal(true)} />
 
       <Navbar scrolled={scrolled} />
 
@@ -69,10 +64,7 @@ const App: React.FC = () => {
           <Services />
         </section>
 
-        <section
-          id="reservar"
-          className="py-20 bg-gray-50 scroll-mt-28"
-        >
+        <section id="reservar" className="py-20 bg-gray-50 scroll-mt-28">
           <BookingCalendar />
         </section>
 
