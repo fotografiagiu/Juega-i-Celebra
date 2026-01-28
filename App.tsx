@@ -64,7 +64,7 @@ const App: React.FC = () => {
         </section>
 
         <section id="servicios" className="py-20">
-          <Services />
+          <Services lang={lang} />
         </section>
 
         <section id="reservar" className="py-20 bg-gray-50 scroll-mt-28">
