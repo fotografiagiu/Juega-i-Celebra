@@ -1,72 +1,100 @@
+import React, { useMemo } from "react";
+import { t, type Lang } from "../i18n";
 
-import React from 'react';
+type ServiceCard = {
+  title: string;
+  desc: string;
+  icon: string;
+  color: string;
+};
 
-const services = [
-  {
-    title: 'Selva de Bolas & Toboganes',
-    desc: 'Un circuito de aventura multinivel con miles de bolas de colores, toboganes gigantes y obstáculos para quemar energía sin parar.',
-    icon: '🤸‍♂️',
-    color: 'bg-blue-100 text-blue-600'
-  },
-  {
-    title: 'Celebraciones',
-    desc: 'Alquiler de espacio para fiestas infantiles y eventos familiares. Un local amplio y cómodo para que organices la celebración a tu manera.',
-    icon: '🎉',
-    color: 'bg-pink-100 text-pink-600'
+type Props = {
+  lang: Lang;
+};
 
-  },
-  {
-    title: 'Zona Baby Segura',
-    desc: 'Espacio exclusivo para los más pequeñines (0-3 años) con juegos de psicomotricidad, suelo acolchado y total seguridad.',
-    icon: '👶',
-    color: 'bg-green-100 text-green-600'
-  }
-];
+const Services: React.FC<Props> = ({ lang }) => {
+  const tr = t(lang);
 
-const Services: React.FC = () => {
+  const services: ServiceCard[] = useMemo(
+    () => [
+      {
+        title: tr.services.cards[0].title,
+        desc: tr.services.cards[0].desc,
+        icon: "🤸‍♂️",
+        color: "bg-blue-100 text-blue-600",
+      },
+      {
+        title: tr.services.cards[1].title,
+        desc: tr.services.cards[1].desc,
+        icon: "🎉",
+        color: "bg-pink-100 text-pink-600",
+      },
+      {
+        title: tr.services.cards[2].title,
+        desc: tr.services.cards[2].desc,
+        icon: "👶",
+        color: "bg-green-100 text-green-600",
+      },
+    ],
+    [tr]
+  );
+
   return (
     <div className="relative py-24 overflow-hidden">
-      {/* Fondo con desenfoque intenso (Very Blurred Background) */}
-      <div 
+      {/* Fondo con desenfoque intenso */}
+      <div
         className="absolute inset-0 z-0 opacity-40 pointer-events-none"
         style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1515606353081-4460122d99c8?q=80&w=2070&auto=format&fit=crop")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'blur(15px) saturate(1.2)',
-          transform: 'scale(1.1)' // Evita bordes blancos por el blur
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1515606353081-4460122d99c8?q=80&w=2070&auto=format&fit=crop")',
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(15px) saturate(1.2)",
+          transform: "scale(1.1)",
         }}
-      ></div>
+      />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20">
           <h2 className="text-5xl md:text-6xl font-extrabold text-blue-600 mb-6 drop-shadow-md font-['Baloo_2'] uppercase tracking-tight">
-            ¿Qué vas a <span className="text-orange-500">encontrar?</span>
+            {tr.services.heading.split(" ").slice(0, -1).join(" ") + " "}
+            <span className="text-orange-500">{tr.services.headingAccent}</span>
           </h2>
+
           <div className="w-32 h-2 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto rounded-full mb-8 shadow-sm"></div>
+
           <p className="text-xl text-gray-800 font-bold max-w-3xl mx-auto bg-white/60 backdrop-blur-xl p-8 rounded-[40px] shadow-sm border border-white/40">
-            En Juga i Celebra hemos diseñado el paraíso del juego. Instalaciones modernas, seguras y pensadas para que cada minuto sea una nueva aventura.
+            {tr.services.intro}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {services.map((service, idx) => (
-            <div 
-              key={idx} 
+            <div
+              key={idx}
               className="group relative bg-white/80 backdrop-blur-md p-10 rounded-[40px] shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border-b-8 border-transparent hover:border-blue-500 overflow-hidden border border-white/50"
             >
-              <div className={`w-20 h-20 ${service.color} rounded-[25px] flex items-center justify-center text-5xl mb-8 shadow-inner group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
+              <div
+                className={`w-20 h-20 ${service.color} rounded-[25px] flex items-center justify-center text-5xl mb-8 shadow-inner group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}
+              >
                 {service.icon}
               </div>
-              <h3 className="text-2xl font-black mb-4 text-gray-800 font-['Baloo_2']">{service.title}</h3>
-              <p className="text-gray-700 leading-relaxed font-semibold">
-                {service.desc}
-              </p>
+
+              <h3 className="text-2xl font-black mb-4 text-gray-800 font-['Baloo_2']">
+                {service.title}
+              </h3>
+
+              <p className="text-gray-700 leading-relaxed font-semibold">{service.desc}</p>
+
               <div className="mt-8">
-                <a href="#reservar" className="text-blue-600 font-black text-lg flex items-center gap-2 group-hover:gap-4 transition-all">
-                  Ver tarifas <span className="text-2xl">&rarr;</span>
+                <a
+                  href="#tarifas"
+                  className="text-blue-600 font-black text-lg flex items-center gap-2 group-hover:gap-4 transition-all"
+                >
+                  {tr.services.cta} <span className="text-2xl">&rarr;</span>
                 </a>
               </div>
+
               <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-blue-50/50 rounded-full -z-10 group-hover:scale-150 transition-transform duration-700"></div>
             </div>
           ))}
