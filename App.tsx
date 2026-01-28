@@ -79,9 +79,10 @@ const App: React.FC = () => {
           <Gallery />
         </section>
 
-        <section id="tarifas" className="py-20 scroll-mt-28">
-          <Pricing />
-        </section>
+       <section id="tarifas" className="py-20 scroll-mt-28">
+        <Pricing lang={lang} />
+      </section>
+
 
         <section id="contacto" className="py-20">
           <Contact />
