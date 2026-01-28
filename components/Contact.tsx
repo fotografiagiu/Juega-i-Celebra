@@ -27,7 +27,6 @@ const Contact: React.FC<Props> = ({ lang }) => {
     const WEB_APP_ENDPOINT =
       "https://script.google.com/macros/s/AKfycbzX9qZPXu6HMmCziQsHYJelYMoR4_eXrJpb9KqG0td57qboG7kEzMw6sIkG_h8uQVk/exec";
 
-    // Mandamos el label traducido + la key (por si quieres filtrar luego)
     const typeLabel = tr.contact.eventTypes[formData.type];
 
     const payload = {
@@ -46,9 +45,7 @@ const Contact: React.FC<Props> = ({ lang }) => {
       await fetch(WEB_APP_ENDPOINT, {
         method: "POST",
         mode: "no-cors",
-        headers: {
-          "Content-Type": "text/plain;charset=utf-8",
-        },
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(payload),
       });
 
@@ -74,7 +71,6 @@ const Contact: React.FC<Props> = ({ lang }) => {
           <p className="text-blue-100 text-lg mb-8">{tr.contact.subtitle}</p>
 
           <div className="space-y-6">
-            {/* Dirección */}
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-2xl">
                 📍
@@ -85,7 +81,6 @@ const Contact: React.FC<Props> = ({ lang }) => {
               </div>
             </div>
 
-            {/* Teléfono */}
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-2xl">
                 📞
@@ -96,7 +91,6 @@ const Contact: React.FC<Props> = ({ lang }) => {
               </div>
             </div>
 
-            {/* Horario */}
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-2xl">
                 ⏰
@@ -149,11 +143,13 @@ const Contact: React.FC<Props> = ({ lang }) => {
                 <label className="block text-sm font-bold text-gray-700 mb-1">
                   {tr.contact.form.eventTypeLabel}
                 </label>
-
                 <select
                   value={formData.type}
                   onChange={(e) =>
-                    setFormData({ ...formData, type: e.target.value as EventTypeKey })
+                    setFormData({
+                      ...formData,
+                      type: e.target.value as EventTypeKey,
+                    })
                   }
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 >
