@@ -1,14 +1,9 @@
-// src/i18n.ts
-
 export type Lang = "val" | "es";
 export const LANG_KEY = "juga_lang";
 
 type Dict = Record<string, any>;
 
 const DICT: Record<Lang, Dict> = {
-  /* =========================
-     VALENCIÀ (PREDETERMINAT)
-     ========================= */
   val: {
     nav: {
       inicio: "Inici",
@@ -18,7 +13,6 @@ const DICT: Record<Lang, Dict> = {
       contacto: "Contacte",
       reservar: "Reservar 2026",
     },
-
     hero: {
       subtitle: "Espai per a esdeveniments",
       city: "Algemesí",
@@ -31,7 +25,6 @@ const DICT: Record<Lang, Dict> = {
         thanks: "Gràcies 😊",
       },
     },
-
     services: {
       title: "Què vas a trobar?",
       intro:
@@ -56,65 +49,44 @@ const DICT: Record<Lang, Dict> = {
       ],
     },
 
-    pricing: {
-      title: "Tarifes de lloguer 2026",
-      subtitle: "Lloga el nostre espai en exclusiva per a la teua celebració.",
-      badgeMostBooked: "MÉS RESERVAT",
-      ctaReserve: "Reserva ara 🗓️",
-      conditionsTitle: "Condicions de reserva",
-
-      tiers: {
-        week: {
-          name: "Entre setmana",
-          price: "80€",
-          unit: "/dia",
-          features: [
-            "De dilluns a dijous (10:00-21:30)",
-            "Accés exclusiu a tot l’espai",
-            "Cuina equipada",
-            "Fiança de 100€ (Efectiu)",
-            "Servei de neteja (+60€)",
-          ],
-        },
-        friday: {
-          name: "Vesprada / Divendres",
-          price: "100€",
-          unit: "/dia",
-          features: [
-            "Divendres / vespra de festiu (10:00-21:30)",
-            "Ideal per a celebracions i reunions",
-            "Accés exclusiu a tot l’espai",
-            "Fiança de 100€ (Efectiu)",
-            "Servei de neteja (+60€)",
-          ],
-        },
-        weekendFull: {
-          name: "Cap de setmana (dia complet)",
-          price: "160€",
-          unit: "/dia",
-          features: [
-            "Dissabte/Diumenge (10:00-21:30)",
-            "Dia complet per al teu esdeveniment",
-            "Accés exclusiu a tot l’espai",
-            "Fiança de 100€ (Efectiu)",
-            "Servei de neteja (+60€)",
-          ],
-        },
+    contact: {
+      title: "Parlem?",
+      subtitle:
+        "Ens encanta resoldre dubtes o ajudar-te a planificar el millor esdeveniment per als peques.",
+      info: {
+        addressTitle: "La nostra adreça",
+        addressValue: "Avinguda País Valencià 58 (Algemesí), València",
+        phoneTitle: "Telèfon",
+        phoneValue: "+34 669 106 393",
+        hoursTitle: "Horari",
+        hoursValue: "Dilluns a Diumenge: 10:00 - 21:30",
       },
-
-      conditions: [
-        "Fiança de <strong>100€</strong>, que s’abonarà en efectiu en el moment del lliurament de claus.",
-        "Es retornarà una vegada revisat el local i verificat que tot està en perfecte estat.",
-        "Servei de neteja: <strong>60€</strong> (opcional).",
-        "Les reserves modificades o cancel·lades amb menys d’una setmana d’antelació no tenen devolució.",
-        "En aquest cas, es retornarà el <strong>50%</strong> de la reserva.",
-      ],
+      form: {
+        fullNameLabel: "Nom complet",
+        fullNamePlaceholder: "El teu nom...",
+        contactLabel: "Correu electrònic / Telèfon",
+        contactPlaceholder: "Dades de contacte...",
+        eventTypeLabel: "Tipus d’esdeveniment",
+        messageLabel: "Missatge",
+        messagePlaceholder: "En què podem ajudar-te?",
+        send: "Enviar missatge",
+        sending: "Enviant...",
+      },
+      eventTypes: {
+        birthday: "Aniversari",
+        freeplay: "Joc lliure",
+        private: "Esdeveniment privat",
+        other: "Altres",
+      },
+      success: {
+        title: "Missatge rebut!",
+        subtitle: "Et contestarem el més prompte possible.",
+        sendAnother: "Enviar un altre missatge",
+      },
+      alertError: "Error en l’enviament. Per favor, contacta per telèfon.",
     },
   },
 
-  /* =========================
-     CASTELLANO
-     ========================= */
   es: {
     nav: {
       inicio: "Inicio",
@@ -124,7 +96,6 @@ const DICT: Record<Lang, Dict> = {
       contacto: "Contacto",
       reservar: "Reservar 2026",
     },
-
     hero: {
       subtitle: "Espacio para eventos",
       city: "Algemesí",
@@ -137,7 +108,6 @@ const DICT: Record<Lang, Dict> = {
         thanks: "Gracias 😊",
       },
     },
-
     services: {
       title: "¿Qué vas a encontrar?",
       intro:
@@ -162,66 +132,45 @@ const DICT: Record<Lang, Dict> = {
       ],
     },
 
-    pricing: {
-      title: "Tarifas de Alquiler 2026",
-      subtitle: "Alquila nuestro espacio en exclusiva para tu celebración.",
-      badgeMostBooked: "MÁS RESERVADO",
-      ctaReserve: "Reserva ahora 🗓️",
-      conditionsTitle: "Condiciones de Reserva",
-
-      tiers: {
-        week: {
-          name: "Entre Semana",
-          price: "80€",
-          unit: "/día",
-          features: [
-            "De lunes a jueves (10:00-21:30)",
-            "Acceso exclusivo a todo el espacio",
-            "Cocina equipada",
-            "Fianza de 100€ (Efectivo)",
-            "Servicio limpieza (+60€)",
-          ],
-        },
-        friday: {
-          name: "Tarde / Viernes",
-          price: "100€",
-          unit: "/día",
-          features: [
-            "Viernes / Víspera festivo (10:00-21:30)",
-            "Ideal para celebraciones y reuniones",
-            "Acceso exclusivo a todo el espacio",
-            "Fianza de 100€ (Efectivo)",
-            "Servicio limpieza (+60€)",
-          ],
-        },
-        weekendFull: {
-          name: "Fin de Semana (Día completo)",
-          price: "160€",
-          unit: "/día",
-          features: [
-            "Sábado/Domingo (10:00-21:30)",
-            "Día completo para tu evento",
-            "Acceso exclusivo a todo el espacio",
-            "Fianza de 100€ (Efectivo)",
-            "Servicio limpieza (+60€)",
-          ],
-        },
+    contact: {
+      title: "¿Hablamos?",
+      subtitle:
+        "Estamos encantados de resolver tus dudas o ayudarte a planificar el mejor evento para tus peques.",
+      info: {
+        addressTitle: "Nuestra Dirección",
+        addressValue: "Avinguda País Valencià 58 (Algemesí), Valencia",
+        phoneTitle: "Teléfono",
+        phoneValue: "+34 669 106 393",
+        hoursTitle: "Horario",
+        hoursValue: "Lunes a Domingo: 10:00 - 21:30",
       },
-
-      conditions: [
-        "Fianza de <strong>100€</strong>, que se abonará en efectivo en el momento de la entrega de llaves.",
-        "Se devolverá una vez revisado el local y verificado que todo está en perfecto estado.",
-        "Servicio de limpieza: <strong>60€</strong> (opcional).",
-        "Las reservas modificadas o canceladas con menos de una semana de antelación no tienen devolución.",
-        "En este caso, se retornará el <strong>50%</strong> de la reserva.",
-      ],
+      form: {
+        fullNameLabel: "Nombre Completo",
+        fullNamePlaceholder: "Tu nombre...",
+        contactLabel: "Correo Electrónico / Teléfono",
+        contactPlaceholder: "Datos de contacto...",
+        eventTypeLabel: "Tipo de Evento",
+        messageLabel: "Mensaje",
+        messagePlaceholder: "¿En qué podemos ayudarte?",
+        send: "Enviar Mensaje",
+        sending: "Enviando...",
+      },
+      eventTypes: {
+        birthday: "Cumpleaños",
+        freeplay: "Juego Libre",
+        private: "Evento Privado",
+        other: "Otro",
+      },
+      success: {
+        title: "¡Mensaje Recibido!",
+        subtitle: "Te contestaremos lo antes posible.",
+        sendAnother: "Enviar otro mensaje",
+      },
+      alertError: "Error en el envío. Por favor, contacta por teléfono.",
     },
   },
 };
 
-/* =========================
-   HELPERS
-   ========================= */
 export function t(lang: Lang) {
   return DICT[lang] || DICT.val;
 }
