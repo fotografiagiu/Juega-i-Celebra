@@ -13,6 +13,7 @@ const DICT: Record<Lang, Dict> = {
       contacto: "Contacte",
       reservar: "Reservar 2026",
     },
+
     hero: {
       subtitle: "Espai per a esdeveniments",
       city: "Algemesí",
@@ -25,6 +26,7 @@ const DICT: Record<Lang, Dict> = {
         thanks: "Gràcies 😊",
       },
     },
+
     services: {
       title: "Què vas a trobar?",
       intro:
@@ -49,10 +51,66 @@ const DICT: Record<Lang, Dict> = {
       ],
     },
 
+    pricing: {
+      title: "Tarifes de lloguer 2026",
+      subtitle: "Lloga el nostre espai en exclusiva per a la teua celebració.",
+      badgeRecommended: "MÉS RESERVAT",
+      cta: "Reserva ara 🗓️",
+      tiers: [
+        {
+          name: "Entre setmana",
+          price: "80€",
+          unit: "/dia",
+          features: [
+            "De dilluns a dijous (10:00-21:30)",
+            "Accés exclusiu a tot l’espai",
+            "Cuina equipada",
+            "Fiança de 100€ (Efectiu)",
+            "Servei neteja (+60€)",
+          ],
+          recommended: false,
+        },
+        {
+          name: "Vesprada / Divendres",
+          price: "100€",
+          unit: "/dia",
+          features: [
+            "Divendres / Vespra de festiu (10:00-21:30)",
+            "Ideal per a celebracions i reunions",
+            "Accés exclusiu a tot l’espai",
+            "Fiança de 100€ (Efectiu)",
+            "Servei neteja (+60€)",
+          ],
+          recommended: true,
+        },
+        {
+          name: "Cap de setmana (dia complet)",
+          price: "160€",
+          unit: "/dia",
+          features: [
+            "Dissabte/Diumenge (10:00-21:30)",
+            "Dia complet per al teu esdeveniment",
+            "Accés exclusiu a tot l’espai",
+            "Fiança de 100€ (Efectiu)",
+            "Servei neteja (+60€)",
+          ],
+          recommended: false,
+        },
+      ],
+      conditionsTitle: "Condicions de reserva",
+      conditions: [
+        "Fiança de 100€, que s’abonarà en efectiu en el moment del lliurament de claus.",
+        "Es retornarà una vegada revisat el local i verificat que tot està en perfecte estat.",
+        "Servei de neteja: 60€ (opcional).",
+        "Les reserves modificades o cancel·lades amb menys d’una setmana d’antelació no tenen devolució.",
+        "En aquest cas, es retornarà el 50% de la reserva.",
+      ],
+    },
+
     contact: {
       title: "Parlem?",
       subtitle:
-        "Ens encanta resoldre dubtes o ajudar-te a planificar el millor esdeveniment per als peques.",
+        "Estem encantats de resoldre els teus dubtes o ajudar-te a planificar el millor esdeveniment per als peques.",
       info: {
         addressTitle: "La nostra adreça",
         addressValue: "Avinguda País Valencià 58 (Algemesí), València",
@@ -63,14 +121,14 @@ const DICT: Record<Lang, Dict> = {
       },
       form: {
         fullNameLabel: "Nom complet",
-        fullNamePlaceholder: "El teu nom...",
-        contactLabel: "Correu electrònic / Telèfon",
-        contactPlaceholder: "Dades de contacte...",
+        fullNamePlaceholder: "El teu nom…",
+        contactLabel: "Correu / Telèfon",
+        contactPlaceholder: "Dades de contacte…",
         eventTypeLabel: "Tipus d’esdeveniment",
         messageLabel: "Missatge",
         messagePlaceholder: "En què podem ajudar-te?",
         send: "Enviar missatge",
-        sending: "Enviant...",
+        sending: "Enviant…",
       },
       eventTypes: {
         birthday: "Aniversari",
@@ -96,6 +154,7 @@ const DICT: Record<Lang, Dict> = {
       contacto: "Contacto",
       reservar: "Reservar 2026",
     },
+
     hero: {
       subtitle: "Espacio para eventos",
       city: "Algemesí",
@@ -108,6 +167,7 @@ const DICT: Record<Lang, Dict> = {
         thanks: "Gracias 😊",
       },
     },
+
     services: {
       title: "¿Qué vas a encontrar?",
       intro:
@@ -132,6 +192,62 @@ const DICT: Record<Lang, Dict> = {
       ],
     },
 
+    pricing: {
+      title: "Tarifas de Alquiler 2026",
+      subtitle: "Alquila nuestro espacio en exclusiva para tu celebración.",
+      badgeRecommended: "MÁS RESERVADO",
+      cta: "Reserva ahora 🗓️",
+      tiers: [
+        {
+          name: "Entre Semana",
+          price: "80€",
+          unit: "/día",
+          features: [
+            "De lunes a jueves (10:00-21:30)",
+            "Acceso exclusivo a todo el espacio",
+            "Cocina equipada",
+            "Fianza de 100€ (Efectivo)",
+            "Servicio limpieza (+60€)",
+          ],
+          recommended: false,
+        },
+        {
+          name: "Tarde / Viernes",
+          price: "100€",
+          unit: "/día",
+          features: [
+            "Viernes / Víspera festivo (10:00-21:30)",
+            "Ideal para celebraciones y reuniones",
+            "Acceso exclusivo a todo el espacio",
+            "Fianza de 100€ (Efectivo)",
+            "Servicio limpieza (+60€)",
+          ],
+          recommended: true,
+        },
+        {
+          name: "Fin de Semana (Día completo)",
+          price: "160€",
+          unit: "/día",
+          features: [
+            "Sábado/Domingo (10:00-21:30)",
+            "Día completo para tu evento",
+            "Acceso exclusivo a todo el espacio",
+            "Fianza de 100€ (Efectivo)",
+            "Servicio limpieza (+60€)",
+          ],
+          recommended: false,
+        },
+      ],
+      conditionsTitle: "Condiciones de Reserva",
+      conditions: [
+        "Fianza de 100€, que se abonará en efectivo en el momento de la entrega de llaves.",
+        "Se devolverá una vez revisado el local y verificado que todo está en perfecto estado.",
+        "Servicio de limpieza: 60€ (opcional).",
+        "Las reservas modificadas o canceladas con menos de una semana de antelación no tienen devolución.",
+        "En este caso, se retornará el 50% de la reserva.",
+      ],
+    },
+
     contact: {
       title: "¿Hablamos?",
       subtitle:
@@ -146,14 +262,14 @@ const DICT: Record<Lang, Dict> = {
       },
       form: {
         fullNameLabel: "Nombre Completo",
-        fullNamePlaceholder: "Tu nombre...",
+        fullNamePlaceholder: "Tu nombre…",
         contactLabel: "Correo Electrónico / Teléfono",
-        contactPlaceholder: "Datos de contacto...",
+        contactPlaceholder: "Datos de contacto…",
         eventTypeLabel: "Tipo de Evento",
         messageLabel: "Mensaje",
         messagePlaceholder: "¿En qué podemos ayudarte?",
         send: "Enviar Mensaje",
-        sending: "Enviando...",
+        sending: "Enviando…",
       },
       eventTypes: {
         birthday: "Cumpleaños",
