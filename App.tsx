@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-// ✅ Tus componentes reales están en /components (RAÍZ)
+// ✅ Componentes reales en /components (RAÍZ)
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Services from "./components/Services";
@@ -34,7 +34,7 @@ const App: React.FC = () => {
       setLang(saved);
       setShowLangModal(false);
     } else {
-      setLang("val");       // predomina valencià
+      setLang("val"); // predomina valencià
       setShowLangModal(true); // pregunta 1ª vez
     }
   }, []);
@@ -55,7 +55,6 @@ const App: React.FC = () => {
 
       <LanguagePill current={lang} onClick={() => setShowLangModal(true)} />
 
-      {/* Navbar/Hero TIENEN que aceptar lang o lo ignoras (pero no rompe) */}
       <Navbar scrolled={scrolled} lang={lang} />
 
       <main>
@@ -79,14 +78,13 @@ const App: React.FC = () => {
           <Gallery />
         </section>
 
-       <section id="tarifas" className="py-20 scroll-mt-28">
-        <Pricing lang={lang} />
-      </section>
+        <section id="tarifas" className="py-20 scroll-mt-28">
+          <Pricing lang={lang} />
+        </section>
 
-
-     <section id="contacto" className="py-20">
-    <Contact lang={lang} />
-    </section>
+        <section id="contacto" className="py-20">
+          <Contact lang={lang} />
+        </section>
       </main>
 
       <Footer />
