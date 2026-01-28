@@ -115,7 +115,7 @@ const DICT: Record<Lang, Dict> = {
         addressTitle: "La nostra adreça",
         addressValue: "Avinguda País Valencià 58 (Algemesí), València",
         phoneTitle: "Telèfon",
-        phoneValue: "+34 669 106 393",
+        phoneValue: "+34 614 03 77 92",
         hoursTitle: "Horari",
         hoursValue: "Dilluns a Diumenge: 10:00 - 21:30",
       },
