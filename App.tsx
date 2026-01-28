@@ -84,9 +84,9 @@ const App: React.FC = () => {
       </section>
 
 
-        <section id="contacto" className="py-20">
-          <Contact />
-        </section>
+     <section id="contacto" className="py-20">
+      <Contact />
+    </section>
       </main>
 
       <Footer />
