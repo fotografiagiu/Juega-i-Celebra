@@ -1,9 +1,14 @@
+// src/i18n.ts
+
 export type Lang = "val" | "es";
 export const LANG_KEY = "juga_lang";
 
 type Dict = Record<string, any>;
 
 const DICT: Record<Lang, Dict> = {
+  /* =========================
+     VALENCIÀ (PREDETERMINAT)
+     ========================= */
   val: {
     nav: {
       inicio: "Inici",
@@ -50,8 +55,66 @@ const DICT: Record<Lang, Dict> = {
         },
       ],
     },
+
+    pricing: {
+      title: "Tarifes de lloguer 2026",
+      subtitle: "Lloga el nostre espai en exclusiva per a la teua celebració.",
+      badgeMostBooked: "MÉS RESERVAT",
+      ctaReserve: "Reserva ara 🗓️",
+      conditionsTitle: "Condicions de reserva",
+
+      tiers: {
+        week: {
+          name: "Entre setmana",
+          price: "80€",
+          unit: "/dia",
+          features: [
+            "De dilluns a dijous (10:00-21:30)",
+            "Accés exclusiu a tot l’espai",
+            "Cuina equipada",
+            "Fiança de 100€ (Efectiu)",
+            "Servei de neteja (+60€)",
+          ],
+        },
+        friday: {
+          name: "Vesprada / Divendres",
+          price: "100€",
+          unit: "/dia",
+          features: [
+            "Divendres / vespra de festiu (10:00-21:30)",
+            "Ideal per a celebracions i reunions",
+            "Accés exclusiu a tot l’espai",
+            "Fiança de 100€ (Efectiu)",
+            "Servei de neteja (+60€)",
+          ],
+        },
+        weekendFull: {
+          name: "Cap de setmana (dia complet)",
+          price: "160€",
+          unit: "/dia",
+          features: [
+            "Dissabte/Diumenge (10:00-21:30)",
+            "Dia complet per al teu esdeveniment",
+            "Accés exclusiu a tot l’espai",
+            "Fiança de 100€ (Efectiu)",
+            "Servei de neteja (+60€)",
+          ],
+        },
+      },
+
+      conditions: [
+        "Fiança de <strong>100€</strong>, que s’abonarà en efectiu en el moment del lliurament de claus.",
+        "Es retornarà una vegada revisat el local i verificat que tot està en perfecte estat.",
+        "Servei de neteja: <strong>60€</strong> (opcional).",
+        "Les reserves modificades o cancel·lades amb menys d’una setmana d’antelació no tenen devolució.",
+        "En aquest cas, es retornarà el <strong>50%</strong> de la reserva.",
+      ],
+    },
   },
 
+  /* =========================
+     CASTELLANO
+     ========================= */
   es: {
     nav: {
       inicio: "Inicio",
@@ -98,9 +161,67 @@ const DICT: Record<Lang, Dict> = {
         },
       ],
     },
+
+    pricing: {
+      title: "Tarifas de Alquiler 2026",
+      subtitle: "Alquila nuestro espacio en exclusiva para tu celebración.",
+      badgeMostBooked: "MÁS RESERVADO",
+      ctaReserve: "Reserva ahora 🗓️",
+      conditionsTitle: "Condiciones de Reserva",
+
+      tiers: {
+        week: {
+          name: "Entre Semana",
+          price: "80€",
+          unit: "/día",
+          features: [
+            "De lunes a jueves (10:00-21:30)",
+            "Acceso exclusivo a todo el espacio",
+            "Cocina equipada",
+            "Fianza de 100€ (Efectivo)",
+            "Servicio limpieza (+60€)",
+          ],
+        },
+        friday: {
+          name: "Tarde / Viernes",
+          price: "100€",
+          unit: "/día",
+          features: [
+            "Viernes / Víspera festivo (10:00-21:30)",
+            "Ideal para celebraciones y reuniones",
+            "Acceso exclusivo a todo el espacio",
+            "Fianza de 100€ (Efectivo)",
+            "Servicio limpieza (+60€)",
+          ],
+        },
+        weekendFull: {
+          name: "Fin de Semana (Día completo)",
+          price: "160€",
+          unit: "/día",
+          features: [
+            "Sábado/Domingo (10:00-21:30)",
+            "Día completo para tu evento",
+            "Acceso exclusivo a todo el espacio",
+            "Fianza de 100€ (Efectivo)",
+            "Servicio limpieza (+60€)",
+          ],
+        },
+      },
+
+      conditions: [
+        "Fianza de <strong>100€</strong>, que se abonará en efectivo en el momento de la entrega de llaves.",
+        "Se devolverá una vez revisado el local y verificado que todo está en perfecto estado.",
+        "Servicio de limpieza: <strong>60€</strong> (opcional).",
+        "Las reservas modificadas o canceladas con menos de una semana de antelación no tienen devolución.",
+        "En este caso, se retornará el <strong>50%</strong> de la reserva.",
+      ],
+    },
   },
 };
 
+/* =========================
+   HELPERS
+   ========================= */
 export function t(lang: Lang) {
   return DICT[lang] || DICT.val;
 }
