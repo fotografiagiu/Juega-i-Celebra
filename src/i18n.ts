@@ -51,6 +51,62 @@ const DICT: Record<Lang, Dict> = {
       ],
     },
 
+    pricing: {
+      title: "Tarifes de lloguer 2026",
+      subtitle: "Lloga el nostre espai en exclusiva per a la teua celebració.",
+      badgeRecommended: "MÉS RESERVAT",
+      cta: "Reserva ara 🗓️",
+      tiers: [
+        {
+          name: "Entre setmana",
+          price: "80€",
+          unit: "/dia",
+          features: [
+            "De dilluns a dijous (10:00-21:30)",
+            "Accés exclusiu a tot l’espai",
+            "Cuina equipada",
+            "Fiança de 100€ (Efectiu)",
+            "Servei neteja (+60€)",
+          ],
+          recommended: false,
+        },
+        {
+          name: "Vesprada / Divendres",
+          price: "100€",
+          unit: "/dia",
+          features: [
+            "Divendres / Vespra de festiu (10:00-21:30)",
+            "Ideal per a celebracions i reunions",
+            "Accés exclusiu a tot l’espai",
+            "Fiança de 100€ (Efectiu)",
+            "Servei neteja (+60€)",
+          ],
+          recommended: true,
+        },
+        {
+          name: "Cap de setmana (dia complet)",
+          price: "160€",
+          unit: "/dia",
+          features: [
+            "Dissabte/Diumenge (10:00-21:30)",
+            "Dia complet per al teu esdeveniment",
+            "Accés exclusiu a tot l’espai",
+            "Fiança de 100€ (Efectiu)",
+            "Servei neteja (+60€)",
+          ],
+          recommended: false,
+        },
+      ],
+      conditionsTitle: "Condicions de reserva",
+      conditions: [
+        "Fiança de 100€, que s’abonarà en efectiu en el moment del lliurament de claus.",
+        "Es retornarà una vegada revisat el local i verificat que tot està en perfecte estat.",
+        "Servei de neteja: 60€ (opcional).",
+        "Les reserves modificades o cancel·lades amb menys d’una setmana d’antelació no tenen devolució.",
+        "En aquest cas, es retornarà el 50% de la reserva.",
+      ],
+    },
+
     features: {
       local: {
         imageAlt: "Local Juga i Celebra",
@@ -70,9 +126,9 @@ const DICT: Record<Lang, Dict> = {
         equipment: {
           items: [
             { icon: "🪑", text: "40 cadires adults" },
-            { icon: "🧒", text: "16 cadires peques (ampliarem pròximament amb 4+)" },
+            { icon: "🧒", text: "16 cadires peques (ampliem pròximament amb 4+)" },
             { icon: "🪑", text: "6 taules plegables" },
-            { icon: "🧸", text: "4 taules peques (ampliarem pròximament amb 1+)" },
+            { icon: "🧸", text: "4 taules peques (ampliem pròximament amb 1+)" },
             { icon: "👶", text: "2 trones" },
             { icon: "🚻", text: "Bany adaptat PMR amb canviador" },
             { icon: "🧥", text: "Penjadors i zona de descans" },
@@ -97,7 +153,7 @@ const DICT: Record<Lang, Dict> = {
         titlePre: "Parc de boles i",
         titleHighlight: "diversió",
         description:
-          "Zona de joc dissenyada perquè els peques s’ho passen genial mentre alliberen energia de manera segura durant la celebració.",
+          "Zona de joc dissenyada perquè els peques s’ho passen en gran mentre alliberen energia de manera segura durant la celebració.",
         points: [
           "Parc de boles amb circuit de joc, obstacles i tobogans.",
           "Ideal perquè els peques es divertisquen i gasten energia durant la celebració.",
@@ -109,7 +165,6 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // (Opcional) si tu Contact/Pricing usan tr.contact / tr.pricing, aquí tienes base lista
     contact: {
       title: "Parlem?",
       subtitle:
@@ -192,6 +247,62 @@ const DICT: Record<Lang, Dict> = {
           desc:
             "Espacio exclusivo para los más pequeñines (0-3 años) con juegos de psicomotricidad, suelo acolchado y total seguridad.",
         },
+      ],
+    },
+
+    pricing: {
+      title: "Tarifas de Alquiler 2026",
+      subtitle: "Alquila nuestro espacio en exclusiva para tu celebración.",
+      badgeRecommended: "MÁS RESERVADO",
+      cta: "Reserva ahora 🗓️",
+      tiers: [
+        {
+          name: "Entre Semana",
+          price: "80€",
+          unit: "/día",
+          features: [
+            "De lunes a jueves (10:00-21:30)",
+            "Acceso exclusivo a todo el espacio",
+            "Cocina equipada",
+            "Fianza de 100€ (Efectivo)",
+            "Servicio limpieza (+60€)",
+          ],
+          recommended: false,
+        },
+        {
+          name: "Tarde / Viernes",
+          price: "100€",
+          unit: "/día",
+          features: [
+            "Viernes / Víspera festivo (10:00-21:30)",
+            "Ideal para celebraciones y reuniones",
+            "Acceso exclusivo a todo el espacio",
+            "Fianza de 100€ (Efectivo)",
+            "Servicio limpieza (+60€)",
+          ],
+          recommended: true,
+        },
+        {
+          name: "Fin de Semana (Día completo)",
+          price: "160€",
+          unit: "/día",
+          features: [
+            "Sábado/Domingo (10:00-21:30)",
+            "Día completo para tu evento",
+            "Acceso exclusivo a todo el espacio",
+            "Fianza de 100€ (Efectivo)",
+            "Servicio limpieza (+60€)",
+          ],
+          recommended: false,
+        },
+      ],
+      conditionsTitle: "Condiciones de Reserva",
+      conditions: [
+        "Fianza de 100€, que se abonará en efectivo en el momento de la entrega de llaves.",
+        "Se devolverá una vez revisado el local y verificado que todo está en perfecto estado.",
+        "Servicio de limpieza: 60€ (opcional).",
+        "Las reservas modificadas o canceladas con menos de una semana de antelación no tienen devolución.",
+        "En este caso, se retornará el 50% de la reserva.",
       ],
     },
 
