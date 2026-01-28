@@ -1,21 +1,21 @@
 import React, { useMemo } from "react";
 import { t, type Lang } from "../i18n";
 
-type ServiceCard = {
+type Props = {
+  lang: Lang;
+};
+
+type Card = {
   title: string;
   desc: string;
   icon: string;
   color: string;
 };
 
-type Props = {
-  lang: Lang;
-};
-
 const Services: React.FC<Props> = ({ lang }) => {
   const tr = t(lang);
 
-  const services: ServiceCard[] = useMemo(
+  const services: Card[] = useMemo(
     () => [
       {
         title: tr.services.cards[0].title,
@@ -57,8 +57,7 @@ const Services: React.FC<Props> = ({ lang }) => {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-20">
           <h2 className="text-5xl md:text-6xl font-extrabold text-blue-600 mb-6 drop-shadow-md font-['Baloo_2'] uppercase tracking-tight">
-            {tr.services.heading.split(" ").slice(0, -1).join(" ") + " "}
-            <span className="text-orange-500">{tr.services.headingAccent}</span>
+            {tr.services.title}
           </h2>
 
           <div className="w-32 h-2 bg-gradient-to-r from-yellow-400 to-orange-500 mx-auto rounded-full mb-8 shadow-sm"></div>
