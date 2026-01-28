@@ -13,6 +13,7 @@ const DICT: Record<Lang, Dict> = {
       contacto: "Contacte",
       reservar: "Reservar 2026",
     },
+
     hero: {
       subtitle: "Espai per a esdeveniments",
       city: "Algemesí",
@@ -25,6 +26,7 @@ const DICT: Record<Lang, Dict> = {
         thanks: "Gràcies 😊",
       },
     },
+
     services: {
       title: "Què vas a trobar?",
       intro:
@@ -59,6 +61,7 @@ const DICT: Record<Lang, Dict> = {
       contacto: "Contacto",
       reservar: "Reservar 2026",
     },
+
     hero: {
       subtitle: "Espacio para eventos",
       city: "Algemesí",
@@ -71,6 +74,7 @@ const DICT: Record<Lang, Dict> = {
         thanks: "Gracias 😊",
       },
     },
+
     services: {
       title: "¿Qué vas a encontrar?",
       intro:
