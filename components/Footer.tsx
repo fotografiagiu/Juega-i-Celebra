@@ -1,13 +1,22 @@
 import React from "react";
 import { t, type Lang } from "../src/i18n";
 
-type Props = {
-  lang: Lang;
-};
+type Props = { lang: Lang };
 
 const Footer: React.FC<Props> = ({ lang }) => {
   const tr = t(lang);
-  const f = tr.footer;
+
+  // ✅ BLINDAJE: si por lo que sea falta footer o alguna key, no rompe la web
+  const f = tr.footer ?? {
+    description:
+      "Dedicados a crear experiencias mágicas para los más pequeños de la casa.",
+    quickLinksTitle: "Enlaces",
+    links: { inicio: "Inicio", servicios: "Servicios", tarifas: "Tarifas", contacto: "Contacto" },
+    legalTitle: "Legal",
+    legal: { legalNotice: "Aviso Legal", privacy: "Privacidad", cookies: "Cookies" },
+    copyright: "© 2026 Juga i Celebra.",
+    designed: "",
+  };
 
   return (
     <footer className="bg-gray-50 pt-20 pb-10 border-t border-gray-200">
@@ -33,10 +42,10 @@ const Footer: React.FC<Props> = ({ lang }) => {
               {f.quickLinksTitle}
             </h4>
             <ul className="space-y-3">
-              <li><a href="#inicio" className="text-gray-500 hover:text-blue-600">{f.links.inicio}</a></li>
-              <li><a href="#servicios" className="text-gray-500 hover:text-blue-600">{f.links.servicios}</a></li>
-              <li><a href="#tarifas" className="text-gray-500 hover:text-blue-600">{f.links.tarifas}</a></li>
-              <li><a href="#contacto" className="text-gray-500 hover:text-blue-600">{f.links.contacto}</a></li>
+              <li><a href="#inicio" className="text-gray-500 hover:text-blue-600 transition-colors">{f.links?.inicio ?? "Inicio"}</a></li>
+              <li><a href="#servicios" className="text-gray-500 hover:text-blue-600 transition-colors">{f.links?.servicios ?? "Servicios"}</a></li>
+              <li><a href="#tarifas" className="text-gray-500 hover:text-blue-600 transition-colors">{f.links?.tarifas ?? "Tarifas"}</a></li>
+              <li><a href="#contacto" className="text-gray-500 hover:text-blue-600 transition-colors">{f.links?.contacto ?? "Contacto"}</a></li>
             </ul>
           </div>
 
@@ -45,9 +54,9 @@ const Footer: React.FC<Props> = ({ lang }) => {
               {f.legalTitle}
             </h4>
             <ul className="space-y-3">
-              <li><a href="#" className="text-gray-500 hover:text-blue-600">{f.legal.legalNotice}</a></li>
-              <li><a href="#" className="text-gray-500 hover:text-blue-600">{f.legal.privacy}</a></li>
-              <li><a href="#" className="text-gray-500 hover:text-blue-600">{f.legal.cookies}</a></li>
+              <li><a href="#" className="text-gray-500 hover:text-blue-600 transition-colors">{f.legal?.legalNotice ?? "Aviso Legal"}</a></li>
+              <li><a href="#" className="text-gray-500 hover:text-blue-600 transition-colors">{f.legal?.privacy ?? "Privacidad"}</a></li>
+              <li><a href="#" className="text-gray-500 hover:text-blue-600 transition-colors">{f.legal?.cookies ?? "Cookies"}</a></li>
             </ul>
           </div>
         </div>
