@@ -87,7 +87,7 @@ const App: React.FC = () => {
         </section>
       </main>
 
-      <Footer />
+      <Footer lang={lang} />
       <ChatAssistant />
     </div>
   );
