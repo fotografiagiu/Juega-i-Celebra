@@ -1,4 +1,5 @@
 // src/i18n.ts
+
 export type Lang = "val" | "es";
 export const LANG_KEY = "juga_lang";
 
@@ -166,29 +167,6 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ AÑADIDO: GalleryFan (tr.gallery.*)
-    gallery: {
-      title: "Galeria",
-      subtitle:
-        "Parc de boles i la resta del local. Polsa per a veure totes les fotos.",
-      photosWord: "fotos",
-      viewButton: "Veure galeria",
-      ariaOpen: "Obrir galeria",
-      ariaOpenPhoto: "Obrir foto",
-      groups: {
-        bolas: {
-          title: "Parc de boles",
-          subtitle: "Zona de joc",
-          slidePrefix: "Parc de boles",
-        },
-        local: {
-          title: "El local",
-          subtitle: "Taules, cuina, lavabo i zones comunes",
-          slidePrefix: "Local",
-        },
-      },
-    },
-
     contact: {
       title: "Parlem?",
       subtitle:
@@ -224,6 +202,27 @@ const DICT: Record<Lang, Dict> = {
         sendAnother: "Enviar un altre missatge",
       },
       alertError: "Error en l’enviament. Per favor, contacta per telèfon.",
+    },
+
+    // ✅ NUEVO: FOOTER
+    footer: {
+      description:
+        "Dedicats a crear experiències màgiques per als més menuts de casa. El millor parc de boles d’Algemesí.",
+      quickLinksTitle: "Enllaços ràpids",
+      links: {
+        inicio: "Inici",
+        servicios: "Serveis",
+        tarifas: "Tarifes",
+        contacto: "Contacte",
+      },
+      legalTitle: "Legal",
+      legal: {
+        legalNotice: "Avís legal",
+        privacy: "Política de privacitat",
+        cookies: "Cookies",
+      },
+      copyright: "© 2026 Juga i Celebra. Tots els drets reservats.",
+      designed: "Dissenyat amb ❤️ per a la comunitat d’Algemesí.",
     },
   },
 
@@ -388,29 +387,6 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ AÑADIDO: GalleryFan (tr.gallery.*)
-    gallery: {
-      title: "Galería",
-      subtitle:
-        "Parque de bolas y el resto del local. Pulsa para ver todas las fotos.",
-      photosWord: "fotos",
-      viewButton: "Ver galería",
-      ariaOpen: "Abrir galería",
-      ariaOpenPhoto: "Abrir foto",
-      groups: {
-        bolas: {
-          title: "Parque de bolas",
-          subtitle: "Zona de juego",
-          slidePrefix: "Parque de bolas",
-        },
-        local: {
-          title: "El local",
-          subtitle: "Mesas, cocina, aseo y zonas comunes",
-          slidePrefix: "Local",
-        },
-      },
-    },
-
     contact: {
       title: "¿Hablamos?",
       subtitle:
@@ -446,6 +422,27 @@ const DICT: Record<Lang, Dict> = {
         sendAnother: "Enviar otro mensaje",
       },
       alertError: "Error en el envío. Por favor, contacta por teléfono.",
+    },
+
+    // ✅ NUEVO: FOOTER
+    footer: {
+      description:
+        "Dedicados a crear experiencias mágicas para los más pequeños de la casa. El mejor parque de bolas de Algemesí.",
+      quickLinksTitle: "Enlaces Rápidos",
+      links: {
+        inicio: "Inicio",
+        servicios: "Servicios",
+        tarifas: "Tarifas",
+        contacto: "Contacto",
+      },
+      legalTitle: "Legal",
+      legal: {
+        legalNotice: "Aviso Legal",
+        privacy: "Política de Privacidad",
+        cookies: "Cookies",
+      },
+      copyright: "© 2026 Juga i Celebra. Todos los derechos reservados.",
+      designed: "Diseñado con ❤️ para la comunidad de Algemesí.",
     },
   },
 };
