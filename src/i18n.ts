@@ -166,7 +166,7 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ AÑADIDO: GalleryFan (tr.gallery.*)
+    // ✅ GalleryFan (tr.gallery.*)
     gallery: {
       title: "Galeria",
       subtitle:
@@ -189,25 +189,85 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ AÑADIDO: Footer (tr.footer.*)
-    footer: {
-      description:
-        "Dedicats a crear experiències màgiques per als més menuts de la casa. El millor parc de boles d’Algemesí.",
-      quickLinksTitle: "Enllaços Ràpids",
-      links: {
-        inicio: "Inici",
-        servicios: "Serveis",
-        tarifas: "Tarifes",
-        contacto: "Contacte",
+    // ✅ AÑADIDO: BookingCalendar (tr.booking.*)
+    booking: {
+      badge: "Calendari Algemesí 2026",
+      titlePre: "Reserva la teua",
+      titleHighlight: "Festa",
+      subtitle:
+        "Les dates en VERD ja estan RESERVADES i bloquejades automàticament.",
+
+      legend: {
+        reserved: "RESERVAT",
+        selected: "Selecció",
+        free: "Lliure",
       },
-      legalTitle: "Legal",
-      legal: {
-        legalNotice: "Avís Legal",
-        privacy: "Política de Privacitat",
-        cookies: "Cookies",
+
+      empty: {
+        title: "Quan és el cumple?",
+        subtitle: "Tria un dia disponible al calendari per començar.",
       },
-      copyright: "© 2026 Juga i Celebra. Tots els drets reservats.",
-      designed: "Dissenyat amb ❤️ per a la comunitat d’Algemesí.",
+
+      form: {
+        title: "Dades de l’esdeveniment",
+        responsibleLabel: "Responsable de la festa",
+        responsiblePlaceholder: "Nom complet",
+        whatsappLabel: "WhatsApp de contacte",
+        whatsappPlaceholder: "6XX XXX XXX",
+
+        configTitle: "Configuració del lloguer",
+        configHint: "(Les tarifes s’ajusten automàticament segons el dia)",
+        scheduleLabel: "Horari:",
+
+        cleaningTitle: "SERVEI DE NETEJA",
+        cleaningHint: "60€ - A consultar amb el local",
+
+        depositLabel: "Pagar reserva hui (50%)",
+        scheduleLine: "Horari:",
+        nextStep: "SEGÜENT PAS 🚀",
+      },
+
+      payment: {
+        back: "← MODIFICAR",
+        title: "Pagament segur",
+        summaryTitle: "Resum de la teua selecció",
+        base: "Lloguer base:",
+        schedule: "Horari:",
+        cleaning: "Servei neteja:",
+        cleaningValue: "A consultar",
+        total: "Total lloguer:",
+        payDeposit: "PAGAR RESERVA:",
+        infoTitle: "📋 INFORMACIÓ ADDICIONAL:",
+        info1Prefix: "• La fiança de",
+        info1Suffix: "es paga en efectiu el dia de l’esdeveniment.",
+        info2Prefix: "• El servei de neteja de",
+        info2Suffix: "s’ha de sol·licitar a part.",
+        info3:
+          "• En pagar, et redirigim a Stripe. En tornar, es marca com RESERVAT.",
+        payButton: "PAGAR AMB TARGETA (STRIPE) 🥳",
+        redirecting: "REDIRIGINT A STRIPE...",
+      },
+
+      alerts: {
+        fillNamePhone: "Completa nom i WhatsApp abans de pagar.",
+        dateAlreadyBooked: "Eixa data ja està reservada. Tria una altra.",
+        noCheckout: "No s’ha pogut crear el checkout.",
+        payNoPending:
+          "Pagament rebut, però no s’ha trobat la reserva pendent. Escriu-nos per WhatsApp.",
+        payOkRegisterFailPrefix:
+          "Pagament OK, però ha fallat el registre.",
+      },
+
+      reservedCard: {
+        title: "RESERVAT!",
+        subtitlePrefix: "La teua data",
+        subtitleMid: "ja està marcada en",
+        subtitleEnd: "fix.",
+        button: "ENVIAR JUSTIFICANT PER WHATSAPP 📄",
+      },
+
+      // Texto de la etiqueta debajo del día reservado
+      dayReservedLabel: "RESERVAT",
     },
 
     contact: {
@@ -409,7 +469,7 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ AÑADIDO: GalleryFan (tr.gallery.*)
+    // ✅ GalleryFan (tr.gallery.*)
     gallery: {
       title: "Galería",
       subtitle:
@@ -432,25 +492,84 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ AÑADIDO: Footer (tr.footer.*)
-    footer: {
-      description:
-        "Dedicados a crear experiencias mágicas para los más pequeños de la casa. El mejor parque de bolas de Algemesí.",
-      quickLinksTitle: "Enlaces Rápidos",
-      links: {
-        inicio: "Inicio",
-        servicios: "Servicios",
-        tarifas: "Tarifas",
-        contacto: "Contacto",
+    // ✅ AÑADIDO: BookingCalendar (tr.booking.*)
+    booking: {
+      badge: "Calendario Algemesí 2026",
+      titlePre: "Reserva tu",
+      titleHighlight: "Fiesta",
+      subtitle:
+        "Las fechas en VERDE ya están RESERVADAS y bloqueadas automáticamente.",
+
+      legend: {
+        reserved: "RESERVADO",
+        selected: "Selección",
+        free: "Libre",
       },
-      legalTitle: "Legal",
-      legal: {
-        legalNotice: "Aviso Legal",
-        privacy: "Política de Privacidad",
-        cookies: "Cookies",
+
+      empty: {
+        title: "¿Cuándo es el cumple?",
+        subtitle: "Elige un día disponible en el calendario para comenzar.",
       },
-      copyright: "© 2026 Juga i Celebra. Todos los derechos reservados.",
-      designed: "Diseñado con ❤️ para la comunidad de Algemesí.",
+
+      form: {
+        title: "Datos del Evento",
+        responsibleLabel: "Responsable de la Fiesta",
+        responsiblePlaceholder: "Nombre completo",
+        whatsappLabel: "WhatsApp de Contacto",
+        whatsappPlaceholder: "6XX XXX XXX",
+
+        configTitle: "Configuración del Alquiler",
+        configHint: "(Las tarifas se ajustan automáticamente según el día)",
+        scheduleLabel: "Horario:",
+
+        cleaningTitle: "SERVICIO DE LIMPIEZA",
+        cleaningHint: "60€ - A consultar con el local",
+
+        depositLabel: "Pago Reserva hoy (50%)",
+        scheduleLine: "Horario:",
+        nextStep: "SIGUIENTE PASO 🚀",
+      },
+
+      payment: {
+        back: "← MODIFICAR",
+        title: "Pago Seguro",
+        summaryTitle: "Resumen de tu selección",
+        base: "Alquiler Base:",
+        schedule: "Horario:",
+        cleaning: "Servicio Limpieza:",
+        cleaningValue: "A consultar",
+        total: "Total Alquiler:",
+        payDeposit: "PAGO RESERVA:",
+        infoTitle: "📋 INFORMACIÓN ADICIONAL:",
+        info1Prefix: "• La fianza de",
+        info1Suffix: "se abona en efectivo el día del evento.",
+        info2Prefix: "• El servicio de limpieza de",
+        info2Suffix: "debe solicitarse aparte.",
+        info3:
+          "• Al pagar, te redirigimos a Stripe. Al volver, se marca como RESERVADO.",
+        payButton: "PAGAR CON TARJETA (STRIPE) 🥳",
+        redirecting: "REDIRIGIENDO A STRIPE...",
+      },
+
+      alerts: {
+        fillNamePhone: "Completa nombre y WhatsApp antes de pagar.",
+        dateAlreadyBooked: "Esa fecha ya está reservada. Elige otra.",
+        noCheckout: "No se pudo crear el checkout.",
+        payNoPending:
+          "Pago recibido, pero no se encontró la reserva pendiente. Escríbenos por WhatsApp.",
+        payOkRegisterFailPrefix:
+          "Pago OK, pero falló el registro.",
+      },
+
+      reservedCard: {
+        title: "¡RESERVADO!",
+        subtitlePrefix: "Tu fecha",
+        subtitleMid: "ya está marcada en",
+        subtitleEnd: "fijo.",
+        button: "ENVIAR JUSTIFICANTE POR WHATSAPP 📄",
+      },
+
+      dayReservedLabel: "RESERVADO",
     },
 
     contact: {
