@@ -166,7 +166,7 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ AÑADIDO: GalleryFan (tr.gallery.*)
+    // ✅ GalleryFan
     gallery: {
       title: "Galeria",
       subtitle:
@@ -189,7 +189,7 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ AÑADIDO: Footer (tr.footer.*)
+    // ✅ Footer
     footer: {
       description:
         "Dedicats a crear experiències màgiques per als més menuts de la casa. El millor parc de boles d’Algemesí.",
@@ -208,6 +208,36 @@ const DICT: Record<Lang, Dict> = {
       },
       copyright: "© 2026 Juga i Celebra. Tots els drets reservats.",
       designed: "Dissenyat amb ❤️ per a la comunitat d’Algemesí.",
+    },
+
+    // ✅ BookingCalendar
+    bookingCalendar: {
+      badge: "Calendari Algemesí 2026",
+      titlePre: "Reserva la teua",
+      titleHighlight: "Festa",
+      introPre: "Les dates en",
+      introHighlight1: "VERD",
+      introMid: "ja estan",
+      introHighlight2: "RESERVADES",
+      introPost: "i bloquejades automàticament.",
+      chooseDayTitle: "Quan és el cumple?",
+      chooseDaySubtitle: "Tria un dia disponible en el calendari per a començar.",
+      reservedTag: "RESERVAT",
+      legendBooked: "RESERVAT",
+      legendSelected: "Selecció",
+      legendFree: "Lliure",
+      formTitle: "Dades de l’esdeveniment",
+      nextStep: "SEGÜENT PAS 🚀",
+      payTitle: "Pagament segur",
+      modify: "← MODIFICAR",
+      payButton: "PAGAR AMB TARGETA (STRIPE) 🥳",
+      redirecting: "REDIRIGINT A STRIPE...",
+      missingFields: "Completa nom i WhatsApp abans de pagar.",
+      dateTaken: "Eixa data ja està reservada. Tria una altra.",
+      paidNoPending:
+        "Pagament rebut, però no s’ha trobat la reserva pendent. Escriu-nos per WhatsApp.",
+      paidRegisterFail:
+        "Pagament OK, però ha fallat el registre. Escriu-nos per WhatsApp amb el justificant.",
     },
 
     contact: {
@@ -409,7 +439,7 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ AÑADIDO: GalleryFan (tr.gallery.*)
+    // ✅ GalleryFan
     gallery: {
       title: "Galería",
       subtitle:
@@ -432,7 +462,7 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ AÑADIDO: Footer (tr.footer.*)
+    // ✅ Footer
     footer: {
       description:
         "Dedicados a crear experiencias mágicas para los más pequeños de la casa. El mejor parque de bolas de Algemesí.",
@@ -451,6 +481,36 @@ const DICT: Record<Lang, Dict> = {
       },
       copyright: "© 2026 Juga i Celebra. Todos los derechos reservados.",
       designed: "Diseñado con ❤️ para la comunidad de Algemesí.",
+    },
+
+    // ✅ BookingCalendar
+    bookingCalendar: {
+      badge: "Calendario Algemesí 2026",
+      titlePre: "Reserva tu",
+      titleHighlight: "Fiesta",
+      introPre: "Las fechas en",
+      introHighlight1: "VERDE",
+      introMid: "ya están",
+      introHighlight2: "RESERVADAS",
+      introPost: "y bloqueadas automáticamente.",
+      chooseDayTitle: "¿Cuándo es el cumple?",
+      chooseDaySubtitle: "Elige un día disponible en el calendario para comenzar.",
+      reservedTag: "RESERVADO",
+      legendBooked: "RESERVADO",
+      legendSelected: "Selección",
+      legendFree: "Libre",
+      formTitle: "Datos del Evento",
+      nextStep: "SIGUIENTE PASO 🚀",
+      payTitle: "Pago Seguro",
+      modify: "← MODIFICAR",
+      payButton: "PAGAR CON TARJETA (STRIPE) 🥳",
+      redirecting: "REDIRIGIENDO A STRIPE...",
+      missingFields: "Completa nombre y WhatsApp antes de pagar.",
+      dateTaken: "Esa fecha ya está reservada. Elige otra.",
+      paidNoPending:
+        "Pago recibido, pero no se encontró la reserva pendiente. Escríbenos por WhatsApp.",
+      paidRegisterFail:
+        "Pago OK, pero falló el registro. Escríbenos por WhatsApp con tu justificante.",
     },
 
     contact: {
