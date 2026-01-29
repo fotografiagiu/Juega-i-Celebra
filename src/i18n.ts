@@ -5,31 +5,6 @@ export const LANG_KEY = "juga_lang";
 
 type Dict = Record<string, any>;
 
-/** Deep merge simple (objetos) para evitar undefined en ramas faltantes */
-function deepMerge<T extends Dict>(base: T, extra: Dict): T {
-  const out: any = Array.isArray(base) ? [...base] : { ...base };
-
-  if (!extra || typeof extra !== "object") return out;
-
-  for (const k of Object.keys(extra)) {
-    const bv = (base as any)?.[k];
-    const ev = (extra as any)[k];
-
-    if (Array.isArray(ev)) {
-      // arrays: el extra pisa (evita mezclas raras)
-      out[k] = ev;
-    } else if (ev && typeof ev === "object") {
-      // objeto: merge recursivo
-      out[k] = deepMerge(bv && typeof bv === "object" ? bv : {}, ev);
-    } else {
-      // primitivo
-      out[k] = ev;
-    }
-  }
-
-  return out;
-}
-
 const DICT: Record<Lang, Dict> = {
   val: {
     nav: {
@@ -76,6 +51,28 @@ const DICT: Record<Lang, Dict> = {
             "Espai segur per als més menuts (0-3 anys) amb jocs de psicomotricitat, sòl encoixinat i total seguretat.",
         },
       ],
+    },
+
+    // ✅ AÑADIDO: gallery (necesario para GalleryFan traducido)
+    gallery: {
+      title: "Galeria",
+      subtitle: "Parc de boles i la resta del local. Polsa per veure totes les fotos.",
+      viewButton: "Veure galeria",
+      photosWord: "fotos",
+      ariaOpen: "Obrir galeria",
+      ariaOpenPhoto: "Obrir foto",
+      groups: {
+        bolas: {
+          title: "Parc de boles",
+          subtitle: "Zona de joc",
+          slidePrefix: "Parc de boles",
+        },
+        local: {
+          title: "El local",
+          subtitle: "Taules, cuina, lavabo i zones comunes",
+          slidePrefix: "Local",
+        },
+      },
     },
 
     pricing: {
@@ -228,27 +225,6 @@ const DICT: Record<Lang, Dict> = {
       },
       alertError: "Error en l’enviament. Per favor, contacta per telèfon.",
     },
-
-    // ✅ FOOTER (nuevo)
-    footer: {
-      description:
-        "Dedicats a crear experiències màgiques per als més menuts de casa. El millor parc de boles d’Algemesí.",
-      quickLinksTitle: "Enllaços ràpids",
-      legalTitle: "Legal",
-      links: {
-        inicio: "Inici",
-        servicios: "Serveis",
-        tarifas: "Tarifes",
-        contacto: "Contacte",
-      },
-      legal: {
-        legalNotice: "Avís legal",
-        privacy: "Política de privacitat",
-        cookies: "Cookies",
-      },
-      copyright: "© 2026 Juga i Celebra. Tots els drets reservats.",
-      designed: "Dissenyat amb ❤️ per a la comunitat d’Algemesí.",
-    },
   },
 
   es: {
@@ -296,6 +272,28 @@ const DICT: Record<Lang, Dict> = {
             "Espacio exclusivo para los más pequeñines (0-3 años) con juegos de psicomotricidad, suelo acolchado y total seguridad.",
         },
       ],
+    },
+
+    // ✅ AÑADIDO: gallery (necesario para GalleryFan traducido)
+    gallery: {
+      title: "Galería",
+      subtitle: "Parque de bolas y el resto del local. Pulsa para ver todas las fotos.",
+      viewButton: "Ver galería",
+      photosWord: "fotos",
+      ariaOpen: "Abrir galería",
+      ariaOpenPhoto: "Abrir foto",
+      groups: {
+        bolas: {
+          title: "Parque de bolas",
+          subtitle: "Zona de juego",
+          slidePrefix: "Parque de bolas",
+        },
+        local: {
+          title: "El local",
+          subtitle: "Mesas, cocina, aseo y zonas comunes",
+          slidePrefix: "Local",
+        },
+      },
     },
 
     pricing: {
@@ -448,33 +446,11 @@ const DICT: Record<Lang, Dict> = {
       },
       alertError: "Error en el envío. Por favor, contacta por teléfono.",
     },
-
-    // ✅ FOOTER (nuevo)
-    footer: {
-      description:
-        "Dedicados a crear experiencias mágicas para los más pequeños de la casa. El mejor parque de bolas de Algemesí.",
-      quickLinksTitle: "Enlaces Rápidos",
-      legalTitle: "Legal",
-      links: {
-        inicio: "Inicio",
-        servicios: "Servicios",
-        tarifas: "Tarifas",
-        contacto: "Contacto",
-      },
-      legal: {
-        legalNotice: "Aviso Legal",
-        privacy: "Política de Privacidad",
-        cookies: "Cookies",
-      },
-      copyright: "© 2026 Juga i Celebra. Todos los derechos reservados.",
-      designed: "Diseñado con ❤️ para la comunidad de Algemesí.",
-    },
   },
 };
 
 export function t(lang: Lang) {
-  // ✅ base siempre val; el idioma seleccionado pisa encima
-  return deepMerge(DICT.val, DICT[lang] ?? {});
+  return DICT[lang] || DICT.val;
 }
 
 export function getSavedLang(): Lang | null {
