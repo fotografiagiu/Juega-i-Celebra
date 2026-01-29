@@ -1,11 +1,11 @@
+// components/Gallery.tsx
 import React from "react";
-import GalleryFan from "./GalleryFan";
 import type { Lang } from "../src/i18n";
+import GalleryFan from "./GalleryFan";
 
-type Props = {
-  lang: Lang;
-};
+type Props = { lang: Lang };
 
 export default function Gallery({ lang }: Props) {
   return <GalleryFan lang={lang} />;
 }
+
