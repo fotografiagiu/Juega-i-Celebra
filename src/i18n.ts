@@ -1,3 +1,4 @@
+// src/i18n.ts
 export type Lang = "val" | "es";
 export const LANG_KEY = "juga_lang";
 
@@ -162,6 +163,29 @@ const DICT: Record<Lang, Dict> = {
           "Normes bàsiques: no es permet menjar/beguda dins del parc de boles.",
         ],
         ctaGallery: "Veure galeria",
+      },
+    },
+
+    // ✅ AÑADIDO: GalleryFan (tr.gallery.*)
+    gallery: {
+      title: "Galeria",
+      subtitle:
+        "Parc de boles i la resta del local. Polsa per a veure totes les fotos.",
+      photosWord: "fotos",
+      viewButton: "Veure galeria",
+      ariaOpen: "Obrir galeria",
+      ariaOpenPhoto: "Obrir foto",
+      groups: {
+        bolas: {
+          title: "Parc de boles",
+          subtitle: "Zona de joc",
+          slidePrefix: "Parc de boles",
+        },
+        local: {
+          title: "El local",
+          subtitle: "Taules, cuina, lavabo i zones comunes",
+          slidePrefix: "Local",
+        },
       },
     },
 
@@ -361,6 +385,29 @@ const DICT: Record<Lang, Dict> = {
           "Normas básicas: no se permite comida/bebida dentro del parque de bolas.",
         ],
         ctaGallery: "Ver galería",
+      },
+    },
+
+    // ✅ AÑADIDO: GalleryFan (tr.gallery.*)
+    gallery: {
+      title: "Galería",
+      subtitle:
+        "Parque de bolas y el resto del local. Pulsa para ver todas las fotos.",
+      photosWord: "fotos",
+      viewButton: "Ver galería",
+      ariaOpen: "Abrir galería",
+      ariaOpenPhoto: "Abrir foto",
+      groups: {
+        bolas: {
+          title: "Parque de bolas",
+          subtitle: "Zona de juego",
+          slidePrefix: "Parque de bolas",
+        },
+        local: {
+          title: "El local",
+          subtitle: "Mesas, cocina, aseo y zonas comunes",
+          slidePrefix: "Local",
+        },
       },
     },
 
