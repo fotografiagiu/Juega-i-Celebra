@@ -75,7 +75,7 @@ const App: React.FC = () => {
         </section>
 
         <section className="py-20 bg-yellow-50">
-          <Gallery />
+          <Gallery lang={lang} />
         </section>
 
         <section id="tarifas" className="py-20 scroll-mt-28">
