@@ -1,13 +1,9 @@
-// src/i18n.ts
 export type Lang = "val" | "es";
 export const LANG_KEY = "juga_lang";
 
 type Dict = Record<string, any>;
 
 const DICT: Record<Lang, Dict> = {
-  /* =======================
-     VALENCIÀ
-  ======================= */
   val: {
     nav: {
       inicio: "Inici",
@@ -111,11 +107,6 @@ const DICT: Record<Lang, Dict> = {
       ],
     },
 
-    features: {
-      ctaContact: "Contactar ara",
-      ctaWhatsapp: "WhatsApp",
-    },
-
     gallery: {
       title: "Galeria",
       subtitle: "Parc de boles i la resta del local. Polsa per veure totes les fotos.",
@@ -151,14 +142,14 @@ const DICT: Record<Lang, Dict> = {
       },
       form: {
         fullNameLabel: "Nom complet",
-        fullNamePlaceholder: "El teu nom…",
-        contactLabel: "Correu / Telèfon",
-        contactPlaceholder: "Dades de contacte…",
+        fullNamePlaceholder: "El teu nom...",
+        contactLabel: "Correu electrònic / Telèfon",
+        contactPlaceholder: "Dades de contacte...",
         eventTypeLabel: "Tipus d’esdeveniment",
         messageLabel: "Missatge",
         messagePlaceholder: "En què podem ajudar-te?",
         send: "Enviar missatge",
-        sending: "Enviant…",
+        sending: "Enviant...",
       },
       success: {
         title: "Missatge rebut!",
@@ -175,9 +166,6 @@ const DICT: Record<Lang, Dict> = {
     },
   },
 
-  /* =======================
-     CASTELLANO
-  ======================= */
   es: {
     nav: {
       inicio: "Inicio",
@@ -281,11 +269,6 @@ const DICT: Record<Lang, Dict> = {
       ],
     },
 
-    features: {
-      ctaContact: "Contactar ahora",
-      ctaWhatsapp: "WhatsApp",
-    },
-
     gallery: {
       title: "Galería",
       subtitle: "Parque de bolas y el resto del local. Pulsa para ver todas las fotos.",
@@ -321,14 +304,14 @@ const DICT: Record<Lang, Dict> = {
       },
       form: {
         fullNameLabel: "Nombre completo",
-        fullNamePlaceholder: "Tu nombre…",
-        contactLabel: "Correo / Teléfono",
-        contactPlaceholder: "Datos de contacto…",
+        fullNamePlaceholder: "Tu nombre...",
+        contactLabel: "Correo electrónico / Teléfono",
+        contactPlaceholder: "Datos de contacto...",
         eventTypeLabel: "Tipo de evento",
         messageLabel: "Mensaje",
         messagePlaceholder: "¿En qué podemos ayudarte?",
         send: "Enviar mensaje",
-        sending: "Enviando…",
+        sending: "Enviando...",
       },
       success: {
         title: "¡Mensaje recibido!",
@@ -347,7 +330,7 @@ const DICT: Record<Lang, Dict> = {
 };
 
 export function t(lang: Lang) {
-  return DICT[lang] ?? DICT.val;
+  return DICT[lang] || DICT.val;
 }
 
 export function getSavedLang(): Lang | null {
