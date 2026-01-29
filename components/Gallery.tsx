@@ -1,4 +1,3 @@
-import React from "react";
 import GalleryFan from "./GalleryFan";
 import type { Lang } from "../src/i18n";
 
