@@ -189,6 +189,27 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
+    // ✅ AÑADIDO: Footer (tr.footer.*)
+    footer: {
+      description:
+        "Dedicats a crear experiències màgiques per als més menuts de la casa. El millor parc de boles d’Algemesí.",
+      quickLinksTitle: "Enllaços Ràpids",
+      links: {
+        inicio: "Inici",
+        servicios: "Serveis",
+        tarifas: "Tarifes",
+        contacto: "Contacte",
+      },
+      legalTitle: "Legal",
+      legal: {
+        legalNotice: "Avís Legal",
+        privacy: "Política de Privacitat",
+        cookies: "Cookies",
+      },
+      copyright: "© 2026 Juga i Celebra. Tots els drets reservats.",
+      designed: "Dissenyat amb ❤️ per a la comunitat d’Algemesí.",
+    },
+
     contact: {
       title: "Parlem?",
       subtitle:
@@ -409,6 +430,27 @@ const DICT: Record<Lang, Dict> = {
           slidePrefix: "Local",
         },
       },
+    },
+
+    // ✅ AÑADIDO: Footer (tr.footer.*)
+    footer: {
+      description:
+        "Dedicados a crear experiencias mágicas para los más pequeños de la casa. El mejor parque de bolas de Algemesí.",
+      quickLinksTitle: "Enlaces Rápidos",
+      links: {
+        inicio: "Inicio",
+        servicios: "Servicios",
+        tarifas: "Tarifas",
+        contacto: "Contacto",
+      },
+      legalTitle: "Legal",
+      legal: {
+        legalNotice: "Aviso Legal",
+        privacy: "Política de Privacidad",
+        cookies: "Cookies",
+      },
+      copyright: "© 2026 Juga i Celebra. Todos los derechos reservados.",
+      designed: "Diseñado con ❤️ para la comunidad de Algemesí.",
     },
 
     contact: {
