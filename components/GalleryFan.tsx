@@ -1,11 +1,16 @@
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
+import { t, type Lang } from "../src/i18n";
+
+type Props = {
+  lang: Lang;
+};
 
 type Slide = { src: string; title?: string };
 
 type Group = {
-  id: string;
+  id: "bolas" | "local";
   title: string;
   subtitle?: string;
   slides: Slide[];
@@ -14,9 +19,15 @@ type Group = {
 function FanStack({
   slides,
   onOpen,
+  ariaOpen,
+  ariaOpenPhoto,
+  btnView,
 }: {
   slides: Slide[];
   onOpen: (index: number) => void;
+  ariaOpen: string;
+  ariaOpenPhoto: (n: number) => string;
+  btnView: string;
 }) {
   const preview = useMemo(() => slides.slice(0, 6), [slides]);
 
@@ -27,12 +38,11 @@ function FanStack({
       tabIndex={0}
       onClick={() => onOpen(0)}
       onKeyDown={(e) => e.key === "Enter" && onOpen(0)}
-      aria-label="Abrir galería"
+      aria-label={ariaOpen}
     >
       <div className="fanFrame">
         <div className="fanFloat">
           {preview.map((s, i) => {
-            // Abanico “controlado” (como antes)
             const rotate = -12 + i * 4;
             const x = i * 16;
             const y = i * 5;
@@ -50,11 +60,11 @@ function FanStack({
                   ev.stopPropagation();
                   onOpen(i);
                 }}
-                aria-label={`Abrir foto ${i + 1}`}
+                aria-label={ariaOpenPhoto(i + 1)}
               >
                 <img
                   src={s.src}
-                  alt={s.title ?? `Foto ${i + 1}`}
+                  alt={s.title ?? ariaOpenPhoto(i + 1)}
                   loading="lazy"
                 />
               </button>
@@ -72,7 +82,7 @@ function FanStack({
                 onOpen(0);
               }}
             >
-              Ver galería
+              {btnView}
               <span className="fanBtnIcon">↗</span>
             </button>
           </div>
@@ -82,35 +92,32 @@ function FanStack({
   );
 }
 
-export default function GalleryFan() {
-  // ✅ Tus fotos reales en /public/gallery:
-  // Galeria1.jpeg ... Galeria21.jpeg
-  // Reparto final:
-  // - IZQUIERDA (Parque de bolas): 1..10 + 21
-  // - DERECHA (El local): 11..20
+export default function GalleryFan({ lang }: Props) {
+  const tr = t(lang);
+
   const groups: Group[] = [
     {
       id: "bolas",
-      title: "Parque de bolas",
-      subtitle: "Zona de juego",
+      title: tr.gallery.groups.bolas.title,
+      subtitle: tr.gallery.groups.bolas.subtitle,
       slides: [
         ...Array.from({ length: 10 }, (_, i) => ({
           src: `/gallery/Galeria${i + 1}.jpeg`,
-          title: `Parque de bolas ${i + 1}`,
+          title: `${tr.gallery.groups.bolas.slidePrefix} ${i + 1}`,
         })),
         {
           src: `/gallery/Galeria21.jpeg`,
-          title: "Parque de bolas 21",
+          title: `${tr.gallery.groups.bolas.slidePrefix} 21`,
         },
       ],
     },
     {
       id: "local",
-      title: "El local",
-      subtitle: "Mesas, cocina, aseo y zonas comunes",
+      title: tr.gallery.groups.local.title,
+      subtitle: tr.gallery.groups.local.subtitle,
       slides: Array.from({ length: 10 }, (_, i) => ({
         src: `/gallery/Galeria${i + 11}.jpeg`, // 11..20
-        title: `Local ${i + 11}`,
+        title: `${tr.gallery.groups.local.slidePrefix} ${i + 11}`,
       })),
     },
   ];
@@ -127,16 +134,16 @@ export default function GalleryFan() {
     setOpen(true);
   };
 
+  const photosLabel = (n: number) => `${n} ${tr.gallery.photosWord}`;
+
   return (
     <section className="gallerySection">
       <div className="galleryHeader">
         <h2 className="galleryTitle">
           <span className="galleryTitleGlow" />
-          Galería
+          {tr.gallery.title}
         </h2>
-        <p className="gallerySubtitle">
-          Parque de bolas y el resto del local. Pulsa para ver todas las fotos.
-        </p>
+        <p className="gallerySubtitle">{tr.gallery.subtitle}</p>
       </div>
 
       <div className="galleryGrid">
@@ -154,12 +161,22 @@ export default function GalleryFan() {
                 {g.subtitle && <p className="muted">{g.subtitle}</p>}
               </div>
 
-              <span className={`count ${g.id === "bolas" ? "count--bolas" : "count--local"}`}>
-                {g.slides.length} fotos
+              <span
+                className={`count ${
+                  g.id === "bolas" ? "count--bolas" : "count--local"
+                }`}
+              >
+                {photosLabel(g.slides.length)}
               </span>
             </div>
 
-            <FanStack slides={g.slides} onOpen={(i) => openGallery(gi, i)} />
+            <FanStack
+              slides={g.slides}
+              onOpen={(i) => openGallery(gi, i)}
+              ariaOpen={tr.gallery.ariaOpen}
+              ariaOpenPhoto={(n) => `${tr.gallery.ariaOpenPhoto} ${n}`}
+              btnView={tr.gallery.viewButton}
+            />
           </div>
         ))}
       </div>
