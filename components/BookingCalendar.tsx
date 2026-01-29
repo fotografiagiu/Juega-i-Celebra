@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { t, type Lang } from "../src/i18n";
 
 type PendingBooking = {
   selectedDate: string;
@@ -17,7 +18,46 @@ const PENDING_KEY = "juga_pending_booking_v1";
 
 type RentalOpt = { label: string; value: string; schedule: string };
 
-const BookingCalendar: React.FC = () => {
+type Props = {
+  lang: Lang;
+};
+
+const BookingCalendar: React.FC<Props> = ({ lang }) => {
+  const tr = t(lang);
+  const bc = tr?.bookingCalendar ?? {};
+
+  const T = {
+    badge: bc.badge ?? "Calendario Algemesí 2026",
+    titlePre: bc.titlePre ?? "Reserva tu",
+    titleHighlight: bc.titleHighlight ?? "Fiesta",
+    introPre: bc.introPre ?? "Las fechas en",
+    introHighlight1: bc.introHighlight1 ?? "VERDE",
+    introMid: bc.introMid ?? "ya están",
+    introHighlight2: bc.introHighlight2 ?? "RESERVADAS",
+    introPost: bc.introPost ?? "y bloqueadas automáticamente.",
+    chooseDayTitle: bc.chooseDayTitle ?? "¿Cuándo es el cumple?",
+    chooseDaySubtitle:
+      bc.chooseDaySubtitle ?? "Elige un día disponible en el calendario para comenzar.",
+    reservedTag: bc.reservedTag ?? "RESERVADO",
+    legendBooked: bc.legendBooked ?? "RESERVADO",
+    legendSelected: bc.legendSelected ?? "Selección",
+    legendFree: bc.legendFree ?? "Libre",
+    formTitle: bc.formTitle ?? "Datos del Evento",
+    nextStep: bc.nextStep ?? "SIGUIENTE PASO 🚀",
+    payTitle: bc.payTitle ?? "Pago Seguro",
+    modify: bc.modify ?? "← MODIFICAR",
+    payButton: bc.payButton ?? "PAGAR CON TARJETA (STRIPE) 🥳",
+    redirecting: bc.redirecting ?? "REDIRIGIENDO A STRIPE...",
+    missingFields: bc.missingFields ?? "Completa nombre y WhatsApp antes de pagar.",
+    dateTaken: bc.dateTaken ?? "Esa fecha ya está reservada. Elige otra.",
+    paidNoPending:
+      bc.paidNoPending ??
+      "Pago recibido, pero no se encontró la reserva pendiente. Escríbenos por WhatsApp.",
+    paidRegisterFail:
+      bc.paidRegisterFail ??
+      "Pago OK, pero falló el registro. Escríbenos por WhatsApp con tu justificante.",
+  };
+
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedISO, setSelectedISO] = useState<string | null>(null);
   const [month, setMonth] = useState(0);
@@ -31,11 +71,9 @@ const BookingCalendar: React.FC = () => {
   const SECURITY_DEPOSIT = 100;
   const PHONE_NUMBER = "34669106393";
 
-  // ✅ Tu endpoint Apps Script (GET lee JSON, POST guarda)
   const WEB_APP_ENDPOINT =
     "https://script.google.com/macros/s/AKfycbw_mTR8MsfkzXEOnwGQBZwnLdzGBE2JcIpg5HCjlAsHh7qUUi7N-ZiEJMrQ5udJ4EXI/exec";
 
-  // ⚠️ Festivos 2026 (YYYY-MM-DD). Si no los usas, déjalo vacío.
   const HOLIDAYS_2026: string[] = [];
 
   const [formData, setFormData] = useState({
@@ -43,7 +81,7 @@ const BookingCalendar: React.FC = () => {
     phone: "",
     kids: "15",
     notes: "",
-    rentalType: "80", // por defecto
+    rentalType: "80",
     cleaning: false,
   });
 
@@ -65,12 +103,19 @@ const BookingCalendar: React.FC = () => {
     []
   );
 
-  // ✅ OPCIONES REALES (SIN 200€)
   const ALL_RENTAL_OPTIONS: RentalOpt[] = useMemo(
     () => [
       { label: "Lunes a Jueves (80€)", value: "80", schedule: "10:00–21:30" },
-      { label: "Viernes / Víspera de festivo (100€)", value: "100", schedule: "10:00–21:30" },
-      { label: "Sábado, domingo y festivos (160€)", value: "160", schedule: "10:00–21:30" },
+      {
+        label: "Viernes / Víspera de festivo (100€)",
+        value: "100",
+        schedule: "10:00–21:30",
+      },
+      {
+        label: "Sábado, domingo y festivos (160€)",
+        value: "160",
+        schedule: "10:00–21:30",
+      },
     ],
     []
   );
@@ -93,10 +138,9 @@ const BookingCalendar: React.FC = () => {
     return HOLIDAYS_2026.includes(iso);
   }
 
-  // ✅ Define qué tarifas se permiten por día
   function getAllowedOptionsForISO(iso: string): RentalOpt[] {
     const dt = isoToDate(iso);
-    const dow = dt.getDay(); // 0=Dom,1=Lun,...6=Sáb
+    const dow = dt.getDay();
 
     const isHoliday = isHolidayISO(iso);
 
@@ -105,20 +149,16 @@ const BookingCalendar: React.FC = () => {
     const nextISO = dateToISO(next);
     const isEveOfHoliday = isHolidayISO(nextISO);
 
-    // Festivo o finde -> 160
     if (isHoliday) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "160");
     if (dow === 6 || dow === 0) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "160");
 
-    // Viernes o víspera -> 100
     if (dow === 5 || isEveOfHoliday) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "100");
 
-    // Lunes-jueves -> 80
     return ALL_RENTAL_OPTIONS.filter((o) => o.value === "80");
   }
 
   const rentalOptions: RentalOpt[] = selectedISO ? getAllowedOptionsForISO(selectedISO) : [];
 
-  // Fuerza rentalType válido según el día seleccionado
   useEffect(() => {
     if (!selectedISO) return;
     const allowed = getAllowedOptionsForISO(selectedISO);
@@ -131,8 +171,8 @@ const BookingCalendar: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedISO]);
 
-  const basePrice = parseFloat(String(formData.rentalType).split("_")[0]); // 80/100/160
-  const cleaningPrice = 0; // A consultar
+  const basePrice = parseFloat(String(formData.rentalType).split("_")[0]);
+  const cleaningPrice = 0;
   const totalPrice = basePrice + cleaningPrice;
   const depositToPay = totalPrice / 2;
 
@@ -149,9 +189,6 @@ const BookingCalendar: React.FC = () => {
   const businessMinDate = new Date(2026, 0, 20);
   businessMinDate.setHours(0, 0, 0, 0);
 
-  /** ✅ Normaliza cualquier formato de fecha del Sheet a YYYY-MM-DD (FECHA LOCAL)
-   * Caso típico: "2026-01-20T23:00:00.000Z" -> en España es 2026-01-21
-   */
   function normalizeSheetDateToISO(v: any): string | null {
     if (v === null || v === undefined) return null;
 
@@ -316,7 +353,6 @@ const BookingCalendar: React.FC = () => {
     window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(waMsg)}`, "_blank");
   }
 
-  // ✅ Detecta vuelta desde Stripe
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const paid = params.get("paid");
@@ -336,7 +372,7 @@ const BookingCalendar: React.FC = () => {
       const pending = readPendingBooking();
 
       if (!pending) {
-        alert("Pago recibido, pero no se encontró la reserva pendiente. Escríbenos por WhatsApp.");
+        alert(T.paidNoPending);
         return;
       }
 
@@ -363,7 +399,7 @@ const BookingCalendar: React.FC = () => {
         .catch((err: any) => {
           console.error(err);
           alert(
-            `Pago OK, pero falló el registro.\n\nMotivo: ${err?.message || "desconocido"}\n\nEscríbenos por WhatsApp con tu justificante.`
+            `${T.paidRegisterFail}\n\nMotivo: ${err?.message || "desconocido"}`
           );
         })
         .finally(() => {
@@ -376,7 +412,7 @@ const BookingCalendar: React.FC = () => {
     if (!selectedISO || !selectedDate) return;
 
     if (!formData.name || !formData.phone) {
-      alert("Completa nombre y WhatsApp antes de pagar.");
+      alert(T.missingFields);
       return;
     }
 
@@ -387,7 +423,7 @@ const BookingCalendar: React.FC = () => {
       setBookedDates(liveSet);
 
       if (liveSet.has(selectedISO)) {
-        alert("Esa fecha ya está reservada. Elige otra.");
+        alert(T.dateTaken);
         setIsSubmitting(false);
         return;
       }
@@ -435,14 +471,17 @@ const BookingCalendar: React.FC = () => {
     <div id="reserva" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 font-['Quicksand']">
       <div className="relative mb-20 text-center">
         <div className="inline-block px-8 py-3 bg-blue-600 rounded-full text-white font-black text-sm uppercase mb-6 shadow-xl animate-bounce">
-          Calendario Algemesí 2026
+          {T.badge}
         </div>
+
         <h2 className="text-6xl md:text-8xl font-black text-blue-700 mb-6 font-['Baloo_2'] tracking-tighter">
-          Reserva tu <span className="text-orange-500">Fiesta</span>
+          {T.titlePre} <span className="text-orange-500">{T.titleHighlight}</span>
         </h2>
+
         <p className="text-2xl text-gray-700 max-w-3xl mx-auto font-bold italic bg-white/40 backdrop-blur-sm p-6 rounded-[30px] border border-white/60">
-          Las fechas en <span className="text-green-600 font-black">VERDE</span> ya están{" "}
-          <span className="text-green-600 font-black">RESERVADAS</span> y bloqueadas automáticamente.
+          {T.introPre} <span className="text-green-600 font-black">{T.introHighlight1}</span>{" "}
+          {T.introMid} <span className="text-green-600 font-black">{T.introHighlight2}</span>{" "}
+          {T.introPost}
         </p>
       </div>
 
@@ -478,12 +517,15 @@ const BookingCalendar: React.FC = () => {
             {blanks.map((b) => (
               <div key={`b-${b}`} className="h-12 md:h-14"></div>
             ))}
+
             {daysArr.map((d) => {
               const checkDate = new Date(2026, month, d);
               checkDate.setHours(0, 0, 0, 0);
               const today = getToday();
               const isPast = checkDate < today || checkDate < businessMinDate;
-              const iso = `2026-${(month + 1).toString().padStart(2, "0")}-${d.toString().padStart(2, "0")}`;
+              const iso = `2026-${(month + 1).toString().padStart(2, "0")}-${d
+                .toString()
+                .padStart(2, "0")}`;
 
               const isBooked = bookedDates.has(iso);
               const isSelected = selectedISO === iso;
@@ -508,7 +550,7 @@ const BookingCalendar: React.FC = () => {
                   {d}
                   {isBooked && (
                     <span className="absolute bottom-1 text-[6px] font-black uppercase text-white/80">
-                      RESERVADO
+                      {T.reservedTag}
                     </span>
                   )}
                 </button>
@@ -518,13 +560,13 @@ const BookingCalendar: React.FC = () => {
 
           <div className="mt-10 flex flex-wrap gap-4 text-[11px] font-black uppercase">
             <div className="flex items-center gap-2 px-3 py-1 bg-green-600 text-white rounded-full">
-              <span className="w-2 h-2 bg-white rounded-full"></span> RESERVADO
+              <span className="w-2 h-2 bg-white rounded-full"></span> {T.legendBooked}
             </div>
             <div className="flex items-center gap-2 px-3 py-1 bg-blue-600 text-white rounded-full">
-              <span className="w-2 h-2 bg-white rounded-full"></span> Selección
+              <span className="w-2 h-2 bg-white rounded-full"></span> {T.legendSelected}
             </div>
             <div className="flex items-center gap-2 px-3 py-1 bg-gray-50 text-gray-400 rounded-full border border-gray-200">
-              Libre
+              {T.legendFree}
             </div>
           </div>
         </div>
@@ -535,11 +577,9 @@ const BookingCalendar: React.FC = () => {
             <div className="h-full bg-blue-50/30 rounded-[50px] border-4 border-dashed border-blue-200 flex flex-col items-center justify-center p-12 text-center">
               <div className="text-6xl mb-8 animate-bounce">🎈</div>
               <h3 className="text-3xl font-black text-blue-400 uppercase font-['Baloo_2']">
-                ¿Cuándo es el cumple?
+                {T.chooseDayTitle}
               </h3>
-              <p className="text-gray-400 mt-4 font-bold text-lg">
-                Elige un día disponible en el calendario para comenzar.
-              </p>
+              <p className="text-gray-400 mt-4 font-bold text-lg">{T.chooseDaySubtitle}</p>
             </div>
           ) : submitted ? (
             <div className="bg-white rounded-[50px] shadow-2xl p-12 border-4 border-green-500 text-center animate-[zoomIn_0.3s_ease-out]">
@@ -569,7 +609,7 @@ const BookingCalendar: React.FC = () => {
               >
                 <div className="bg-blue-600 p-6 rounded-[30px] text-white flex justify-between items-center shadow-lg">
                   <div>
-                    <h3 className="text-3xl font-black font-['Baloo_2']">Datos del Evento</h3>
+                    <h3 className="text-3xl font-black font-['Baloo_2']">{T.formTitle}</h3>
                     <p className="text-blue-100 font-bold uppercase tracking-widest">{selectedDate}</p>
                   </div>
                   <span className="text-4xl animate-pulse">🎉</span>
@@ -589,6 +629,7 @@ const BookingCalendar: React.FC = () => {
                       placeholder="Nombre completo"
                     />
                   </div>
+
                   <div className="space-y-2">
                     <label className="text-xs font-black text-gray-400 uppercase ml-2">
                       WhatsApp de Contacto
@@ -683,8 +724,9 @@ const BookingCalendar: React.FC = () => {
                       Horario: {selectedSchedule}
                     </p>
                   </div>
+
                   <button className="w-full md:w-auto bg-white text-blue-600 px-12 py-5 rounded-[25px] font-black text-xl hover:bg-blue-50 shadow-xl transform active:scale-95 transition-all">
-                    SIGUIENTE PASO 🚀
+                    {T.nextStep}
                   </button>
                 </div>
               </form>
@@ -697,10 +739,10 @@ const BookingCalendar: React.FC = () => {
                   className="text-blue-600 font-black hover:underline flex items-center gap-2"
                   disabled={isSubmitting}
                 >
-                  ← MODIFICAR
+                  {T.modify}
                 </button>
                 <h4 className="text-3xl font-black text-gray-800 font-['Baloo_2'] uppercase tracking-tight">
-                  Pago Seguro
+                  {T.payTitle}
                 </h4>
               </div>
 
@@ -729,10 +771,12 @@ const BookingCalendar: React.FC = () => {
                   <div className="bg-white/80 p-5 rounded-2xl mt-6 border border-blue-200 text-xs text-gray-500 leading-relaxed shadow-sm">
                     <p className="text-blue-800 font-black mb-1">📋 INFORMACIÓN ADICIONAL:</p>
                     <p>
-                      • La fianza de <strong>{SECURITY_DEPOSIT}€</strong> se abona en efectivo el día del evento.
+                      • La fianza de <strong>{SECURITY_DEPOSIT}€</strong> se abona en efectivo el día del
+                      evento.
                     </p>
                     <p>
-                      • El servicio de limpieza de <strong>{CLEANING_FEE}€</strong> debe solicitarse aparte.
+                      • El servicio de limpieza de <strong>{CLEANING_FEE}€</strong> debe solicitarse
+                      aparte.
                     </p>
                     <p>
                       • Al pagar, te redirigimos a <strong>Stripe</strong>. Al volver, se marca como{" "}
@@ -750,10 +794,10 @@ const BookingCalendar: React.FC = () => {
                 {isSubmitting ? (
                   <>
                     <div className="w-6 h-6 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
-                    REDIRIGIENDO A STRIPE...
+                    {T.redirecting}
                   </>
                 ) : (
-                  <>PAGAR CON TARJETA (STRIPE) 🥳</>
+                  <>{T.payButton}</>
                 )}
               </button>
             </div>
