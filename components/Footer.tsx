@@ -1,4 +1,3 @@
-// components/Footer.tsx
 import React from "react";
 import { t, type Lang } from "../src/i18n";
 
@@ -8,6 +7,7 @@ type Props = {
 
 const Footer: React.FC<Props> = ({ lang }) => {
   const tr = t(lang);
+  const f = tr.footer;
 
   return (
     <footer className="bg-gray-50 pt-20 pb-10 border-t border-gray-200">
@@ -24,86 +24,37 @@ const Footer: React.FC<Props> = ({ lang }) => {
             </div>
 
             <p className="text-gray-500 max-w-sm mb-6 leading-relaxed">
-              {tr.footer.description}
+              {f.description}
             </p>
           </div>
 
           <div>
             <h4 className="font-bold text-gray-800 mb-6 uppercase tracking-wider text-sm">
-              {tr.footer.quickLinksTitle}
+              {f.quickLinksTitle}
             </h4>
             <ul className="space-y-3">
-              <li>
-                <a
-                  href="#inicio"
-                  className="text-gray-500 hover:text-blue-600 transition-colors"
-                >
-                  {tr.footer.links.inicio}
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#servicios"
-                  className="text-gray-500 hover:text-blue-600 transition-colors"
-                >
-                  {tr.footer.links.servicios}
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#tarifas"
-                  className="text-gray-500 hover:text-blue-600 transition-colors"
-                >
-                  {tr.footer.links.tarifas}
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#contacto"
-                  className="text-gray-500 hover:text-blue-600 transition-colors"
-                >
-                  {tr.footer.links.contacto}
-                </a>
-              </li>
+              <li><a href="#inicio" className="text-gray-500 hover:text-blue-600">{f.links.inicio}</a></li>
+              <li><a href="#servicios" className="text-gray-500 hover:text-blue-600">{f.links.servicios}</a></li>
+              <li><a href="#tarifas" className="text-gray-500 hover:text-blue-600">{f.links.tarifas}</a></li>
+              <li><a href="#contacto" className="text-gray-500 hover:text-blue-600">{f.links.contacto}</a></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-bold text-gray-800 mb-6 uppercase tracking-wider text-sm">
-              {tr.footer.legalTitle}
+              {f.legalTitle}
             </h4>
             <ul className="space-y-3">
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-500 hover:text-blue-600 transition-colors"
-                >
-                  {tr.footer.legal.legalNotice}
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-500 hover:text-blue-600 transition-colors"
-                >
-                  {tr.footer.legal.privacy}
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-500 hover:text-blue-600 transition-colors"
-                >
-                  {tr.footer.legal.cookies}
-                </a>
-              </li>
+              <li><a href="#" className="text-gray-500 hover:text-blue-600">{f.legal.legalNotice}</a></li>
+              <li><a href="#" className="text-gray-500 hover:text-blue-600">{f.legal.privacy}</a></li>
+              <li><a href="#" className="text-gray-500 hover:text-blue-600">{f.legal.cookies}</a></li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-gray-200 pt-8 flex flex-col md:row items-center justify-between gap-4 text-gray-400 text-sm">
-          <p>{tr.footer.copyright}</p>
-          <p>{tr.footer.designed}</p>
+        <div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-gray-400 text-sm">
+          <p>{f.copyright}</p>
+          <p>{f.designed}</p>
         </div>
       </div>
     </footer>
