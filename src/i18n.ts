@@ -1,3 +1,4 @@
+// src/i18n.ts
 export type Lang = "val" | "es";
 export const LANG_KEY = "juga_lang";
 
@@ -105,6 +106,11 @@ const DICT: Record<Lang, Dict> = {
         "Les reserves modificades o cancel·lades amb menys d’una setmana d’antelació no tenen devolució.",
         "En aquest cas, es retornarà el 50% de la reserva.",
       ],
+    },
+
+    features: {
+      ctaContact: "Contactar ara",
+      ctaWhatsapp: "WhatsApp",
     },
 
     gallery: {
@@ -269,6 +275,11 @@ const DICT: Record<Lang, Dict> = {
       ],
     },
 
+    features: {
+      ctaContact: "Contactar ahora",
+      ctaWhatsapp: "WhatsApp",
+    },
+
     gallery: {
       title: "Galería",
       subtitle: "Parque de bolas y el resto del local. Pulsa para ver todas las fotos.",
@@ -330,7 +341,7 @@ const DICT: Record<Lang, Dict> = {
 };
 
 export function t(lang: Lang) {
-  return DICT[lang] || DICT.val;
+  return DICT[lang] ?? DICT.val;
 }
 
 export function getSavedLang(): Lang | null {
