@@ -5,6 +5,31 @@ export const LANG_KEY = "juga_lang";
 
 type Dict = Record<string, any>;
 
+/** Deep merge simple (objetos) para evitar undefined en ramas faltantes */
+function deepMerge<T extends Dict>(base: T, extra: Dict): T {
+  const out: any = Array.isArray(base) ? [...base] : { ...base };
+
+  if (!extra || typeof extra !== "object") return out;
+
+  for (const k of Object.keys(extra)) {
+    const bv = (base as any)?.[k];
+    const ev = (extra as any)[k];
+
+    if (Array.isArray(ev)) {
+      // arrays: el extra pisa (evita mezclas raras)
+      out[k] = ev;
+    } else if (ev && typeof ev === "object") {
+      // objeto: merge recursivo
+      out[k] = deepMerge(bv && typeof bv === "object" ? bv : {}, ev);
+    } else {
+      // primitivo
+      out[k] = ev;
+    }
+  }
+
+  return out;
+}
+
 const DICT: Record<Lang, Dict> = {
   val: {
     nav: {
@@ -204,18 +229,18 @@ const DICT: Record<Lang, Dict> = {
       alertError: "Error en l’enviament. Per favor, contacta per telèfon.",
     },
 
-    // ✅ NUEVO: FOOTER
+    // ✅ FOOTER (nuevo)
     footer: {
       description:
         "Dedicats a crear experiències màgiques per als més menuts de casa. El millor parc de boles d’Algemesí.",
       quickLinksTitle: "Enllaços ràpids",
+      legalTitle: "Legal",
       links: {
         inicio: "Inici",
         servicios: "Serveis",
         tarifas: "Tarifes",
         contacto: "Contacte",
       },
-      legalTitle: "Legal",
       legal: {
         legalNotice: "Avís legal",
         privacy: "Política de privacitat",
@@ -424,18 +449,18 @@ const DICT: Record<Lang, Dict> = {
       alertError: "Error en el envío. Por favor, contacta por teléfono.",
     },
 
-    // ✅ NUEVO: FOOTER
+    // ✅ FOOTER (nuevo)
     footer: {
       description:
         "Dedicados a crear experiencias mágicas para los más pequeños de la casa. El mejor parque de bolas de Algemesí.",
       quickLinksTitle: "Enlaces Rápidos",
+      legalTitle: "Legal",
       links: {
         inicio: "Inicio",
         servicios: "Servicios",
         tarifas: "Tarifas",
         contacto: "Contacto",
       },
-      legalTitle: "Legal",
       legal: {
         legalNotice: "Aviso Legal",
         privacy: "Política de Privacidad",
@@ -448,7 +473,8 @@ const DICT: Record<Lang, Dict> = {
 };
 
 export function t(lang: Lang) {
-  return DICT[lang] || DICT.val;
+  // ✅ base siempre val; el idioma seleccionado pisa encima
+  return deepMerge(DICT.val, DICT[lang] ?? {});
 }
 
 export function getSavedLang(): Lang | null {
