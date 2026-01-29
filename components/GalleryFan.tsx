@@ -1,16 +1,11 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
-import { t, type Lang } from "../src/i18n";
-
-type Props = {
-  lang: Lang;
-};
 
 type Slide = { src: string; title?: string };
 
 type Group = {
-  id: "bolas" | "local";
+  id: string;
   title: string;
   subtitle?: string;
   slides: Slide[];
@@ -19,15 +14,9 @@ type Group = {
 function FanStack({
   slides,
   onOpen,
-  ariaOpen,
-  ariaOpenPhoto,
-  btnView,
 }: {
   slides: Slide[];
   onOpen: (index: number) => void;
-  ariaOpen: string;
-  ariaOpenPhoto: (n: number) => string;
-  btnView: string;
 }) {
   const preview = useMemo(() => slides.slice(0, 6), [slides]);
 
@@ -38,11 +27,12 @@ function FanStack({
       tabIndex={0}
       onClick={() => onOpen(0)}
       onKeyDown={(e) => e.key === "Enter" && onOpen(0)}
-      aria-label={ariaOpen}
+      aria-label="Abrir galería"
     >
       <div className="fanFrame">
         <div className="fanFloat">
           {preview.map((s, i) => {
+            // Abanico “controlado” (como antes)
             const rotate = -12 + i * 4;
             const x = i * 16;
             const y = i * 5;
@@ -60,9 +50,13 @@ function FanStack({
                   ev.stopPropagation();
                   onOpen(i);
                 }}
-                aria-label={ariaOpenPhoto(i + 1)}
+                aria-label={`Abrir foto ${i + 1}`}
               >
-                <img src={s.src} alt={s.title ?? ariaOpenPhoto(i + 1)} loading="lazy" />
+                <img
+                  src={s.src}
+                  alt={s.title ?? `Foto ${i + 1}`}
+                  loading="lazy"
+                />
               </button>
             );
           })}
@@ -78,7 +72,7 @@ function FanStack({
                 onOpen(0);
               }}
             >
-              {btnView}
+              Ver galería
               <span className="fanBtnIcon">↗</span>
             </button>
           </div>
@@ -88,32 +82,35 @@ function FanStack({
   );
 }
 
-export default function GalleryFan({ lang }: Props) {
-  const tr = t(lang);
-
+export default function GalleryFan() {
+  // ✅ Tus fotos reales en /public/gallery:
+  // Galeria1.jpeg ... Galeria21.jpeg
+  // Reparto final:
+  // - IZQUIERDA (Parque de bolas): 1..10 + 21
+  // - DERECHA (El local): 11..20
   const groups: Group[] = [
     {
       id: "bolas",
-      title: tr.gallery.groups.bolas.title,
-      subtitle: tr.gallery.groups.bolas.subtitle,
+      title: "Parque de bolas",
+      subtitle: "Zona de juego",
       slides: [
         ...Array.from({ length: 10 }, (_, i) => ({
           src: `/gallery/Galeria${i + 1}.jpeg`,
-          title: `${tr.gallery.groups.bolas.slidePrefix} ${i + 1}`,
+          title: `Parque de bolas ${i + 1}`,
         })),
         {
           src: `/gallery/Galeria21.jpeg`,
-          title: `${tr.gallery.groups.bolas.slidePrefix} 21`,
+          title: "Parque de bolas 21",
         },
       ],
     },
     {
       id: "local",
-      title: tr.gallery.groups.local.title,
-      subtitle: tr.gallery.groups.local.subtitle,
+      title: "El local",
+      subtitle: "Mesas, cocina, aseo y zonas comunes",
       slides: Array.from({ length: 10 }, (_, i) => ({
         src: `/gallery/Galeria${i + 11}.jpeg`, // 11..20
-        title: `${tr.gallery.groups.local.slidePrefix} ${i + 11}`,
+        title: `Local ${i + 11}`,
       })),
     },
   ];
@@ -130,16 +127,16 @@ export default function GalleryFan({ lang }: Props) {
     setOpen(true);
   };
 
-  const photosLabel = (n: number) => `${n} ${tr.gallery.photosWord}`;
-
   return (
-    <section className="gallerySection" id="galeria">
+    <section className="gallerySection">
       <div className="galleryHeader">
         <h2 className="galleryTitle">
           <span className="galleryTitleGlow" />
-          {tr.gallery.title}
+          Galería
         </h2>
-        <p className="gallerySubtitle">{tr.gallery.subtitle}</p>
+        <p className="gallerySubtitle">
+          Parque de bolas y el resto del local. Pulsa para ver todas las fotos.
+        </p>
       </div>
 
       <div className="galleryGrid">
@@ -147,29 +144,32 @@ export default function GalleryFan({ lang }: Props) {
           <div key={g.id} className="galleryCard">
             <div className="galleryCardTop">
               <div className="titleRow">
-                <h3 className={`badge3d ${g.id === "bolas" ? "badge3d--bolas" : "badge3d--local"}`}>
+                <h3
+                  className={`badge3d ${
+                    g.id === "bolas" ? "badge3d--bolas" : "badge3d--local"
+                  }`}
+                >
                   {g.title}
                 </h3>
                 {g.subtitle && <p className="muted">{g.subtitle}</p>}
               </div>
 
               <span className={`count ${g.id === "bolas" ? "count--bolas" : "count--local"}`}>
-                {photosLabel(g.slides.length)}
+                {g.slides.length} fotos
               </span>
             </div>
 
-            <FanStack
-              slides={g.slides}
-              onOpen={(i) => openGallery(gi, i)}
-              ariaOpen={tr.gallery.ariaOpen}
-              ariaOpenPhoto={(n) => `${tr.gallery.ariaOpenPhoto} ${n}`}
-              btnView={tr.gallery.viewButton}
-            />
+            <FanStack slides={g.slides} onOpen={(i) => openGallery(gi, i)} />
           </div>
         ))}
       </div>
 
-      <Lightbox open={open} close={() => setOpen(false)} slides={slides} index={index} />
+      <Lightbox
+        open={open}
+        close={() => setOpen(false)}
+        slides={slides}
+        index={index}
+      />
 
       <style>{css}</style>
     </section>
@@ -272,6 +272,7 @@ const css = `
   font-size: 13px;
 }
 
+/* ===== BADGE 3D (títulos) ===== */
 .badge3d{
   display:inline-flex;
   align-items:center;
@@ -313,6 +314,19 @@ const css = `
   background: linear-gradient(135deg, #9C27B0, #673AB7, #26C6DA);
 }
 
+@media (hover:hover){
+  .badge3d{
+    transition: transform .22s ease, box-shadow .22s ease;
+  }
+  .badge3d:hover{
+    transform: translateY(-1px);
+    box-shadow:
+      0 18px 44px rgba(0,0,0,.14),
+      inset 0 1px 0 rgba(255,255,255,.82);
+  }
+}
+
+/* ===== contador ===== */
 .count{
   font-size: 12px;
   font-weight: 900;
@@ -326,10 +340,18 @@ const css = `
     inset 0 1px 0 rgba(255,255,255,.8);
   color: rgba(15,23,42,.78);
 }
-.count--bolas{ background: linear-gradient(135deg, rgba(255,255,255,.72), rgba(0,191,165,.10)); }
-.count--local{ background: linear-gradient(135deg, rgba(255,255,255,.72), rgba(156,39,176,.09)); }
 
-.fanScene{ perspective: 1100px; }
+.count--bolas{
+  background: linear-gradient(135deg, rgba(255,255,255,.72), rgba(0,191,165,.10));
+}
+.count--local{
+  background: linear-gradient(135deg, rgba(255,255,255,.72), rgba(156,39,176,.09));
+}
+
+/* ===== abanico 3D + botón ===== */
+.fanScene{
+  perspective: 1100px;
+}
 
 .fanFrame{
   position: relative;
@@ -345,6 +367,15 @@ const css = `
   cursor: pointer;
 }
 
+@media (hover:hover){
+  .fanFrame:hover{
+    transform: rotateX(2deg) rotateY(-2deg) translateY(-2px);
+    box-shadow:
+      0 26px 60px rgba(0,0,0,.16),
+      inset 0 1px 0 rgba(255,255,255,.78);
+  }
+}
+
 .fanFloat{
   position: relative;
   height: 260px;
@@ -352,6 +383,10 @@ const css = `
   background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.10), rgba(0,0,0,.08));
   overflow: hidden;
   animation: floaty 4.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .fanFloat{ animation: none; }
 }
 
 @keyframes floaty{
@@ -379,6 +414,13 @@ const css = `
   object-fit: cover;
   display:block;
   filter: saturate(1.02) contrast(1.02);
+}
+
+@media (hover:hover){
+  .fanCard:hover{
+    box-shadow: 0 20px 46px rgba(0,0,0,.26);
+    filter: saturate(1.06) contrast(1.05);
+  }
 }
 
 .fanGlow{
@@ -414,7 +456,7 @@ const css = `
   font-weight: 600;
   letter-spacing: .3px;
   background: linear-gradient(135deg, #00BFA5 0%, #26C6DA 55%, #FF8A65 100%);
-  box-shadow:
+  box-shadow: 
     0 10px 26px rgba(0,0,0,.20),
     inset 0 1px 0 rgba(255,255,255,.25);
   cursor:pointer;
@@ -431,5 +473,13 @@ const css = `
   border-radius: 999px;
   background: rgba(255,255,255,.18);
   backdrop-filter: blur(4px);
+}
+
+@media (hover:hover){
+  .fanBtn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 18px 40px rgba(0,0,0,.26);
+    filter: brightness(1.03);
+  }
 }
 `;
