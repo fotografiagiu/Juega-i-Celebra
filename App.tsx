@@ -67,8 +67,8 @@ const App: React.FC = () => {
         </section>
 
         <section id="reservar" className="py-20 bg-gray-50 scroll-mt-28">
-          <BookingCalendar />
-        </section>
+      <BookingCalendar lang={lang} />
+      </section>
 
         <section className="py-20">
           <Features lang={lang} />
