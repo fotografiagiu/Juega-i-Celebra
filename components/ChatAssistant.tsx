@@ -1,106 +1,294 @@
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { t, type Lang } from "../src/i18n";
 
-import React, { useState } from 'react';
-import { getPartyRecommendation } from '../services/gemini';
+type Props = {
+  lang: Lang;
+};
 
-const ChatAssistant: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState<string | null>(null);
-  
-  const [formData, setFormData] = useState({
-    age: 5,
-    kids: 10,
-    interests: ''
-  });
+type Msg = { from: "bot" | "user"; text: string };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    const result = await getPartyRecommendation(formData.age, formData.kids, formData.interests);
-    setResponse(result);
-    setLoading(false);
+const PHONE_E164 = "34614037792"; // +34 614 03 77 92
+const WA_LINK = `https://wa.me/${PHONE_E164}`;
+
+export default function ChatAssistant({ lang }: Props) {
+  const tr = t(lang);
+  const [open, setOpen] = useState(false);
+  const [input, setInput] = useState("");
+  const [msgs, setMsgs] = useState<Msg[]>(() => [
+    { from: "bot", text: `${tr.chat.title}: ${tr.chat.subtitle}` },
+  ]);
+
+  const listRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // cuando cambias idioma, refresco mensaje inicial sin romper el historial
+    setMsgs((prev) => {
+      if (!prev.length) return [{ from: "bot", text: `${tr.chat.title}: ${tr.chat.subtitle}` }];
+      const first = prev[0];
+      const rest = prev.slice(1);
+      return [{ ...first, text: `${tr.chat.title}: ${tr.chat.subtitle}` }, ...rest];
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lang]);
+
+  useEffect(() => {
+    if (!open) return;
+    const tm = setTimeout(() => {
+      listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
+    }, 50);
+    return () => clearTimeout(tm);
+  }, [open, msgs]);
+
+  const chips = useMemo(
+    () => [
+      { key: "location", label: tr.chat.chips.location },
+      { key: "hours", label: tr.chat.chips.hours },
+      { key: "prices", label: tr.chat.chips.prices },
+      { key: "deposit", label: tr.chat.chips.deposit },
+      { key: "reserve", label: tr.chat.chips.reserve },
+      { key: "whatsapp", label: tr.chat.chips.whatsapp },
+    ],
+    [tr]
+  );
+
+  const answerFor = (key: string) => {
+    const a = tr.chat.answers;
+    if (key === "location") return a.location;
+    if (key === "hours") return a.hours;
+    if (key === "prices") return a.prices;
+    if (key === "deposit") return a.deposit;
+    if (key === "reserve") return a.reserve;
+    if (key === "whatsapp") return a.whatsapp;
+    return "OK";
+  };
+
+  const push = (m: Msg) => setMsgs((p) => [...p, m]);
+
+  const onChip = (key: string) => {
+    push({ from: "user", text: chips.find((c) => c.key === key)?.label || key });
+    push({ from: "bot", text: answerFor(key) });
+
+    if (key === "reserve") {
+      setTimeout(() => {
+        const el = document.querySelector("#reservar");
+        el?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 200);
+    }
+
+    if (key === "whatsapp") {
+      setTimeout(() => window.open(WA_LINK, "_blank"), 150);
+    }
+  };
+
+  const onSend = () => {
+    const q = input.trim();
+    if (!q) return;
+    setInput("");
+    push({ from: "user", text: q });
+
+    // “matcher” simple por palabras clave (sin IA)
+    const low = q.toLowerCase();
+    const has = (arr: string[]) => arr.some((w) => low.includes(w));
+
+    if (has(["ubic", "dónde", "donde", "direc", "mapa"])) return push({ from: "bot", text: tr.chat.answers.location });
+    if (has(["hora", "horari", "abre", "cierra", "obert"])) return push({ from: "bot", text: tr.chat.answers.hours });
+    if (has(["precio", "tarifa", "cuánto", "cuanto", "coste"])) return push({ from: "bot", text: tr.chat.answers.prices });
+    if (has(["fianza", "limpieza", "deposito", "depósito"])) return push({ from: "bot", text: tr.chat.answers.deposit });
+    if (has(["reserv", "fecha", "dispon"])) return push({ from: "bot", text: tr.chat.answers.reserve });
+
+    // fallback
+    push({
+      from: "bot",
+      text: `${tr.chat.subtitle}. ${tr.chat.inputHint}`,
+    });
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[100]">
-      <button 
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-16 h-16 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl flex items-center justify-center text-3xl transition-transform hover:scale-110"
+    <>
+      {/* FAB */}
+      <button
+        type="button"
+        aria-label={tr.chat.fabLabel}
+        className="jugaChatFab"
+        onClick={() => setOpen((v) => !v)}
       >
-        {isOpen ? '✕' : '✨'}
+        💬
       </button>
 
-      {isOpen && (
-        <div className="absolute bottom-20 right-0 w-[350px] sm:w-[400px] bg-white rounded-3xl shadow-2xl overflow-hidden animate-[fadeInUp_0.3s_ease-out] border border-blue-100">
-          <div className="bg-blue-600 p-6 text-white">
-            <h3 className="text-xl font-bold">Asistente de Fiestas</h3>
-            <p className="text-blue-100 text-sm">¡Te ayudo a planificar el cumple perfecto!</p>
+      {/* Panel */}
+      {open && (
+        <div className="jugaChatPanel" role="dialog" aria-modal="false">
+          <div className="jugaChatHeader">
+            <div>
+              <div className="jugaChatTitle">{tr.chat.title}</div>
+              <div className="jugaChatSub">{tr.chat.subtitle}</div>
+            </div>
+            <button type="button" className="jugaChatClose" onClick={() => setOpen(false)}>
+              {tr.chat.actions.close} ✕
+            </button>
           </div>
-          
-          <div className="p-6 max-h-[450px] overflow-y-auto">
-            {!response ? (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <p className="text-gray-600 text-sm">Dime unos detalles y te daré una recomendación:</p>
-                <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase">Edad del cumpleañero/a</label>
-                  <input 
-                    type="number" 
-                    value={formData.age}
-                    onChange={(e) => setFormData({...formData, age: parseInt(e.target.value)})}
-                    className="w-full border-b-2 border-gray-100 py-2 focus:border-blue-500 outline-none transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase">Número de niños/as</label>
-                  <input 
-                    type="number" 
-                    value={formData.kids}
-                    onChange={(e) => setFormData({...formData, kids: parseInt(e.target.value)})}
-                    className="w-full border-b-2 border-gray-100 py-2 focus:border-blue-500 outline-none transition-colors"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-400 uppercase">¿Qué le gusta? (Superhéroes, Piratas...)</label>
-                  <input 
-                    type="text" 
-                    value={formData.interests}
-                    onChange={(e) => setFormData({...formData, interests: e.target.value})}
-                    placeholder="Ej: Dinosaurios y fútbol"
-                    className="w-full border-b-2 border-gray-100 py-2 focus:border-blue-500 outline-none transition-colors"
-                  />
-                </div>
-                <button 
-                  disabled={loading}
-                  className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition-all disabled:bg-gray-400"
-                >
-                  {loading ? 'Calculando magia...' : '¡Obtener Recomendación!'}
-                </button>
-              </form>
-            ) : (
-              <div className="space-y-4">
-                <div className="bg-blue-50 p-4 rounded-2xl text-gray-700 leading-relaxed text-sm">
-                  {response}
-                </div>
-                <button 
-                  onClick={() => {setResponse(null); setFormData({age: 5, kids: 10, interests: ''})}}
-                  className="w-full py-2 text-blue-600 font-bold hover:underline"
-                >
-                  Probar otra configuración
-                </button>
-                <a 
-                  href="#contacto"
-                  onClick={() => setIsOpen(false)}
-                  className="block w-full bg-orange-500 text-center text-white py-3 rounded-xl font-bold hover:bg-orange-600 shadow-md"
-                >
-                  ¡Quiero reservar esto!
-                </a>
+
+          <div className="jugaChatBody" ref={listRef}>
+            {msgs.map((m, idx) => (
+              <div key={idx} className={`jugaChatMsg ${m.from === "user" ? "isUser" : "isBot"}`}>
+                {m.text}
               </div>
-            )}
+            ))}
+          </div>
+
+          <div className="jugaChatChips">
+            {chips.map((c) => (
+              <button key={c.key} type="button" className="jugaChatChip" onClick={() => onChip(c.key)}>
+                {c.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="jugaChatInputRow">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={tr.chat.placeholder}
+              className="jugaChatInput"
+              onKeyDown={(e) => e.key === "Enter" && onSend()}
+            />
+            <button type="button" className="jugaChatSend" onClick={onSend}>
+              ➤
+            </button>
           </div>
         </div>
       )}
-    </div>
-  );
-};
 
-export default ChatAssistant;
+      <style>{css}</style>
+    </>
+  );
+}
+
+const css = `
+.jugaChatFab{
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  font-size: 22px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.22);
+  cursor: pointer;
+  z-index: 9999;
+}
+
+.jugaChatPanel{
+  position: fixed;
+  right: 18px;
+  bottom: 86px;
+  width: 340px;
+  max-width: calc(100vw - 36px);
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 18px;
+  box-shadow: 0 18px 60px rgba(0,0,0,.24);
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.jugaChatHeader{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap: 10px;
+  padding: 14px 14px 10px;
+  background: linear-gradient(135deg, rgba(37,99,235,.12), rgba(249,115,22,.10));
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+
+.jugaChatTitle{ font-weight: 900; color:#0f172a; }
+.jugaChatSub{ font-size: 12px; opacity: .75; margin-top: 2px; }
+
+.jugaChatClose{
+  border: none;
+  background: rgba(255,255,255,.8);
+  padding: 8px 10px;
+  border-radius: 12px;
+  cursor:pointer;
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.jugaChatBody{
+  height: 260px;
+  overflow: auto;
+  padding: 12px;
+  background: #fff;
+}
+
+.jugaChatMsg{
+  max-width: 85%;
+  padding: 10px 12px;
+  border-radius: 14px;
+  margin: 8px 0;
+  font-size: 13px;
+  line-height: 1.25rem;
+}
+
+.jugaChatMsg.isBot{
+  background: #f1f5f9;
+  color: #0f172a;
+  border: 1px solid rgba(0,0,0,.05);
+}
+
+.jugaChatMsg.isUser{
+  margin-left: auto;
+  background: #2563eb;
+  color: #fff;
+}
+
+.jugaChatChips{
+  display:flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 12px;
+  border-top: 1px solid rgba(0,0,0,.06);
+  background: #fff;
+}
+
+.jugaChatChip{
+  border: 1px solid rgba(0,0,0,.08);
+  background: #fff;
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor:pointer;
+}
+
+.jugaChatInputRow{
+  display:flex;
+  gap: 8px;
+  padding: 10px 12px 12px;
+  border-top: 1px solid rgba(0,0,0,.06);
+  background: #fff;
+}
+
+.jugaChatInput{
+  flex:1;
+  border: 1px solid rgba(0,0,0,.10);
+  border-radius: 12px;
+  padding: 10px 12px;
+  outline: none;
+  font-size: 13px;
+}
+
+.jugaChatSend{
+  width: 42px;
+  border: none;
+  border-radius: 12px;
+  background: #0f172a;
+  color:#fff;
+  font-weight: 900;
+  cursor:pointer;
+}
+`;
