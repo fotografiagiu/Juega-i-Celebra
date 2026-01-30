@@ -400,9 +400,9 @@ const DICT: Record<Lang, Dict> = {
         equipment: {
           items: [
             { icon: "🪑", text: "40 sillas adultos" },
-            { icon: "🧒", text: "16 sillas peques (ampliamos próximamente con 4+)" },
+            { icon: "🧒", text: "20 sillas peques" },
             { icon: "🪑", text: "6 mesas plegables" },
-            { icon: "🧸", text: "4 mesas peques (ampliamos próximamente con 1+)" },
+            { icon: "🧸", text: "5 mesas peques" },
             { icon: "👶", text: "2 tronas" },
             { icon: "🚻", text: "Baño adaptado PMR con cambiador" },
             { icon: "🧥", text: "Percheros y zona de descanso" },
