@@ -88,7 +88,7 @@ const App: React.FC = () => {
       </main>
 
       <Footer lang={lang} />
-      <ChatAssistant />
+      <ChatAssistant lang={lang} />
     </div>
   );
 };
