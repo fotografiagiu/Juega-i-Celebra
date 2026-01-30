@@ -127,9 +127,9 @@ const DICT: Record<Lang, Dict> = {
         equipment: {
           items: [
             { icon: "🪑", text: "40 cadires adults" },
-            { icon: "🧒", text: "20 cadires peques" },
+            { icon: "🧒", text: "16 cadires peques (ampliem pròximament amb 4+)" },
             { icon: "🪑", text: "6 taules plegables" },
-            { icon: "🧸", text: "5 taules peques" },
+            { icon: "🧸", text: "4 taules peques (ampliem pròximament amb 1+)" },
             { icon: "👶", text: "2 trones" },
             { icon: "🚻", text: "Bany adaptat PMR amb canviador" },
             { icon: "🧥", text: "Penjadors i zona de descans" },
@@ -166,7 +166,6 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ GalleryFan
     gallery: {
       title: "Galeria",
       subtitle:
@@ -189,7 +188,6 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ Footer
     footer: {
       description:
         "Dedicats a crear experiències màgiques per als més menuts de la casa. El millor parc de boles d’Algemesí.",
@@ -210,34 +208,37 @@ const DICT: Record<Lang, Dict> = {
       designed: "Dissenyat amb ❤️ per a la comunitat d’Algemesí.",
     },
 
-    // ✅ BookingCalendar
-    bookingCalendar: {
-      badge: "Calendari Algemesí 2026",
-      titlePre: "Reserva la teua",
-      titleHighlight: "Festa",
-      introPre: "Les dates en",
-      introHighlight1: "VERD",
-      introMid: "ja estan",
-      introHighlight2: "RESERVADES",
-      introPost: "i bloquejades automàticament.",
-      chooseDayTitle: "Quan és el cumple?",
-      chooseDaySubtitle: "Tria un dia disponible en el calendari per a començar.",
-      reservedTag: "RESERVAT",
-      legendBooked: "RESERVAT",
-      legendSelected: "Selecció",
-      legendFree: "Lliure",
-      formTitle: "Dades de l’esdeveniment",
-      nextStep: "SEGÜENT PAS 🚀",
-      payTitle: "Pagament segur",
-      modify: "← MODIFICAR",
-      payButton: "PAGAR AMB TARGETA (STRIPE) 🥳",
-      redirecting: "REDIRIGINT A STRIPE...",
-      missingFields: "Completa nom i WhatsApp abans de pagar.",
-      dateTaken: "Eixa data ja està reservada. Tria una altra.",
-      paidNoPending:
-        "Pagament rebut, però no s’ha trobat la reserva pendent. Escriu-nos per WhatsApp.",
-      paidRegisterFail:
-        "Pagament OK, però ha fallat el registre. Escriu-nos per WhatsApp amb el justificant.",
+    // ✅ AÑADIDO: Chat interno (FAQ)
+    chat: {
+      fabLabel: "Obrir xat",
+      title: "Assistència",
+      subtitle: "Respostes ràpides",
+      placeholder: "Escriu ací…",
+      inputHint: "O tria un botó:",
+      chips: {
+        location: "📍 Ubicació",
+        hours: "🕒 Horari",
+        prices: "💶 Tarifes",
+        deposit: "🧾 Fiança i neteja",
+        reserve: "🗓️ Reservar",
+        whatsapp: "📲 WhatsApp",
+      },
+      answers: {
+        location: "Estem en Avinguda País Valencià 58 (Algemesí), València.",
+        hours: "Horari: dilluns a diumenge de 10:00 a 21:30.",
+        prices:
+          "Tarifes 2026: Dilluns-Dijous 80€, Divendres/Vespra 100€, Dissabte-Diumenge/Festiu 160€.",
+        deposit:
+          "Fiança: 100€ en efectiu el dia de les claus. Neteja: 60€ (opcional, a consultar).",
+        reserve:
+          "Per reservar, baixa a la secció “Reservar 2026” i tria una data disponible.",
+        whatsapp: "Si vols, escriu-nos per WhatsApp i t’ajudem ara mateix.",
+      },
+      actions: {
+        goReserve: "Anar a reservar",
+        openWhatsapp: "Obrir WhatsApp",
+        close: "Tancar",
+      },
     },
 
     contact: {
@@ -400,9 +401,9 @@ const DICT: Record<Lang, Dict> = {
         equipment: {
           items: [
             { icon: "🪑", text: "40 sillas adultos" },
-            { icon: "🧒", text: "20 sillas peques" },
+            { icon: "🧒", text: "16 sillas peques (ampliamos próximamente con 4+)" },
             { icon: "🪑", text: "6 mesas plegables" },
-            { icon: "🧸", text: "5 mesas peques" },
+            { icon: "🧸", text: "4 mesas peques (ampliamos próximamente con 1+)" },
             { icon: "👶", text: "2 tronas" },
             { icon: "🚻", text: "Baño adaptado PMR con cambiador" },
             { icon: "🧥", text: "Percheros y zona de descanso" },
@@ -439,7 +440,6 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ GalleryFan
     gallery: {
       title: "Galería",
       subtitle:
@@ -462,7 +462,6 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ Footer
     footer: {
       description:
         "Dedicados a crear experiencias mágicas para los más pequeños de la casa. El mejor parque de bolas de Algemesí.",
@@ -483,34 +482,37 @@ const DICT: Record<Lang, Dict> = {
       designed: "Diseñado con ❤️ para la comunidad de Algemesí.",
     },
 
-    // ✅ BookingCalendar
-    bookingCalendar: {
-      badge: "Calendario Algemesí 2026",
-      titlePre: "Reserva tu",
-      titleHighlight: "Fiesta",
-      introPre: "Las fechas en",
-      introHighlight1: "VERDE",
-      introMid: "ya están",
-      introHighlight2: "RESERVADAS",
-      introPost: "y bloqueadas automáticamente.",
-      chooseDayTitle: "¿Cuándo es el cumple?",
-      chooseDaySubtitle: "Elige un día disponible en el calendario para comenzar.",
-      reservedTag: "RESERVADO",
-      legendBooked: "RESERVADO",
-      legendSelected: "Selección",
-      legendFree: "Libre",
-      formTitle: "Datos del Evento",
-      nextStep: "SIGUIENTE PASO 🚀",
-      payTitle: "Pago Seguro",
-      modify: "← MODIFICAR",
-      payButton: "PAGAR CON TARJETA (STRIPE) 🥳",
-      redirecting: "REDIRIGIENDO A STRIPE...",
-      missingFields: "Completa nombre y WhatsApp antes de pagar.",
-      dateTaken: "Esa fecha ya está reservada. Elige otra.",
-      paidNoPending:
-        "Pago recibido, pero no se encontró la reserva pendiente. Escríbenos por WhatsApp.",
-      paidRegisterFail:
-        "Pago OK, pero falló el registro. Escríbenos por WhatsApp con tu justificante.",
+    // ✅ AÑADIDO: Chat interno (FAQ)
+    chat: {
+      fabLabel: "Abrir chat",
+      title: "Asistente",
+      subtitle: "Respuestas rápidas",
+      placeholder: "Escribe aquí…",
+      inputHint: "O elige un botón:",
+      chips: {
+        location: "📍 Ubicación",
+        hours: "🕒 Horario",
+        prices: "💶 Tarifas",
+        deposit: "🧾 Fianza y limpieza",
+        reserve: "🗓️ Reservar",
+        whatsapp: "📲 WhatsApp",
+      },
+      answers: {
+        location: "Estamos en Avinguda País Valencià 58 (Algemesí), Valencia.",
+        hours: "Horario: lunes a domingo de 10:00 a 21:30.",
+        prices:
+          "Tarifas 2026: Lunes-Jueves 80€, Viernes/Víspera 100€, Sábado-Domingo/Festivo 160€.",
+        deposit:
+          "Fianza: 100€ en efectivo el día de entrega de llaves. Limpieza: 60€ (opcional, a consultar).",
+        reserve:
+          "Para reservar, baja a la sección “Reservar 2026” y elige una fecha disponible.",
+        whatsapp: "Si quieres, escríbenos por WhatsApp y te ayudamos ahora mismo.",
+      },
+      actions: {
+        goReserve: "Ir a reservar",
+        openWhatsapp: "Abrir WhatsApp",
+        close: "Cerrar",
+      },
     },
 
     contact: {
