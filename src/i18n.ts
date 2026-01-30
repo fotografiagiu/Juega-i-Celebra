@@ -188,47 +188,73 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ CHAT: datos completos + respuestas profesionales
+    footer: {
+      description:
+        "Dedicats a crear experiències màgiques per als més menuts de la casa. El millor parc de boles d’Algemesí.",
+      quickLinksTitle: "Enllaços Ràpids",
+      links: {
+        inicio: "Inici",
+        servicios: "Serveis",
+        tarifas: "Tarifes",
+        contacto: "Contacte",
+      },
+      legalTitle: "Legal",
+      legal: {
+        legalNotice: "Avís Legal",
+        privacy: "Política de Privacitat",
+        cookies: "Cookies",
+      },
+      copyright: "© 2026 Juga i Celebra. Tots els drets reservats.",
+      designed: "Dissenyat amb ❤️ per a la comunitat d’Algemesí.",
+    },
+
+    // ✅ CHAT: ampliat i professional
     chat: {
-      phone: "+34 614 03 77 92",
-      phoneDigits: "34614037792", // para wa.me
-      address: "Avinguda País Valencià 58 (Algemesí), València",
-      hours: "Dilluns a diumenge: 10:00 - 21:30",
-      capacity: "Aforament autoritzat: fins a 48 persones.",
-      seating: {
+      meta: {
+        phone: "+34 614 03 77 92",
+        phoneDigits: "34614037792",
+        address: "Avinguda País Valencià 58 (Algemesí), València",
+        hours: "Dilluns a diumenge: 10:00 - 21:30",
+        capacityMax: "48",
+        capacityText: "Aforament autoritzat: fins a 48 persones.",
         adultsChairs: "40 cadires d’adults",
         kidsChairs: "16 cadires de xiquets (ampliem pròximament amb 4+)",
         foldTables: "6 taules plegables",
         kidsTables: "4 taules menudes (ampliem pròximament amb 1+)",
         highChairs: "2 trones",
+        kitchenText:
+          "Cuina de suport (NO es pot cuinar): nevera/congelador, cafetera, microones i boteller.",
+        foodText:
+          "Sí, podeu portar el vostre menjar i beguda. Només demanem respectar les normes i deixar-ho tot en bon estat.",
       },
-      food: {
-        canBring:
-          "Sí, podeu portar el vostre menjar i beguda. (Només respectant normes i deixant-ho tot en bon estat.)",
+
+      ui: {
+        fabLabel: "Obrir xat",
+        title: "Assistència",
+        subtitle: "Respostes ràpides",
+        placeholder: "Escriu ací…",
+        chips: {
+          reserve: "🗓️ Reservar",
+          whatsapp: "📲 WhatsApp",
+          phone: "📞 Telèfon",
+          location: "📍 Ubicació",
+          hours: "🕒 Horari",
+          prices: "💶 Tarifes",
+          deposit: "🧾 Fiança i neteja",
+          capacity: "👥 Aforament",
+          seating: "🪑 Taules i cadires",
+          food: "🍕 Menjar",
+          kitchen: "🍽️ Cuina",
+        },
+        actions: {
+          goReserve: "Anar a reservar",
+          openWhatsapp: "Obrir WhatsApp",
+        },
       },
-      kitchen: {
-        note:
-          "La cuina és de suport (no es pot cuinar): nevera/congelador, cafetera, microones i boteller.",
-      },
-      title: "Assistència",
-      subtitle: "Respostes ràpides",
-      placeholder: "Escriu ací…",
-      chips: {
-        reserve: "🗓️ Reservar",
-        whatsapp: "📲 WhatsApp",
-        phone: "📞 Telèfon",
-        location: "📍 Ubicació",
-        hours: "🕒 Horari",
-        prices: "💶 Tarifes",
-        deposit: "🧾 Fiança i neteja",
-        capacity: "👥 Aforament",
-        seating: "🪑 Taules i cadires",
-        food: "🍕 Menjar",
-        kitchen: "🍽️ Cuina",
-      },
+
       answers: {
         intro:
-          "Hola! Sóc l’assistent de Juga i Celebra. Digues-me què necessites (ubicació, horari, tarifes, aforament, taules/cadires, menjar, cuina, reserva…).",
+          "Hola! Sóc l’assistent de Juga i Celebra. Pregunta’m el que necessites (ubicació, horari, tarifes, aforament, taules/cadires, menjar, cuina o reserva).",
         location: "📍 Ubicació: {address}",
         hours: "🕒 Horari: {hours}",
         phone: "📞 Telèfon: {phone}",
@@ -239,17 +265,13 @@ const DICT: Record<Lang, Dict> = {
           "🧾 Fiança: 100€ en efectiu el dia de les claus. Neteja: 60€ (opcional, a consultar).",
         reserve:
           "🗓️ Per reservar: baixa a “Reservar 2026” i tria una data disponible (les verdes ja estan reservades).",
-        capacity: "👥 {capacity}",
+        capacity: "👥 {capacityText}",
         seating:
           "🪑 Equipament:\n- {adultsChairs}\n- {kidsChairs}\n- {foldTables}\n- {kidsTables}\n- {highChairs}",
-        food: "🍕 {canBring}",
-        kitchen: "🍽️ {kitchenNote}",
+        food: "🍕 {foodText}",
+        kitchen: "🍽️ {kitchenText}",
         fallback:
-          "T’ho revise: pots preguntar-me per ubicació, horari, tarifes, fiança/neteja, aforament, taules/cadires, menjar, cuina o reserva. 😊",
-      },
-      actions: {
-        goReserve: "Anar a reservar",
-        openWhatsapp: "Obrir WhatsApp",
+          "Pots preguntar per ubicació, horari, tarifes, fiança/neteja, aforament, taules/cadires, menjar, cuina o reserva.",
       },
     },
 
@@ -474,47 +496,73 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ CHAT: datos completos + respuestas profesionales
+    footer: {
+      description:
+        "Dedicados a crear experiencias mágicas para los más pequeños de la casa. El mejor parque de bolas de Algemesí.",
+      quickLinksTitle: "Enlaces Rápidos",
+      links: {
+        inicio: "Inicio",
+        servicios: "Servicios",
+        tarifas: "Tarifas",
+        contacto: "Contacto",
+      },
+      legalTitle: "Legal",
+      legal: {
+        legalNotice: "Aviso Legal",
+        privacy: "Política de Privacidad",
+        cookies: "Cookies",
+      },
+      copyright: "© 2026 Juga i Celebra. Todos los derechos reservados.",
+      designed: "Diseñado con ❤️ para la comunidad de Algemesí.",
+    },
+
+    // ✅ CHAT: ampliat i profesional
     chat: {
-      phone: "+34 614 03 77 92",
-      phoneDigits: "34614037792",
-      address: "Avinguda País Valencià 58 (Algemesí), Valencia",
-      hours: "Lunes a domingo: 10:00 - 21:30",
-      capacity: "Aforo autorizado: hasta 48 personas.",
-      seating: {
+      meta: {
+        phone: "+34 614 03 77 92",
+        phoneDigits: "34614037792",
+        address: "Avinguda País Valencià 58 (Algemesí), Valencia",
+        hours: "Lunes a domingo: 10:00 - 21:30",
+        capacityMax: "48",
+        capacityText: "Aforo autorizado: hasta 48 personas.",
         adultsChairs: "40 sillas de adultos",
         kidsChairs: "16 sillas de niños (ampliamos próximamente con 4+)",
         foldTables: "6 mesas plegables",
         kidsTables: "4 mesas pequeñas (ampliamos próximamente con 1+)",
         highChairs: "2 tronas",
+        kitchenText:
+          "La cocina es auxiliar (NO se puede cocinar): nevera/congelador, cafetera, microondas y botellero.",
+        foodText:
+          "Sí, podéis traer vuestra comida y bebida. Solo pedimos respetar las normas y dejarlo todo en buen estado.",
       },
-      food: {
-        canBring:
-          "Sí, podéis traer vuestra comida y bebida. (Solo pedimos respetar las normas y dejarlo todo en buen estado.)",
+
+      ui: {
+        fabLabel: "Abrir chat",
+        title: "Asistente",
+        subtitle: "Respuestas rápidas",
+        placeholder: "Escribe aquí…",
+        chips: {
+          reserve: "🗓️ Reservar",
+          whatsapp: "📲 WhatsApp",
+          phone: "📞 Teléfono",
+          location: "📍 Ubicación",
+          hours: "🕒 Horario",
+          prices: "💶 Tarifas",
+          deposit: "🧾 Fianza y limpieza",
+          capacity: "👥 Aforo",
+          seating: "🪑 Mesas y sillas",
+          food: "🍕 Comida",
+          kitchen: "🍽️ Cocina",
+        },
+        actions: {
+          goReserve: "Ir a reservar",
+          openWhatsapp: "Abrir WhatsApp",
+        },
       },
-      kitchen: {
-        note:
-          "La cocina es auxiliar (no se puede cocinar): nevera/congelador, cafetera, microondas y botellero.",
-      },
-      title: "Asistente",
-      subtitle: "Respuestas rápidas",
-      placeholder: "Escribe aquí…",
-      chips: {
-        reserve: "🗓️ Reservar",
-        whatsapp: "📲 WhatsApp",
-        phone: "📞 Teléfono",
-        location: "📍 Ubicación",
-        hours: "🕒 Horario",
-        prices: "💶 Tarifas",
-        deposit: "🧾 Fianza y limpieza",
-        capacity: "👥 Aforo",
-        seating: "🪑 Mesas y sillas",
-        food: "🍕 Comida",
-        kitchen: "🍽️ Cocina",
-      },
+
       answers: {
         intro:
-          "¡Hola! Soy el asistente de Juga i Celebra. Pregúntame lo que necesites (ubicación, horario, tarifas, aforo, mesas/sillas, comida, cocina, reserva…).",
+          "¡Hola! Soy el asistente de Juga i Celebra. Pregúntame lo que necesites (ubicación, horario, tarifas, aforo, mesas/sillas, comida, cocina o reserva).",
         location: "📍 Ubicación: {address}",
         hours: "🕒 Horario: {hours}",
         phone: "📞 Teléfono: {phone}",
@@ -525,17 +573,13 @@ const DICT: Record<Lang, Dict> = {
           "🧾 Fianza: 100€ en efectivo el día de entrega de llaves. Limpieza: 60€ (opcional, a consultar).",
         reserve:
           "🗓️ Para reservar: baja a “Reservar 2026” y elige una fecha disponible (las verdes ya están reservadas).",
-        capacity: "👥 {capacity}",
+        capacity: "👥 {capacityText}",
         seating:
           "🪑 Equipamiento:\n- {adultsChairs}\n- {kidsChairs}\n- {foldTables}\n- {kidsTables}\n- {highChairs}",
-        food: "🍕 {canBring}",
-        kitchen: "🍽️ {kitchenNote}",
+        food: "🍕 {foodText}",
+        kitchen: "🍽️ {kitchenText}",
         fallback:
-          "Te lo reviso: puedes preguntarme por ubicación, horario, tarifas, fianza/limpieza, aforo, mesas/sillas, comida, cocina o reserva.",
-      },
-      actions: {
-        goReserve: "Ir a reservar",
-        openWhatsapp: "Abrir WhatsApp",
+          "Puedes preguntarme por ubicación, horario, tarifas, fianza/limpieza, aforo, mesas/sillas, comida, cocina o reserva.",
       },
     },
 
