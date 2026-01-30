@@ -166,7 +166,7 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ GalleryFan (tr.gallery.*)
+    // ✅ AÑADIDO: GalleryFan (tr.gallery.*)
     gallery: {
       title: "Galeria",
       subtitle:
@@ -189,7 +189,7 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ Footer (tr.footer.*)
+    // ✅ AÑADIDO: Footer (tr.footer.*)
     footer: {
       description:
         "Dedicats a crear experiències màgiques per als més menuts de la casa. El millor parc de boles d’Algemesí.",
@@ -210,12 +210,12 @@ const DICT: Record<Lang, Dict> = {
       designed: "Dissenyat amb ❤️ per a la comunitat d’Algemesí.",
     },
 
-    // ✅ NUEVO: Chat interno (FAQ + disponibilidad)
+    // ✅ AÑADIDO: Assistant (tr.assistant.*)
     assistant: {
       fabLabel: "Ajuda",
       title: "Atenció al client",
-      subtitle: "Responem dubtes ràpid (i podem comprovar dates).",
-      placeholder: "Escriu la teua pregunta… (ex: 15/03/2026)",
+      subtitle: "Resolem dubtes (i comprovem dates).",
+      placeholder: "Escriu… (ex: 15/03/2026)",
       send: "Enviar",
       quickTitle: "Accés ràpid",
       quick: {
@@ -233,39 +233,35 @@ const DICT: Record<Lang, Dict> = {
       },
       bot: {
         hello:
-          "Hola 👋 Sóc l’assistent de Juga i Celebra. Pregunta’m el que necessites. Si em dius una data (DD/MM/2026 o 2026-MM-DD) et dic si està disponible.",
+          "Hola 👋 Sóc l’assistent de Juga i Celebra. Si em dius una data (DD/MM/2026 o 2026-MM-DD) et dic si està disponible.",
         fallback:
-          "No tinc eixa dada exacta. Escriu-nos per WhatsApp i t’ho confirmem al moment.",
+          "No tinc eixa dada ara mateix. Escriu-nos per WhatsApp i t’ho confirmem al moment.",
       },
       answers: {
         prices:
-          "Tarifes 2026:\n• Dilluns–Dijous: 80€ (10:00–21:30)\n• Divendres / vespra festiu: 100€ (10:00–21:30)\n• Dissabte, diumenge i festius: 160€ (10:00–21:30)\n\nPagament de reserva: 50% amb targeta (Stripe).",
-        location:
-          "Estem a: Avinguda País Valencià 58 (Algemesí), València.",
-        phone:
-          "Telèfon/WhatsApp: +34 614 03 77 92.",
+          "Tarifes 2026:\n• Dilluns–Dijous: 80€ (10:00–21:30)\n• Divendres / vespra festiu: 100€ (10:00–21:30)\n• Dissabte, diumenge i festius: 160€ (10:00–21:30)\n\nReserva: 50% amb targeta (Stripe).",
+        location: "Avinguda País Valencià 58 (Algemesí), València.",
+        phone: "Telèfon/WhatsApp: +34 614 03 77 92.",
         capacity:
           "Aforament autoritzat: fins a 48 persones.\nEquipament: 40 cadires adults, 16 cadires peques, 6 taules plegables, 4 taules peques, 2 trones.",
         food:
-          "Sí: podeu portar el vostre menjar i beguda (inclosa tarta). Important: no es permet menjar/beguda dins del parc de boles.",
+          "Sí, podeu portar el vostre menjar i beguda (inclosa tarta). Important: no es permet menjar/beguda dins del parc de boles.",
         kitchen:
-          "Hi ha cuina de suport (no es pot cuinar): nevera/congelador, microones, cafetera i boteller.",
+          "Cuina de suport (no es pot cuinar): nevera/congelador, microones, cafetera i boteller.",
         rules:
-          "Normes parc de boles:\n• Calcetins obligatoris.\n• Sense calçat dins del parc.\n• No menjar ni beguda dins del parc.\n• Ús sota supervisió d’un adult responsable.",
+          "Normes parc de boles:\n• Calcetins obligatoris.\n• Sense calçat dins del parc.\n• No menjar ni beguda dins del parc.\n• Ús sota supervisió d’un adult.",
         cleaning:
           "Fiança: 100€ en efectiu el dia de l’esdeveniment (es retorna si tot està correcte).\nNeteja: 60€ (opcional / a consultar).",
         cancel:
-          "Cancel·lacions o canvis amb menys d’1 setmana: no hi ha devolució. En eixe cas, es retorna el 50% de la reserva (segons condicions).",
+          "Canvis/cancel·lacions amb menys d’1 setmana: no hi ha devolució. En eixe cas, es retorna el 50% de la reserva (segons condicions).",
         howToBook:
-          "Com reservar:\n1) Tria una data disponible al calendari.\n2) Ompli nom i WhatsApp.\n3) Paga la reserva (50%) amb targeta via Stripe.\n4) En tornar a la web, la data queda marcada com RESERVADA.",
+          "Com reservar:\n1) Tria una data disponible al calendari.\n2) Ompli nom i WhatsApp.\n3) Paga la reserva (50%) amb targeta via Stripe.\n4) En tornar, queda RESERVADA.",
         availabilityHint:
           "Digues-me una data (DD/MM/2026 o 2026-MM-DD) i t’indique si està disponible.",
-        available:
-          "✅ La data {date} està DISPONIBLE.",
-        booked:
-          "⛔ La data {date} ja està RESERVADA.",
+        available: "✅ La data {date} està DISPONIBLE.",
+        booked: "⛔ La data {date} ja està RESERVADA.",
         availabilityError:
-          "No he pogut comprovar la disponibilitat ara mateix. Mira el calendari (les dates en verd estan reservades) o escriu-nos per WhatsApp.",
+          "No he pogut comprovar la disponibilitat ara mateix. Mira el calendari o escriu-nos per WhatsApp.",
       },
     },
 
@@ -468,7 +464,7 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ GalleryFan (tr.gallery.*)
+    // ✅ AÑADIDO: GalleryFan (tr.gallery.*)
     gallery: {
       title: "Galería",
       subtitle:
@@ -491,7 +487,7 @@ const DICT: Record<Lang, Dict> = {
       },
     },
 
-    // ✅ Footer (tr.footer.*)
+    // ✅ AÑADIDO: Footer (tr.footer.*)
     footer: {
       description:
         "Dedicados a crear experiencias mágicas para los más pequeños de la casa. El mejor parque de bolas de Algemesí.",
@@ -512,12 +508,12 @@ const DICT: Record<Lang, Dict> = {
       designed: "Diseñado con ❤️ para la comunidad de Algemesí.",
     },
 
-    // ✅ NUEVO: Chat interno (FAQ + disponibilidad)
+    // ✅ AÑADIDO: Assistant (tr.assistant.*)
     assistant: {
       fabLabel: "Ayuda",
       title: "Atención al cliente",
-      subtitle: "Resolvemos dudas rápido (y podemos comprobar fechas).",
-      placeholder: "Escribe tu pregunta… (ej: 15/03/2026)",
+      subtitle: "Resolvemos dudas (y comprobamos fechas).",
+      placeholder: "Escribe… (ej: 15/03/2026)",
       send: "Enviar",
       quickTitle: "Acceso rápido",
       quick: {
@@ -535,39 +531,35 @@ const DICT: Record<Lang, Dict> = {
       },
       bot: {
         hello:
-          "Hola 👋 Soy el asistente de Juga i Celebra. Pregúntame lo que necesites. Si me dices una fecha (DD/MM/2026 o 2026-MM-DD) te digo si está disponible.",
+          "Hola 👋 Soy el asistente de Juga i Celebra. Si me dices una fecha (DD/MM/2026 o 2026-MM-DD) te digo si está disponible.",
         fallback:
-          "No tengo ese dato exacto ahora mismo. Escríbenos por WhatsApp y te lo confirmamos al momento.",
+          "No tengo ese dato ahora mismo. Escríbenos por WhatsApp y te lo confirmamos al momento.",
       },
       answers: {
         prices:
-          "Tarifas 2026:\n• Lunes–Jueves: 80€ (10:00–21:30)\n• Viernes / víspera festivo: 100€ (10:00–21:30)\n• Sábado, domingo y festivos: 160€ (10:00–21:30)\n\nPago de reserva: 50% con tarjeta (Stripe).",
-        location:
-          "Estamos en: Avinguda País Valencià 58 (Algemesí), Valencia.",
-        phone:
-          "Teléfono/WhatsApp: +34 614 03 77 92.",
+          "Tarifas 2026:\n• Lunes–Jueves: 80€ (10:00–21:30)\n• Viernes / víspera festivo: 100€ (10:00–21:30)\n• Sábado, domingo y festivos: 160€ (10:00–21:30)\n\nReserva: 50% con tarjeta (Stripe).",
+        location: "Avinguda País Valencià 58 (Algemesí), Valencia.",
+        phone: "Teléfono/WhatsApp: +34 614 03 77 92.",
         capacity:
           "Aforo autorizado: hasta 48 personas.\nEquipamiento: 40 sillas adultos, 16 sillas peques, 6 mesas plegables, 4 mesas peques, 2 tronas.",
         food:
-          "Sí: podéis traer vuestra comida y bebida (incluida tarta). Importante: no se permite comida/bebida dentro del parque de bolas.",
+          "Sí, podéis traer vuestra comida y bebida (incluida tarta). Importante: no se permite comida/bebida dentro del parque de bolas.",
         kitchen:
-          "Hay cocina de apoyo (no se puede cocinar): nevera/congelador, microondas, cafetera y botellero.",
+          "Cocina de apoyo (no se puede cocinar): nevera/congelador, microondas, cafetera y botellero.",
         rules:
-          "Normas del parque de bolas:\n• Calcetines obligatorios.\n• Sin calzado dentro del parque.\n• No comida ni bebida dentro del parque.\n• Uso bajo supervisión de un adulto responsable.",
+          "Normas del parque de bolas:\n• Calcetines obligatorios.\n• Sin calzado dentro del parque.\n• No comida ni bebida dentro del parque.\n• Uso bajo supervisión de un adulto.",
         cleaning:
           "Fianza: 100€ en efectivo el día del evento (se devuelve si todo está correcto).\nLimpieza: 60€ (opcional / a consultar).",
         cancel:
-          "Cancelaciones o cambios con menos de 1 semana: no hay devolución. En ese caso, se retornará el 50% de la reserva (según condiciones).",
+          "Cambios/cancelaciones con menos de 1 semana: no hay devolución. En ese caso, se retornará el 50% de la reserva (según condiciones).",
         howToBook:
-          "Cómo reservar:\n1) Elige una fecha disponible en el calendario.\n2) Rellena nombre y WhatsApp.\n3) Paga la reserva (50%) con tarjeta vía Stripe.\n4) Al volver a la web, la fecha queda marcada como RESERVADA.",
+          "Cómo reservar:\n1) Elige una fecha disponible en el calendario.\n2) Rellena nombre y WhatsApp.\n3) Paga la reserva (50%) con tarjeta vía Stripe.\n4) Al volver, queda RESERVADA.",
         availabilityHint:
           "Dime una fecha (DD/MM/2026 o 2026-MM-DD) y te digo si está disponible.",
-        available:
-          "✅ La fecha {date} está DISPONIBLE.",
-        booked:
-          "⛔ La fecha {date} ya está RESERVADA.",
+        available: "✅ La fecha {date} está DISPONIBLE.",
+        booked: "⛔ La fecha {date} ya está RESERVADA.",
         availabilityError:
-          "No he podido comprobar la disponibilidad ahora mismo. Mira el calendario (las fechas en verde están reservadas) o escríbenos por WhatsApp.",
+          "No he podido comprobar la disponibilidad ahora mismo. Mira el calendario o escríbenos por WhatsApp.",
       },
     },
 
@@ -610,8 +602,9 @@ const DICT: Record<Lang, Dict> = {
   },
 };
 
+// ✅ fallback seguro (si falla lang o falta algo, devuelve "val")
 export function t(lang: Lang) {
-  return DICT[lang] || DICT.val;
+  return (DICT[lang] || DICT.val) as Dict;
 }
 
 export function getSavedLang(): Lang | null {
