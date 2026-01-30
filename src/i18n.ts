@@ -127,9 +127,9 @@ const DICT: Record<Lang, Dict> = {
         equipment: {
           items: [
             { icon: "🪑", text: "40 cadires adults" },
-            { icon: "🧒", text: "16 cadires peques (ampliem pròximament amb 4+)" },
+            { icon: "🧒", text: "20 cadires peques" },
             { icon: "🪑", text: "6 taules plegables" },
-            { icon: "🧸", text: "4 taules peques (ampliem pròximament amb 1+)" },
+            { icon: "🧸", text: "5 taules peques" },
             { icon: "👶", text: "2 trones" },
             { icon: "🚻", text: "Bany adaptat PMR amb canviador" },
             { icon: "🧥", text: "Penjadors i zona de descans" },
