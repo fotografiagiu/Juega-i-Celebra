@@ -168,8 +168,7 @@ const DICT: Record<Lang, Dict> = {
 
     gallery: {
       title: "Galeria",
-      subtitle:
-        "Parc de boles i la resta del local. Polsa per a veure totes les fotos.",
+      subtitle: "Parc de boles i la resta del local. Polsa per a veure totes les fotos.",
       photosWord: "fotos",
       viewButton: "Veure galeria",
       ariaOpen: "Obrir galeria",
@@ -208,7 +207,6 @@ const DICT: Record<Lang, Dict> = {
       designed: "Dissenyat amb ❤️ per a la comunitat d’Algemesí.",
     },
 
-    // ✅ AÑADIDO: Chat interno (FAQ)
     chat: {
       fabLabel: "Obrir xat",
       title: "Assistència",
@@ -230,8 +228,7 @@ const DICT: Record<Lang, Dict> = {
           "Tarifes 2026: Dilluns-Dijous 80€, Divendres/Vespra 100€, Dissabte-Diumenge/Festiu 160€.",
         deposit:
           "Fiança: 100€ en efectiu el dia de les claus. Neteja: 60€ (opcional, a consultar).",
-        reserve:
-          "Per reservar, baixa a la secció “Reservar 2026” i tria una data disponible.",
+        reserve: "Per reservar, baixa a la secció “Reservar 2026” i tria una data disponible.",
         whatsapp: "Si vols, escriu-nos per WhatsApp i t’ajudem ara mateix.",
       },
       actions: {
@@ -276,6 +273,113 @@ const DICT: Record<Lang, Dict> = {
         sendAnother: "Enviar un altre missatge",
       },
       alertError: "Error en l’enviament. Per favor, contacta per telèfon.",
+    },
+
+    // ✅ NUEVO: Booking Calendar (100% i18n)
+    bookingCalendar: {
+      badge: "Calendari Algemesí 2026",
+      titlePre: "Reserva la teua",
+      titleHighlight: "Festa",
+
+      introPre: "Les dates en",
+      introHighlight1: "VERD",
+      introMid: "ja estan",
+      introHighlight2: "RESERVADES",
+      introPost: "i bloquejades automàticament.",
+
+      months: [
+        "Gener",
+        "Febrer",
+        "Març",
+        "Abril",
+        "Maig",
+        "Juny",
+        "Juliol",
+        "Agost",
+        "Setembre",
+        "Octubre",
+        "Novembre",
+        "Desembre",
+      ],
+      weekdays: ["DL", "DT", "DC", "DJ", "DV", "DS", "DG"],
+
+      chooseDayTitle: "Quan és l’aniversari?",
+      chooseDaySubtitle: "Tria un dia disponible en el calendari per a començar.",
+
+      reservedTag: "RESERVAT",
+      legendBooked: "RESERVAT",
+      legendSelected: "Selecció",
+      legendFree: "Lliure",
+
+      formTitle: "Dades de l’esdeveniment",
+      responsibleLabel: "Responsable de la festa",
+      namePlaceholder: "Nom i cognoms",
+      whatsappLabel: "WhatsApp de contacte",
+      phonePlaceholder: "6XX XXX XXX",
+
+      rentalConfigTitle: "Configuració del lloguer",
+      rentalConfigSubtitle: "(Les tarifes s’ajusten automàticament segons el dia)",
+      scheduleLabel: "Horari",
+
+      rentalOptions: [
+        { label: "Dilluns a dijous (80€)", value: "80", schedule: "10:00–21:30" },
+        { label: "Divendres / Vespra de festiu (100€)", value: "100", schedule: "10:00–21:30" },
+        { label: "Dissabte, diumenge i festius (160€)", value: "160", schedule: "10:00–21:30" },
+      ],
+
+      cleaningTitle: "SERVICI DE NETEJA",
+      cleaningSubtitle: "60€ - A consultar amb el local",
+
+      payTodayLabel: "Pagament de reserva hui (50%)",
+      nextStep: "SEGÜENT PAS 🚀",
+
+      payTitle: "Pagament segur",
+      modify: "← MODIFICAR",
+      payButton: "PAGAR AMB TARGETA (STRIPE) 🥳",
+      redirecting: "REDIRIGINT A STRIPE...",
+
+      summaryTitle: "Resum de la teua selecció",
+      baseRentalLabel: "Lloguer base",
+      cleaningServiceLabel: "Servei de neteja",
+      consultText: "A consultar",
+      totalRentalLabel: "Total del lloguer",
+      payDepositLabel: "PAGAMENT DE RESERVA",
+
+      additionalInfoTitle: "📋 INFORMACIÓ ADDICIONAL:",
+      additionalLine1_pre: "• La fiança de",
+      additionalLine1_post: "s’abona en efectiu el dia de l’esdeveniment.",
+      additionalLine2_pre: "• El servei de neteja de",
+      additionalLine2_post: "s’ha de demanar a banda.",
+      additionalLine3:
+        "• En pagar, et redirigim a Stripe. En tornar, es marca com a RESERVAT.",
+
+      successTitle: "RESERVAT!",
+      successTextPre: "La teua data",
+      successTextMid: "ja està marcada en",
+      successGreenWord: "VERD",
+      successTextPost: "fix.",
+      successWhatsappBtn: "ENVIAR JUSTIFICANT PER WHATSAPP 📄",
+
+      missingFields: "Completa el nom i el WhatsApp abans de pagar.",
+      dateTaken: "Eixa data ja està reservada. Tria’n una altra.",
+      paidNoPending:
+        "Pagament rebut, però no s’ha trobat la reserva pendent. Escriu-nos per WhatsApp.",
+      paidRegisterFail:
+        "Pagament OK, però ha fallat el registre. Escriu-nos per WhatsApp amb el justificant.",
+
+      wa: {
+        hello: "Hola! He reservat el dia",
+        paidLabel: "Pagament de reserva (Stripe)",
+        tarifaLabel: "Tarifa",
+        scheduleLabel: "Horari",
+        kidsLabel: "Infants",
+        reminderLabel: "Recordatori",
+        depositWord: "Fiança",
+        cashWord: "en efectiu",
+        cleaningWord: "Neteja",
+        consultWord: "a consultar",
+        sessionLabel: "Sessió",
+      },
     },
   },
 
@@ -366,6 +470,7 @@ const DICT: Record<Lang, Dict> = {
             "Sábado/Domingo (10:00-21:30)",
             "Día completo para tu evento",
             "Acceso exclusivo a todo el espacio",
+            "Acceso exclusivo a todo el espacio",
             "Fianza de 100€ (Efectivo)",
             "Servicio limpieza (+60€)",
           ],
@@ -442,8 +547,7 @@ const DICT: Record<Lang, Dict> = {
 
     gallery: {
       title: "Galería",
-      subtitle:
-        "Parque de bolas y el resto del local. Pulsa para ver todas las fotos.",
+      subtitle: "Parque de bolas y el resto del local. Pulsa para ver todas las fotos.",
       photosWord: "fotos",
       viewButton: "Ver galería",
       ariaOpen: "Abrir galería",
@@ -482,7 +586,6 @@ const DICT: Record<Lang, Dict> = {
       designed: "Diseñado con ❤️ para la comunidad de Algemesí.",
     },
 
-    // ✅ AÑADIDO: Chat interno (FAQ)
     chat: {
       fabLabel: "Abrir chat",
       title: "Asistente",
@@ -504,8 +607,7 @@ const DICT: Record<Lang, Dict> = {
           "Tarifas 2026: Lunes-Jueves 80€, Viernes/Víspera 100€, Sábado-Domingo/Festivo 160€.",
         deposit:
           "Fianza: 100€ en efectivo el día de entrega de llaves. Limpieza: 60€ (opcional, a consultar).",
-        reserve:
-          "Para reservar, baja a la sección “Reservar 2026” y elige una fecha disponible.",
+        reserve: "Para reservar, baja a la sección “Reservar 2026” y elige una fecha disponible.",
         whatsapp: "Si quieres, escríbenos por WhatsApp y te ayudamos ahora mismo.",
       },
       actions: {
@@ -550,6 +652,113 @@ const DICT: Record<Lang, Dict> = {
         sendAnother: "Enviar otro mensaje",
       },
       alertError: "Error en el envío. Por favor, contacta por teléfono.",
+    },
+
+    // ✅ NUEVO: Booking Calendar (100% i18n)
+    bookingCalendar: {
+      badge: "Calendario Algemesí 2026",
+      titlePre: "Reserva tu",
+      titleHighlight: "Fiesta",
+
+      introPre: "Las fechas en",
+      introHighlight1: "VERDE",
+      introMid: "ya están",
+      introHighlight2: "RESERVADAS",
+      introPost: "y bloqueadas automáticamente.",
+
+      months: [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre",
+      ],
+      weekdays: ["LU", "MA", "MI", "JU", "VI", "SA", "DO"],
+
+      chooseDayTitle: "¿Cuándo es el cumple?",
+      chooseDaySubtitle: "Elige un día disponible en el calendario para comenzar.",
+
+      reservedTag: "RESERVADO",
+      legendBooked: "RESERVADO",
+      legendSelected: "Selección",
+      legendFree: "Libre",
+
+      formTitle: "Datos del evento",
+      responsibleLabel: "Responsable de la fiesta",
+      namePlaceholder: "Nombre completo",
+      whatsappLabel: "WhatsApp de contacto",
+      phonePlaceholder: "6XX XXX XXX",
+
+      rentalConfigTitle: "Configuración del alquiler",
+      rentalConfigSubtitle: "(Las tarifas se ajustan automáticamente según el día)",
+      scheduleLabel: "Horario",
+
+      rentalOptions: [
+        { label: "Lunes a Jueves (80€)", value: "80", schedule: "10:00–21:30" },
+        { label: "Viernes / Víspera de festivo (100€)", value: "100", schedule: "10:00–21:30" },
+        { label: "Sábado, domingo y festivos (160€)", value: "160", schedule: "10:00–21:30" },
+      ],
+
+      cleaningTitle: "SERVICIO DE LIMPIEZA",
+      cleaningSubtitle: "60€ - A consultar con el local",
+
+      payTodayLabel: "Pago Reserva hoy (50%)",
+      nextStep: "SIGUIENTE PASO 🚀",
+
+      payTitle: "Pago seguro",
+      modify: "← MODIFICAR",
+      payButton: "PAGAR CON TARJETA (STRIPE) 🥳",
+      redirecting: "REDIRIGIENDO A STRIPE...",
+
+      summaryTitle: "Resumen de tu selección",
+      baseRentalLabel: "Alquiler base",
+      cleaningServiceLabel: "Servicio de limpieza",
+      consultText: "A consultar",
+      totalRentalLabel: "Total alquiler",
+      payDepositLabel: "PAGO RESERVA",
+
+      additionalInfoTitle: "📋 INFORMACIÓN ADICIONAL:",
+      additionalLine1_pre: "• La fianza de",
+      additionalLine1_post: "se abona en efectivo el día del evento.",
+      additionalLine2_pre: "• El servicio de limpieza de",
+      additionalLine2_post: "debe solicitarse aparte.",
+      additionalLine3:
+        "• Al pagar, te redirigimos a Stripe. Al volver, se marca como RESERVADO.",
+
+      successTitle: "¡RESERVADO!",
+      successTextPre: "Tu fecha",
+      successTextMid: "ya está marcada en",
+      successGreenWord: "VERDE",
+      successTextPost: "fijo.",
+      successWhatsappBtn: "ENVIAR JUSTIFICANTE POR WHATSAPP 📄",
+
+      missingFields: "Completa nombre y WhatsApp antes de pagar.",
+      dateTaken: "Esa fecha ya está reservada. Elige otra.",
+      paidNoPending:
+        "Pago recibido, pero no se encontró la reserva pendiente. Escríbenos por WhatsApp.",
+      paidRegisterFail:
+        "Pago OK, pero falló el registro. Escríbenos por WhatsApp con tu justificante.",
+
+      wa: {
+        hello: "¡Hola! He reservado el día",
+        paidLabel: "Pago Reserva (Stripe)",
+        tarifaLabel: "Tarifa",
+        scheduleLabel: "Horario",
+        kidsLabel: "Niños",
+        reminderLabel: "Recordatorio",
+        depositWord: "Fianza",
+        cashWord: "en efectivo",
+        cleaningWord: "Limpieza",
+        consultWord: "a consultar",
+        sessionLabel: "Session",
+      },
     },
   },
 };
