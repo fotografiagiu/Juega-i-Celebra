@@ -25,71 +25,84 @@ type Props = {
 const BookingCalendar: React.FC<Props> = ({ lang }) => {
   const tr = t(lang);
 
-  // ✅ ultra-safe: si i18n aún no tiene bookingCalendar, no crashea
-  const bc = (tr && (tr as any).bookingCalendar) ? (tr as any).bookingCalendar : {};
+  // ✅ Ultra-safe: si i18n aún no tiene bookingCalendar, no crashea
+  const bc = (tr as any)?.bookingCalendar ?? {};
 
   const T = {
-    badge: bc.badge ?? "Calendari Algemesí 2026",
-    titlePre: bc.titlePre ?? "Reserva la teua",
-    titleHighlight: bc.titleHighlight ?? "Festa",
-    introPre: bc.introPre ?? "Les dates en",
-    introHighlight1: bc.introHighlight1 ?? "VERD",
-    introMid: bc.introMid ?? "ja estan",
-    introHighlight2: bc.introHighlight2 ?? "RESERVADES",
-    introPost: bc.introPost ?? "i bloquejades automàticament.",
-    chooseDayTitle: bc.chooseDayTitle ?? "Quan és el cumple?",
+    badge: bc.badge ?? (lang === "val" ? "Calendari Algemesí 2026" : "Calendario Algemesí 2026"),
+    titlePre: bc.titlePre ?? (lang === "val" ? "Reserva la teua" : "Reserva tu"),
+    titleHighlight: bc.titleHighlight ?? (lang === "val" ? "Festa" : "Fiesta"),
+    introPre: bc.introPre ?? (lang === "val" ? "Les dates en" : "Las fechas en"),
+    introHighlight1: bc.introHighlight1 ?? (lang === "val" ? "VERD" : "VERDE"),
+    introMid: bc.introMid ?? (lang === "val" ? "ja estan" : "ya están"),
+    introHighlight2: bc.introHighlight2 ?? (lang === "val" ? "RESERVADES" : "RESERVADAS"),
+    introPost: bc.introPost ?? (lang === "val" ? "i bloquejades automàticament." : "y bloqueadas automáticamente."),
+    chooseDayTitle: bc.chooseDayTitle ?? (lang === "val" ? "Quan és el cumple?" : "¿Cuándo es el cumple?"),
     chooseDaySubtitle:
-      bc.chooseDaySubtitle ?? "Tria un dia disponible al calendari per a començar.",
-    reservedTag: bc.reservedTag ?? "RESERVAT",
-    holidayTag: bc.holidayTag ?? "FESTIU",
-    legendBooked: bc.legendBooked ?? "RESERVAT",
-    legendSelected: bc.legendSelected ?? "Selecció",
-    legendFree: bc.legendFree ?? "Lliure",
-    legendHoliday: bc.legendHoliday ?? "Festiu",
-    formTitle: bc.formTitle ?? "Dades de l’esdeveniment",
-    nextStep: bc.nextStep ?? "SEGÜENT PAS 🚀",
-    payTitle: bc.payTitle ?? "Pagament segur",
-    modify: bc.modify ?? "← MODIFICAR",
-    payButton: bc.payButton ?? "PAGAR AMB TARGETA (STRIPE) 🥳",
-    redirecting: bc.redirecting ?? "REDIRIGINT A STRIPE...",
-    missingFields: bc.missingFields ?? "Completa nom i WhatsApp abans de pagar.",
-    dateTaken: bc.dateTaken ?? "Eixa data ja està reservada. Tria una altra.",
+      bc.chooseDaySubtitle ??
+      (lang === "val" ? "Tria un dia disponible al calendari per a començar." : "Elige un día disponible en el calendario para comenzar."),
+    reservedTag: bc.reservedTag ?? (lang === "val" ? "RESERVAT" : "RESERVADO"),
+    holidayTag: bc.holidayTag ?? (lang === "val" ? "FESTIU" : "FESTIVO"),
+    legendBooked: bc.legendBooked ?? (lang === "val" ? "RESERVAT" : "RESERVADO"),
+    legendSelected: bc.legendSelected ?? (lang === "val" ? "SELECCIÓ" : "SELECCIÓN"),
+    legendFree: bc.legendFree ?? (lang === "val" ? "LLIURE" : "LIBRE"),
+    legendHoliday: bc.legendHoliday ?? (lang === "val" ? "FESTIU" : "FESTIVO"),
+    formTitle: bc.formTitle ?? (lang === "val" ? "Dades de l’esdeveniment" : "Datos del evento"),
+    nextStep: bc.nextStep ?? (lang === "val" ? "SEGÜENT PAS 🚀" : "SIGUIENTE PASO 🚀"),
+    payTitle: bc.payTitle ?? (lang === "val" ? "Pagament segur" : "Pago Seguro"),
+    modify: bc.modify ?? (lang === "val" ? "← MODIFICAR" : "← MODIFICAR"),
+    payButton: bc.payButton ?? (lang === "val" ? "PAGAR AMB TARGETA (STRIPE) 🥳" : "PAGAR CON TARJETA (STRIPE) 🥳"),
+    redirecting: bc.redirecting ?? (lang === "val" ? "REDIRIGINT A STRIPE..." : "REDIRIGIENDO A STRIPE..."),
+    missingFields: bc.missingFields ?? (lang === "val" ? "Completa nom i WhatsApp abans de pagar." : "Completa nombre y WhatsApp antes de pagar."),
+    dateTaken: bc.dateTaken ?? (lang === "val" ? "Eixa data ja està reservada. Tria una altra." : "Esa fecha ya está reservada. Elige otra."),
     paidNoPending:
       bc.paidNoPending ??
-      "Pagament rebut, però no s’ha trobat la reserva pendent. Escriu-nos per WhatsApp.",
+      (lang === "val"
+        ? "Pagament rebut, però no s’ha trobat la reserva pendent. Escriu-nos per WhatsApp."
+        : "Pago recibido, pero no se encontró la reserva pendiente. Escríbenos por WhatsApp."),
     paidRegisterFail:
       bc.paidRegisterFail ??
-      "Pagament OK, però ha fallat el registre. Escriu-nos per WhatsApp amb el justificant.",
+      (lang === "val"
+        ? "Pagament OK, però ha fallat el registre. Escriu-nos per WhatsApp amb el justificant."
+        : "Pago OK, pero falló el registro. Escríbenos por WhatsApp con tu justificante."),
     labels: {
-      responsible: bc.labels?.responsible ?? "Responsable de la festa",
-      fullNamePH: bc.labels?.fullNamePH ?? "Nom complet",
-      whatsapp: bc.labels?.whatsapp ?? "WhatsApp de contacte",
-      whatsappPH: bc.labels?.whatsappPH ?? "6XX XXX XXX",
-      rentalConfig: bc.labels?.rentalConfig ?? "Configuració del lloguer",
-      autoRates: bc.labels?.autoRates ?? "(Les tarifes s’ajusten automàticament segons el dia)",
-      cleaningTitle: bc.labels?.cleaningTitle ?? "SERVEI DE NETEJA",
-      cleaningSub: bc.labels?.cleaningSub ?? "60€ - A consultar amb el local",
-      payToday: bc.labels?.payToday ?? "Pagament reserva hui (50%)",
-      summaryTitle: bc.labels?.summaryTitle ?? "Resum de la selecció",
-      base: bc.labels?.base ?? "Lloguer base:",
-      schedule: bc.labels?.schedule ?? "Horari:",
-      cleaning: bc.labels?.cleaning ?? "Servei neteja:",
-      total: bc.labels?.total ?? "Total lloguer:",
-      deposit: bc.labels?.deposit ?? "PAGAMENT RESERVA:",
-      infoTitle: bc.labels?.infoTitle ?? "📋 INFORMACIÓ ADDICIONAL:",
+      responsible: bc.labels?.responsible ?? (lang === "val" ? "Responsable de la festa" : "Responsable de la fiesta"),
+      fullNamePH: bc.labels?.fullNamePH ?? (lang === "val" ? "Nom complet" : "Nombre completo"),
+      whatsapp: bc.labels?.whatsapp ?? (lang === "val" ? "WhatsApp de contacte" : "WhatsApp de contacto"),
+      whatsappPH: bc.labels?.whatsappPH ?? (lang === "val" ? "6XX XXX XXX" : "6XX XXX XXX"),
+      rentalConfig: bc.labels?.rentalConfig ?? (lang === "val" ? "Configuració del lloguer" : "Configuración del alquiler"),
+      autoRates:
+        bc.labels?.autoRates ??
+        (lang === "val" ? "(Les tarifes s’ajusten automàticament segons el dia)" : "(Las tarifas se ajustan automáticamente según el día)"),
+      cleaningTitle: bc.labels?.cleaningTitle ?? (lang === "val" ? "SERVEI DE NETEJA" : "SERVICIO DE LIMPIEZA"),
+      cleaningSub: bc.labels?.cleaningSub ?? (lang === "val" ? "60€ - A consultar amb el local" : "60€ - A consultar con el local"),
+      payToday: bc.labels?.payToday ?? (lang === "val" ? "Pagament reserva hui (50%)" : "Pago Reserva hoy (50%)"),
+      summaryTitle: bc.labels?.summaryTitle ?? (lang === "val" ? "Resum de la selecció" : "Resumen de tu selección"),
+      base: bc.labels?.base ?? (lang === "val" ? "Lloguer base:" : "Alquiler base:"),
+      schedule: bc.labels?.schedule ?? (lang === "val" ? "Horari:" : "Horario:"),
+      cleaning: bc.labels?.cleaning ?? (lang === "val" ? "Servei neteja:" : "Servicio limpieza:"),
+      total: bc.labels?.total ?? (lang === "val" ? "Total lloguer:" : "Total alquiler:"),
+      deposit: bc.labels?.deposit ?? (lang === "val" ? "PAGAMENT RESERVA:" : "PAGO RESERVA:"),
+      infoTitle: bc.labels?.infoTitle ?? (lang === "val" ? "📋 INFORMACIÓ ADDICIONAL:" : "📋 INFORMACIÓN ADICIONAL:"),
       info1:
         bc.labels?.info1 ??
-        "• La fiança de {SECURITY_DEPOSIT}€ s’abona en efectiu el dia de l’esdeveniment.",
+        (lang === "val"
+          ? "• La fiança de {SECURITY_DEPOSIT}€ s’abona en efectiu el dia de l’esdeveniment."
+          : "• La fianza de {SECURITY_DEPOSIT}€ se abona en efectivo el día del evento."),
       info2:
         bc.labels?.info2 ??
-        "• El servei de neteja de {CLEANING_FEE}€ s’ha de sol·licitar a banda.",
+        (lang === "val"
+          ? "• El servei de neteja de {CLEANING_FEE}€ s’ha de sol·licitar a banda."
+          : "• El servicio de limpieza de {CLEANING_FEE}€ debe solicitarse aparte."),
       info3:
         bc.labels?.info3 ??
-        "• En pagar, et redirigim a Stripe. En tornar, es marca com a RESERVAT.",
-      reservedOkTitle: bc.labels?.reservedOkTitle ?? "RESERVAT!",
-      reservedOkTextPre: bc.labels?.reservedOkTextPre ?? "La teua data",
-      reservedOkTextPost: bc.labels?.reservedOkTextPost ?? "ja està marcada en VERD.",
-      sendProof: bc.labels?.sendProof ?? "ENVIAR JUSTIFICANT PER WHATSAPP 📄",
+        (lang === "val"
+          ? "• En pagar, et redirigim a Stripe. En tornar, es marca com a RESERVAT."
+          : "• Al pagar, te redirigimos a Stripe. Al volver, se marca como RESERVADO."),
+      reservedOkTitle: bc.labels?.reservedOkTitle ?? (lang === "val" ? "RESERVAT!" : "¡RESERVADO!"),
+      reservedOkTextPre: bc.labels?.reservedOkTextPre ?? (lang === "val" ? "La teua data" : "Tu fecha"),
+      reservedOkTextPost: bc.labels?.reservedOkTextPost ?? (lang === "val" ? "ja està marcada en VERD." : "ya está marcada en VERDE."),
+      sendProof: bc.labels?.sendProof ?? (lang === "val" ? "ENVIAR JUSTIFICANT PER WHATSAPP 📄" : "ENVIAR JUSTIFICANTE POR WHATSAPP 📄"),
     },
   };
 
@@ -102,7 +115,7 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
   const [bookedDates, setBookedDates] = useState<Set<string>>(new Set());
   const formRef = useRef<HTMLDivElement>(null);
 
-  // Ajusta estos importes si cambian
+  // Importes
   const CLEANING_FEE = 60;
   const SECURITY_DEPOSIT = 100;
   const PHONE_NUMBER = "34669106393";
@@ -114,7 +127,7 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
   const businessMinDate = new Date(2026, 0, 20);
   businessMinDate.setHours(0, 0, 0, 0);
 
-  // ✅ Festivos 2026 (CV + Algemesí locales) — revisaremos lista luego si quieres
+  // ✅ Festivos 2026 (CV + Algemesí locales) — lista base (luego la afinamos si me pasas “otros precios”)
   const HOLIDAYS_2026: string[] = [
     "2026-01-01",
     "2026-01-06",
@@ -122,20 +135,55 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
     "2026-04-03",
     "2026-04-06",
     "2026-05-01",
-    "2026-06-12", // Algemesí (Sant Onofre) - ojo: confirmar
+    "2026-06-12", // Algemesí (Sant Onofre) - pendiente confirmar oficial
     "2026-06-24",
     "2026-08-15",
-    "2026-09-08", // Algemesí (Mare de Déu de la Salut) - ojo: confirmar
+    "2026-09-08", // Algemesí (Mare de Déu de la Salut) - pendiente confirmar oficial
     "2026-10-09",
     "2026-10-12",
     "2026-12-08",
     "2026-12-25",
   ];
 
-  // ✅ más robusto que useMemo aquí (evita movidas al pegar/recompilar)
-  const holidaySet = new Set(HOLIDAYS_2026);
-  function isHolidayISO(iso: string) {
-    return holidaySet.has(iso);
+  const holidaySet = useMemo(() => new Set(HOLIDAYS_2026), []);
+  const isHolidayISO = (iso: string) => holidaySet.has(iso);
+
+  // ✅ Meses según idioma (para que no haya mezcla)
+  const months = useMemo(() => {
+    if (lang === "val") {
+      return ["Gener", "Febrer", "Març", "Abril", "Maig", "Juny", "Juliol", "Agost", "Setembre", "Octubre", "Novembre", "Desembre"];
+    }
+    return ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+  }, [lang]);
+
+  // ✅ Tarifas según idioma (para que no haya mezcla)
+  const ALL_RENTAL_OPTIONS: RentalOpt[] = useMemo(() => {
+    if (lang === "val") {
+      return [
+        { label: "Dilluns a dijous (80€)", value: "80", schedule: "10:00–21:30" },
+        { label: "Divendres / Vespra de festiu (100€)", value: "100", schedule: "10:00–21:30" },
+        { label: "Dissabte, diumenge i festius (160€)", value: "160", schedule: "10:00–21:30" },
+      ];
+    }
+    return [
+      { label: "Lunes a Jueves (80€)", value: "80", schedule: "10:00–21:30" },
+      { label: "Viernes / Víspera de festivo (100€)", value: "100", schedule: "10:00–21:30" },
+      { label: "Sábado, domingo y festivos (160€)", value: "160", schedule: "10:00–21:30" },
+    ];
+  }, [lang]);
+
+  function isoToDate(iso: string) {
+    const [y, m, d] = iso.split("-").map((n) => parseInt(n, 10));
+    const dt = new Date(y, m - 1, d);
+    dt.setHours(0, 0, 0, 0);
+    return dt;
+  }
+
+  function dateToISO(dt: Date) {
+    const y = dt.getFullYear();
+    const m = String(dt.getMonth() + 1).padStart(2, "0");
+    const d = String(dt.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
   }
 
   // ✅ Mes inicial automático (sin quedarse en enero)
@@ -161,59 +209,18 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
     cleaning: false,
   });
 
-  const months = useMemo(
-    () => [
-      "Enero",
-      "Febrero",
-      "Marzo",
-      "Abril",
-      "Mayo",
-      "Junio",
-      "Julio",
-      "Agosto",
-      "Septiembre",
-      "Octubre",
-      "Noviembre",
-      "Diciembre",
-    ],
-    []
-  );
-
-  const ALL_RENTAL_OPTIONS: RentalOpt[] = useMemo(
-    () => [
-      { label: "Lunes a Jueves (80€)", value: "80", schedule: "10:00–21:30" },
-      { label: "Viernes / Víspera de festivo (100€)", value: "100", schedule: "10:00–21:30" },
-      { label: "Sábado, domingo y festivos (160€)", value: "160", schedule: "10:00–21:30" },
-    ],
-    []
-  );
-
-  function isoToDate(iso: string) {
-    const [y, m, d] = iso.split("-").map((n) => parseInt(n, 10));
-    const dt = new Date(y, m - 1, d);
-    dt.setHours(0, 0, 0, 0);
-    return dt;
-  }
-
-  function dateToISO(dt: Date) {
-    const y = dt.getFullYear();
-    const m = String(dt.getMonth() + 1).padStart(2, "0");
-    const d = String(dt.getDate()).padStart(2, "0");
-    return `${y}-${m}-${d}`;
-  }
-
   function getAllowedOptionsForISO(iso: string): RentalOpt[] {
     const dt = isoToDate(iso);
     const dow = dt.getDay(); // 0 domingo ... 6 sábado
 
-    const isHoliday = isHolidayISO(iso);
+    const holiday = isHolidayISO(iso);
 
     const next = new Date(dt);
     next.setDate(next.getDate() + 1);
     const nextISO = dateToISO(next);
     const isEveOfHoliday = isHolidayISO(nextISO);
 
-    if (isHoliday) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "160");
+    if (holiday) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "160");
     if (dow === 6 || dow === 0) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "160");
     if (dow === 5 || isEveOfHoliday) return ALL_RENTAL_OPTIONS.filter((o) => o.value === "100");
 
@@ -338,7 +345,14 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
 
   const handleDateClick = (d: number, isPast: boolean, isBooked: boolean, iso: string) => {
     if (isPast || isBooked) return;
-    setSelectedDate(`${d} de ${months[month]} 2026`);
+
+    // ✅ Fecha en texto según idioma (sin “mezcla”)
+    const dateText =
+      lang === "val"
+        ? `${d} de ${months[month]} de 2026`
+        : `${d} de ${months[month]} 2026`;
+
+    setSelectedDate(dateText);
     setSelectedISO(iso);
     setSubmitted(false);
     setPaymentStep(false);
@@ -517,7 +531,7 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
       window.location.href = data.url;
     } catch (err: any) {
       console.error(err);
-      alert(err?.message || "Error iniciando el pago. Inténtalo de nuevo.");
+      alert(err?.message || (lang === "val" ? "Error iniciant el pagament. Torna-ho a intentar." : "Error iniciando el pago. Inténtalo de nuevo."));
       setIsSubmitting(false);
     }
   }
@@ -584,9 +598,7 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
               const today = getToday();
               const isPast = checkDate < today || checkDate < businessMinDate;
 
-              const iso = `2026-${(month + 1).toString().padStart(2, "0")}-${d
-                .toString()
-                .padStart(2, "0")}`;
+              const iso = `2026-${(month + 1).toString().padStart(2, "0")}-${d.toString().padStart(2, "0")}`;
 
               const isBooked = bookedDates.has(iso);
               const isSelected = selectedISO === iso;
@@ -763,7 +775,7 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
                               formData.rentalType === opt.value ? "text-white/90" : "text-gray-400"
                             }`}
                           >
-                            Horario: {opt.schedule}
+                            {T.labels.schedule} {opt.schedule}
                           </span>
                         </div>
                       </label>
@@ -797,7 +809,7 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
                     </p>
                     <p className="text-5xl font-black tracking-tighter">{depositToPay.toFixed(2)}€</p>
                     <p className="text-xs font-black text-blue-200 uppercase tracking-widest mt-2">
-                      Horario: {selectedSchedule}
+                      {T.labels.schedule} {selectedSchedule}
                     </p>
                   </div>
 
@@ -834,7 +846,7 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
                     <span>{T.labels.schedule}</span> <span>{selectedSchedule}</span>
                   </p>
                   <p className="flex justify-between text-gray-400 italic text-sm">
-                    <span>{T.labels.cleaning}</span> <span>A consultar</span>
+                    <span>{T.labels.cleaning}</span> <span>{lang === "val" ? "A consultar" : "A consultar"}</span>
                   </p>
                   <div className="h-px bg-blue-200 my-4"></div>
                   <p className="flex justify-between text-xl text-gray-800 font-black">
@@ -847,16 +859,10 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
                   <div className="bg-white/80 p-5 rounded-2xl mt-6 border border-blue-200 text-xs text-gray-500 leading-relaxed shadow-sm">
                     <p className="text-blue-800 font-black mb-1">{T.labels.infoTitle}</p>
                     <p>
-                      {String(T.labels.info1 || "").replace(
-                        "{SECURITY_DEPOSIT}",
-                        String(SECURITY_DEPOSIT)
-                      )}
+                      {String(T.labels.info1 || "").replace("{SECURITY_DEPOSIT}", String(SECURITY_DEPOSIT))}
                     </p>
                     <p>
-                      {String(T.labels.info2 || "").replace(
-                        "{CLEANING_FEE}",
-                        String(CLEANING_FEE)
-                      )}
+                      {String(T.labels.info2 || "").replace("{CLEANING_FEE}", String(CLEANING_FEE))}
                     </p>
                     <p>{T.labels.info3}</p>
                   </div>
