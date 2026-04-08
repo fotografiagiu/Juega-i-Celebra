@@ -353,7 +353,7 @@ const Features: React.FC<Props> = ({ lang }) => {
                 Opció 1
               </div>
               <h3 className="text-5xl font-black text-blue-600 mb-4">20€</h3>
-              <p className="text-2xl font-black text-gray-800 mb-3">Barrer i fregar</p>
+              <p className="text-2xl font-black text-gray-800 mb-3">Escombrem i freguem</p>
               <p className="text-gray-600 font-semibold leading-relaxed">
                 Vosaltres feu una recollida bàsica i nosaltres deixem el terra a punt.
               </p>
