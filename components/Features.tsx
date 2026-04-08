@@ -31,7 +31,7 @@ const isValenciano = lang === "val";
     },
     {
       icon: "🧸",
-      text: isValenciano ? "5 taules peques" : "4 mesas peques",
+      text: isValenciano ? "5 taules peques" : "5 mesas peques",
     },
     {
       icon: "👑",
