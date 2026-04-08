@@ -316,12 +316,6 @@ const Features: React.FC<Props> = ({ lang }) => {
               </span>
               Diana de dards per a sumar joc i entreteniment.
             </li>
-            <li className="flex items-center gap-3 text-gray-700 font-semibold">
-              <span className="flex-shrink-0 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">
-                ✓
-              </span>
-              Sempre amb ús responsable i supervisió d’un adult.
-            </li>
           </ul>
         </div>
       </div>
