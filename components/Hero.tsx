@@ -24,7 +24,7 @@ const Hero: React.FC<Props> = ({ lang }) => {
     `${tr.hero.whatsapp.line2}\n` +
     `${tr.hero.whatsapp.thanks}`;
 
-  const whatsappUrl = `https://wa.me/34669106393?text=${encodeURIComponent(whatsappText)}`;
+  const whatsappUrl = `https://wa.me/34614037792?text=${encodeURIComponent(whatsappText)}`;
 
   // ✅ Scroll controlado (evita problemas con navbar fixed)
   const scrollToReservar = (e: React.MouseEvent) => {
