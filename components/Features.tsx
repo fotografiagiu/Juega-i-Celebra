@@ -10,19 +10,7 @@ const WHATSAPP_URL = `https://wa.me/34${WHATSAPP_PHONE}`;
 
 const Features: React.FC<Props> = ({ lang }) => {
   const tr = t(lang);
- const languageProbe = [
-  tr.features.local.titlePre,
-  tr.features.park.titlePre,
-  tr.features.local.ctaContact,
-]
-  .join(" ")
-  .toLowerCase();
-
-const isValenciano =
-  languageProbe.includes("parc") ||
-  languageProbe.includes("nostre") ||
-  languageProbe.includes("contacta") ||
-  languageProbe.includes("espai");
+const isValenciano = lang === "val";
 
   const equipmentTitle = isValenciano
     ? "Equipament i comoditats"
