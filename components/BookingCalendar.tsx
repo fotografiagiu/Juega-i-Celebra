@@ -29,7 +29,7 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
   const bc = (tr as any)?.bookingCalendar ?? {};
 
   const T = {
-    badge: bc.badge ?? (lang === "val" ? "Calendari Algemesí 2026" : "Calendario Algemesí 2026"),
+    badge: bc.badge ?? (lang === "val" ? "Calendari Algemesí 2026-2027" : "Calendario Algemesí 2026-2027"),
     titlePre: bc.titlePre ?? (lang === "val" ? "Reserva la teua" : "Reserva tu"),
     titleHighlight: bc.titleHighlight ?? (lang === "val" ? "Festa" : "Fiesta"),
     introPre: bc.introPre ?? (lang === "val" ? "Les dates en" : "Las fechas en"),
@@ -47,6 +47,7 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
     legendSelected: bc.legendSelected ?? (lang === "val" ? "SELECCIÓ" : "SELECCIÓN"),
     legendFree: bc.legendFree ?? (lang === "val" ? "LLIURE" : "LIBRE"),
     legendHoliday: bc.legendHoliday ?? (lang === "val" ? "FESTIU" : "FESTIVO"),
+    yearSelect: bc.yearSelect ?? (lang === "val" ? "Tria l’any" : "Selecciona el año"),
     formTitle: bc.formTitle ?? (lang === "val" ? "Dades de l’esdeveniment" : "Datos del evento"),
     nextStep: bc.nextStep ?? (lang === "val" ? "SEGÜENT PAS 🚀" : "SIGUIENTE PASO 🚀"),
     payTitle: bc.payTitle ?? (lang === "val" ? "Pagament segur" : "Pago Seguro"),
@@ -123,6 +124,9 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
   const WEB_APP_ENDPOINT =
     "https://script.google.com/macros/s/AKfycbw_mTR8MsfkzXEOnwGQBZwnLdzGBE2JcIpg5HCjlAsHh7qUUi7N-ZiEJMrQ5udJ4EXI/exec";
 
+  const MIN_YEAR = 2026;
+  const MAX_YEAR = 2027;
+
   // ✅ Mínimo de negocio (bloquea antes de este día)
   const businessMinDate = new Date(2026, 0, 20);
   businessMinDate.setHours(0, 0, 0, 0);
@@ -145,7 +149,25 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
     "2026-12-25",
   ];
 
-  const holidaySet = useMemo(() => new Set(HOLIDAYS_2026), []);
+  // ✅ Festivos 2027: misma lógica que 2026 (CV + Algemesí). Semana Santa 2027: 26 y 29 de marzo.
+  const HOLIDAYS_2027: string[] = [
+    "2027-01-01",
+    "2027-01-06",
+    "2027-03-19",
+    "2027-03-26",
+    "2027-03-29",
+    "2027-05-01",
+    "2027-06-12", // Algemesí (Sant Onofre) - pendiente confirmar oficial
+    "2027-06-24",
+    "2027-08-15",
+    "2027-09-08", // Algemesí (Mare de Déu de la Salut) - pendiente confirmar oficial
+    "2027-10-09",
+    "2027-10-12",
+    "2027-12-08",
+    "2027-12-25",
+  ];
+
+  const holidaySet = useMemo(() => new Set([...HOLIDAYS_2026, ...HOLIDAYS_2027]), []);
   const isHolidayISO = (iso: string) => holidaySet.has(iso);
 
   // ✅ Meses según idioma (para que no haya mezcla)
@@ -186,19 +208,70 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
     return `${y}-${m}-${d}`;
   }
 
-  // ✅ Mes inicial automático (sin quedarse en enero)
-  function getInitialMonthIndex() {
+  // ✅ Vista inicial automática (sin quedarse en enero)
+  function getInitialView() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    let m = 0;
-    if (today.getFullYear() === 2026) m = today.getMonth();
-    if (today < businessMinDate) m = businessMinDate.getMonth();
+    if (today < businessMinDate) {
+      return { year: MIN_YEAR, month: businessMinDate.getMonth() };
+    }
 
-    return Math.max(0, Math.min(11, m));
+    const y = today.getFullYear();
+    if (y < MIN_YEAR) return { year: MIN_YEAR, month: 0 };
+    if (y > MAX_YEAR) return { year: MAX_YEAR, month: 11 };
+    return { year: y, month: today.getMonth() };
   }
 
-  const [month, setMonth] = useState<number>(() => getInitialMonthIndex());
+  const [month, setMonth] = useState<number>(() => getInitialView().month);
+  const [year, setYear] = useState<number>(() => getInitialView().year);
+  const [showYearPicker, setShowYearPicker] = useState(false);
+  const yearPickerRef = useRef<HTMLDivElement>(null);
+
+  const isFirstMonth = year === MIN_YEAR && month === 0;
+  const isLastMonth = year === MAX_YEAR && month === 11;
+
+  function goPrevMonth() {
+    if (isFirstMonth) return;
+    if (month === 0) {
+      setYear((y) => y - 1);
+      setMonth(11);
+      return;
+    }
+    setMonth((m) => m - 1);
+  }
+
+  function goNextMonth() {
+    if (isLastMonth) return;
+    if (month === 11) {
+      setYear((y) => y + 1);
+      setMonth(0);
+      return;
+    }
+    setMonth((m) => m + 1);
+  }
+
+  const availableYears = useMemo(() => {
+    const years: number[] = [];
+    for (let y = MIN_YEAR; y <= MAX_YEAR; y++) years.push(y);
+    return years;
+  }, []);
+
+  function selectYear(nextYear: number) {
+    setYear(nextYear);
+    setShowYearPicker(false);
+  }
+
+  useEffect(() => {
+    if (!showYearPicker) return;
+    const onDocClick = (e: MouseEvent) => {
+      if (yearPickerRef.current && !yearPickerRef.current.contains(e.target as Node)) {
+        setShowYearPicker(false);
+      }
+    };
+    document.addEventListener("mousedown", onDocClick);
+    return () => document.removeEventListener("mousedown", onDocClick);
+  }, [showYearPicker]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -335,10 +408,11 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
     }
   }, [selectedISO]);
 
-  // ✅ Si hay fecha seleccionada (o vuelves de Stripe), salta al mes de esa fecha
+  // ✅ Si hay fecha seleccionada (o vuelves de Stripe), salta al mes/año de esa fecha
   useEffect(() => {
     if (!selectedISO) return;
     const dt = isoToDate(selectedISO);
+    setYear(dt.getFullYear());
     setMonth(Math.max(0, Math.min(11, dt.getMonth())));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedISO]);
@@ -349,8 +423,8 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
     // ✅ Fecha en texto según idioma (sin “mezcla”)
     const dateText =
       lang === "val"
-        ? `${d} de ${months[month]} de 2026`
-        : `${d} de ${months[month]} 2026`;
+        ? `${d} de ${months[month]} de ${year}`
+        : `${d} de ${months[month]} ${year}`;
 
     setSelectedDate(dateText);
     setSelectedISO(iso);
@@ -536,8 +610,8 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
     }
   }
 
-  const daysArr = Array.from({ length: new Date(2026, month + 1, 0).getDate() }, (_, i) => i + 1);
-  const firstDay = new Date(2026, month, 1).getDay();
+  const daysArr = Array.from({ length: new Date(year, month + 1, 0).getDate() }, (_, i) => i + 1);
+  const firstDay = new Date(year, month, 1).getDay();
   const blanks = Array.from({ length: firstDay === 0 ? 6 : firstDay - 1 }, (_, i) => i);
 
   return (
@@ -563,19 +637,60 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
         <div className="w-full lg:w-5/12 bg-white rounded-[50px] shadow-2xl p-10 border border-blue-50 relative overflow-hidden">
           <div className="flex justify-between items-center mb-10">
             <button
-              onClick={() => setMonth((m) => Math.max(0, m - 1))}
+              onClick={goPrevMonth}
               className="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-2xl hover:bg-blue-600 hover:text-white transition-all text-xl disabled:opacity-20"
-              disabled={month === 0}
+              disabled={isFirstMonth}
             >
               ◀
             </button>
-            <h3 className="text-2xl font-black text-gray-800 uppercase font-['Baloo_2']">
-              {months[month]} 2026
-            </h3>
+            <div ref={yearPickerRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setShowYearPicker((open) => !open)}
+                className="px-3 py-2 rounded-2xl hover:bg-blue-50 transition-all"
+                aria-label={T.yearSelect}
+                aria-haspopup="listbox"
+                aria-expanded={showYearPicker}
+              >
+                <h3 className="text-2xl font-black text-gray-800 uppercase font-['Baloo_2'] tracking-tight">
+                  {months[month]}{" "}
+                  <span className="text-blue-600 inline-flex items-center gap-1">
+                    {year}
+                    <span className="text-sm" aria-hidden>
+                      {showYearPicker ? "▴" : "▾"}
+                    </span>
+                  </span>
+                </h3>
+              </button>
+              {showYearPicker && (
+                <div
+                  role="listbox"
+                  aria-label={T.yearSelect}
+                  className="absolute left-1/2 -translate-x-1/2 mt-2 min-w-[140px] bg-white rounded-2xl shadow-2xl border border-blue-100 overflow-hidden z-20"
+                >
+                  {availableYears.map((y) => (
+                    <button
+                      key={y}
+                      type="button"
+                      role="option"
+                      aria-selected={y === year}
+                      onClick={() => selectYear(y)}
+                      className={`w-full px-5 py-3 text-lg font-black uppercase font-['Baloo_2'] transition-all ${
+                        y === year
+                          ? "bg-blue-600 text-white"
+                          : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                      }`}
+                    >
+                      {y}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             <button
-              onClick={() => setMonth((m) => Math.min(11, m + 1))}
+              onClick={goNextMonth}
               className="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-2xl hover:bg-blue-600 hover:text-white transition-all text-xl disabled:opacity-20"
-              disabled={month === 11}
+              disabled={isLastMonth}
             >
               ▶
             </button>
@@ -592,13 +707,13 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
             ))}
 
             {daysArr.map((d) => {
-              const checkDate = new Date(2026, month, d);
+              const checkDate = new Date(year, month, d);
               checkDate.setHours(0, 0, 0, 0);
 
               const today = getToday();
               const isPast = checkDate < today || checkDate < businessMinDate;
 
-              const iso = `2026-${(month + 1).toString().padStart(2, "0")}-${d.toString().padStart(2, "0")}`;
+              const iso = dateToISO(checkDate);
 
               const isBooked = bookedDates.has(iso);
               const isSelected = selectedISO === iso;
@@ -606,7 +721,7 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
 
               return (
                 <button
-                  key={d}
+                  key={`${year}-${month}-${d}`}
                   disabled={isPast || isBooked}
                   onClick={() => handleDateClick(d, isPast, isBooked, iso)}
                   className={`h-12 md:h-14 rounded-2xl flex flex-col items-center justify-center text-lg font-black transition-all transform relative

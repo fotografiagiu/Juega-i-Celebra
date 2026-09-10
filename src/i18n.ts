@@ -12,13 +12,13 @@ const DICT: Record<Lang, Dict> = {
       calendario: "Calendari",
       tarifas: "Tarifes",
       contacto: "Contacte",
-      reservar: "Reservar 2026",
+      reservar: "Reservar 2026-2027",
     },
 
     hero: {
       subtitle: "Espai per a esdeveniments",
       city: "Algemesí",
-      ctaReserve: "RESERVAR 2026",
+      ctaReserve: "RESERVAR 2026-2027",
       ctaWhatsapp: "WHATSAPP",
       whatsapp: {
         greeting: "Hola 👋",
@@ -228,7 +228,7 @@ const DICT: Record<Lang, Dict> = {
           "Tarifes 2026: Dilluns-Dijous 80€, Divendres/Vespra 100€, Dissabte-Diumenge/Festiu 160€.",
         deposit:
           "Fiança: 100€ en efectiu el dia de les claus. Neteja: 60€ (opcional, a consultar).",
-        reserve: "Per reservar, baixa a la secció “Reservar 2026” i tria una data disponible.",
+        reserve: "Per reservar, baixa a la secció “Reservar 2026-2027” i tria una data disponible.",
         whatsapp: "Si vols, escriu-nos per WhatsApp i t’ajudem ara mateix.",
       },
       actions: {
@@ -277,7 +277,7 @@ const DICT: Record<Lang, Dict> = {
 
     // ✅ NUEVO: Booking Calendar (100% i18n)
     bookingCalendar: {
-      badge: "Calendari Algemesí 2026",
+      badge: "Calendari Algemesí 2026-2027",
       titlePre: "Reserva la teua",
       titleHighlight: "Festa",
 
@@ -310,6 +310,7 @@ const DICT: Record<Lang, Dict> = {
       legendBooked: "RESERVAT",
       legendSelected: "Selecció",
       legendFree: "Lliure",
+      yearSelect: "Tria l’any",
 
       formTitle: "Dades de l’esdeveniment",
       responsibleLabel: "Responsable de la festa",
@@ -390,13 +391,13 @@ const DICT: Record<Lang, Dict> = {
       calendario: "Calendario",
       tarifas: "Tarifas",
       contacto: "Contacto",
-      reservar: "Reservar 2026",
+      reservar: "Reservar 2026-2027",
     },
 
     hero: {
       subtitle: "Espacio para eventos",
       city: "Algemesí",
-      ctaReserve: "RESERVAR 2026",
+      ctaReserve: "RESERVAR 2026-2027",
       ctaWhatsapp: "WHATSAPP",
       whatsapp: {
         greeting: "Hola 👋",
@@ -607,7 +608,7 @@ const DICT: Record<Lang, Dict> = {
           "Tarifas 2026: Lunes-Jueves 80€, Viernes/Víspera 100€, Sábado-Domingo/Festivo 160€.",
         deposit:
           "Fianza: 100€ en efectivo el día de entrega de llaves. Limpieza: 60€ (opcional, a consultar).",
-        reserve: "Para reservar, baja a la sección “Reservar 2026” y elige una fecha disponible.",
+        reserve: "Para reservar, baja a la sección “Reservar 2026-2027” y elige una fecha disponible.",
         whatsapp: "Si quieres, escríbenos por WhatsApp y te ayudamos ahora mismo.",
       },
       actions: {
@@ -656,7 +657,7 @@ const DICT: Record<Lang, Dict> = {
 
     // ✅ NUEVO: Booking Calendar (100% i18n)
     bookingCalendar: {
-      badge: "Calendario Algemesí 2026",
+      badge: "Calendario Algemesí 2026-2027",
       titlePre: "Reserva tu",
       titleHighlight: "Fiesta",
 
@@ -689,6 +690,7 @@ const DICT: Record<Lang, Dict> = {
       legendBooked: "RESERVADO",
       legendSelected: "Selección",
       legendFree: "Libre",
+      yearSelect: "Selecciona el año",
 
       formTitle: "Datos del evento",
       responsibleLabel: "Responsable de la fiesta",
