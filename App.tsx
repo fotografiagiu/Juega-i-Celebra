@@ -1,0 +1,96 @@
+import React, { useEffect, useState } from "react";
+
+// ✅ Componentes reales en /components (RAÍZ)
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import Services from "./components/Services";
+import Features from "./components/Features";
+import Gallery from "./components/Gallery";
+import Pricing from "./components/Pricing";
+import Contact from "./components/Contact";
+import Footer from "./components/Footer";
+import BookingCalendar from "./components/BookingCalendar";
+import ChatAssistant from "./components/ChatAssistant";
+
+// ✅ Idioma lo tienes en /src
+import LanguageModal from "./src/components/LanguageModal";
+import LanguagePill from "./src/components/LanguagePill";
+import { getSavedLang, saveLang, type Lang } from "./src/i18n";
+
+const App: React.FC = () => {
+  const [scrolled, setScrolled] = useState(false);
+  const [lang, setLang] = useState<Lang>("val");
+  const [showLangModal, setShowLangModal] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const saved = getSavedLang();
+    if (saved) {
+      setLang(saved);
+      setShowLangModal(false);
+    } else {
+      setLang("val"); // predomina valencià
+      setShowLangModal(true); // pregunta 1ª vez
+    }
+  }, []);
+
+  const handleSelectLang = (l: Lang) => {
+    setLang(l);
+    saveLang(l);
+    setShowLangModal(false);
+  };
+
+  return (
+    <div className="min-h-screen bg-white text-gray-800 overflow-x-hidden">
+      <LanguageModal
+        open={showLangModal}
+        onSelect={handleSelectLang}
+        onClose={() => setShowLangModal(false)}
+      />
+
+      <LanguagePill current={lang} onClick={() => setShowLangModal(true)} />
+
+      <Navbar scrolled={scrolled} lang={lang} />
+
+      <main>
+        <section id="inicio">
+          <Hero lang={lang} />
+        </section>
+
+        <section id="servicios" className="py-20">
+          <Services lang={lang} />
+        </section>
+
+        <section id="reservar" className="py-20 bg-gray-50 scroll-mt-28">
+      <BookingCalendar lang={lang} />
+      </section>
+
+        <section className="py-20">
+          <Features lang={lang} />
+        </section>
+
+        <section className="py-20 bg-yellow-50">
+          <Gallery lang={lang} />
+        </section>
+
+        <section id="tarifas" className="py-20 scroll-mt-28">
+          <Pricing lang={lang} />
+        </section>
+
+        <section id="contacto" className="py-20">
+          <Contact lang={lang} />
+        </section>
+      </main>
+
+      <Footer lang={lang} />
+      <ChatAssistant lang={lang} />
+    </div>
+  );
+};
+
+export default App;
