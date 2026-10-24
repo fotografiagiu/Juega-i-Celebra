@@ -92,6 +92,20 @@ const Pricing: React.FC<Props> = ({ lang }) => {
             </li>
           ))}
         </ul>
+
+        <h5 className="mt-6 sm:mt-8 text-sm sm:text-base font-black text-gray-800 font-['Baloo_2'] uppercase tracking-wide">
+          {tr.pricing.weatherTitle}
+        </h5>
+        <ul className="mt-3 sm:mt-4 space-y-3 sm:space-y-4 text-[13px] sm:text-sm leading-relaxed font-semibold text-gray-600">
+          {tr.pricing.weatherConditions.map((line: string, i: number) => (
+            <li key={i} className="flex items-start gap-3">
+              <span className="mt-0.5 w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-[10px] flex-shrink-0">
+                ✔
+              </span>
+              <span>{line}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

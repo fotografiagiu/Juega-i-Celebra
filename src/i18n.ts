@@ -106,6 +106,12 @@ const DICT: Record<Lang, Dict> = {
         "Les reserves modificades o cancel·lades amb menys d’una setmana d’antelació no tenen devolució.",
         "En aquest cas, es retornarà el 50% de la reserva.",
       ],
+      weatherTitle: "Clàusula de condicions davant alertes meteorològiques",
+      weatherConditions: [
+        "En cas que s’emeta una alerta roja meteorològica oficial que afecte la zona on es troba el local, s’oferirà la possibilitat de modificar la data de l’esdeveniment per una altra data disponible, prèviament acordada amb Juga i Celebra.",
+        "No es procedirà a la devolució de les quantitats abonades en concepte de reserva o lloguer.",
+        "El canvi de data estarà subjecte a la disponibilitat del local.",
+      ],
     },
 
     features: {
@@ -317,6 +323,8 @@ const DICT: Record<Lang, Dict> = {
       namePlaceholder: "Nom i cognoms",
       whatsappLabel: "WhatsApp de contacte",
       phonePlaceholder: "6XX XXX XXX",
+      emailLabel: "Correu de confirmació",
+      emailPlaceholder: "el.teu@correu.com",
 
       rentalConfigTitle: "Configuració del lloguer",
       rentalConfigSubtitle: "(Les tarifes s’ajusten automàticament segons el dia)",
@@ -352,21 +360,25 @@ const DICT: Record<Lang, Dict> = {
       additionalLine2_pre: "• El servei de neteja de",
       additionalLine2_post: "s’ha de demanar a banda.",
       additionalLine3:
-        "• En pagar, et redirigim a Stripe. En tornar, es marca com a RESERVAT.",
+        "• En pagar, et redirigim a Stripe. El rebut de la reserva t’arriba al correu.",
 
       successTitle: "RESERVAT!",
       successTextPre: "La teua data",
       successTextMid: "ja està marcada en",
       successGreenWord: "VERD",
       successTextPost: "fix.",
-      successWhatsappBtn: "ENVIAR JUSTIFICANT PER WHATSAPP 📄",
+      successEmailText: "Stripe t’enviarà el rebut de la reserva a",
+      successWhatsappBtn: "ESCRIURE PER WHATSAPP",
 
-      missingFields: "Completa el nom i el WhatsApp abans de pagar.",
+      missingFields: "Completa el nom, el WhatsApp i el correu abans de pagar.",
+      invalidEmail: "Introdueix un correu vàlid per a enviar-te la confirmació.",
       dateTaken: "Eixa data ja està reservada. Tria’n una altra.",
       paidNoPending:
         "Pagament rebut, però no s’ha trobat la reserva pendent. Escriu-nos per WhatsApp.",
       paidRegisterFail:
         "Pagament OK, però ha fallat el registre. Escriu-nos per WhatsApp amb el justificant.",
+      paidNotVerified:
+        "No hem pogut verificar el pagament a Stripe. Escriu-nos per WhatsApp amb el justificant.",
 
       wa: {
         hello: "Hola! He reservat el dia",
@@ -485,6 +497,12 @@ const DICT: Record<Lang, Dict> = {
         "Servicio de limpieza: 60€ (opcional).",
         "Las reservas modificadas o canceladas con menos de una semana de antelación no tienen devolución.",
         "En este caso, se retornará el 50% de la reserva.",
+      ],
+      weatherTitle: "Cláusula de condiciones ante alertas meteorológicas",
+      weatherConditions: [
+        "En caso de que se emita una alerta roja meteorológica oficial que afecte a la zona donde se encuentra el local, se ofrecerá la posibilidad de modificar la fecha del evento por otra fecha disponible, previamente acordada con Juga i Celebra.",
+        "No se procederá a la devolución de las cantidades abonadas en concepto de reserva o alquiler.",
+        "El cambio de fecha estará sujeto a la disponibilidad del local.",
       ],
     },
 
@@ -697,6 +715,8 @@ const DICT: Record<Lang, Dict> = {
       namePlaceholder: "Nombre completo",
       whatsappLabel: "WhatsApp de contacto",
       phonePlaceholder: "6XX XXX XXX",
+      emailLabel: "Correo de confirmación",
+      emailPlaceholder: "tu@correo.com",
 
       rentalConfigTitle: "Configuración del alquiler",
       rentalConfigSubtitle: "(Las tarifas se ajustan automáticamente según el día)",
@@ -732,21 +752,25 @@ const DICT: Record<Lang, Dict> = {
       additionalLine2_pre: "• El servicio de limpieza de",
       additionalLine2_post: "debe solicitarse aparte.",
       additionalLine3:
-        "• Al pagar, te redirigimos a Stripe. Al volver, se marca como RESERVADO.",
+        "• Al pagar, te redirigimos a Stripe. El recibo de la reserva te llega al correo.",
 
       successTitle: "¡RESERVADO!",
       successTextPre: "Tu fecha",
       successTextMid: "ya está marcada en",
       successGreenWord: "VERDE",
       successTextPost: "fijo.",
-      successWhatsappBtn: "ENVIAR JUSTIFICANTE POR WHATSAPP 📄",
+      successEmailText: "Stripe te enviará el recibo de la reserva a",
+      successWhatsappBtn: "ESCRIBIR POR WHATSAPP",
 
-      missingFields: "Completa nombre y WhatsApp antes de pagar.",
+      missingFields: "Completa nombre, WhatsApp y correo antes de pagar.",
+      invalidEmail: "Introduce un correo válido para enviarte la confirmación.",
       dateTaken: "Esa fecha ya está reservada. Elige otra.",
       paidNoPending:
         "Pago recibido, pero no se encontró la reserva pendiente. Escríbenos por WhatsApp.",
       paidRegisterFail:
         "Pago OK, pero falló el registro. Escríbenos por WhatsApp con tu justificante.",
+      paidNotVerified:
+        "No hemos podido verificar el pago en Stripe. Escríbenos por WhatsApp con el justificante.",
 
       wa: {
         hello: "¡Hola! He reservado el día",

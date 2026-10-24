@@ -26,17 +26,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const baseUrl = (process.env.PUBLIC_BASE_URL || origin || "").trim();
     if (!baseUrl) return res.status(400).json({ error: "Missing base url" });
 
-    // Datos desde el frontend (como antes)
     const {
       depositToPay,
       date,
       formatted_date,
       name,
       phone,
+      email,
       rentalType,
+      tarifa,
       totalPrice,
       notes,
+      schedule,
     } = (req.body || {}) as Record<string, any>;
+
+    const customerEmail = String(email || "").trim().toLowerCase();
+    if (!customerEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
+      return res.status(400).json({ error: "Missing email" });
+    }
 
     const amountEUR = Number(depositToPay);
 
@@ -48,40 +55,59 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const unitAmount = Math.round(amountEUR * 100); // céntimos
+    const fecha = String(formatted_date || date);
+    const hora = String(schedule || "10:00–21:30");
+    const tarifaLabel = String(tarifa || rentalType || "");
+    const totalLabel = totalPrice == null || totalPrice === "" ? "" : String(totalPrice);
+
+    const bookingSummary = [
+      name ? `Nombre: ${name}` : "",
+      `Fecha: ${fecha}`,
+      `Horario: ${hora}`,
+      tarifaLabel ? `Tarifa: ${tarifaLabel}` : "",
+      `Señal pagada: ${amountEUR.toFixed(2)}€`,
+      totalLabel ? `Total alquiler: ${totalLabel}€` : "",
+    ]
+      .filter(Boolean)
+      .join(" · ");
+
+    const metadata = {
+      date: String(date || ""),
+      formatted_date: String(formatted_date || ""),
+      name: String(name || ""),
+      phone: String(phone || ""),
+      email: customerEmail,
+      rentalType: String(rentalType || ""),
+      tarifa: tarifaLabel,
+      schedule: hora,
+      depositToPay: String(amountEUR),
+      totalPrice: totalLabel,
+      notes: String(notes || ""),
+    };
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       payment_method_types: ["card"],
-
-      // ✅ SOLO price_data (dinámico). NO mezclar con price:
+      customer_email: customerEmail,
+      payment_intent_data: {
+        description: `Reserva Juga i Celebra · ${fecha} · ${hora}`,
+        receipt_email: customerEmail,
+        metadata,
+      },
       line_items: [
         {
           price_data: {
             currency: "eur",
             product_data: {
-              name: "Reserva Juga i Celebra (señal)",
-              description: formatted_date
-                ? `Fecha: ${formatted_date}`
-                : `Fecha: ${date}`,
+              name: `Reserva Juga i Celebra (señal) · ${fecha}`,
+              description: bookingSummary,
             },
             unit_amount: unitAmount,
           },
           quantity: 1,
         },
       ],
-
-      metadata: {
-        date: String(date || ""),
-        formatted_date: String(formatted_date || ""),
-        name: String(name || ""),
-        phone: String(phone || ""),
-        rentalType: String(rentalType || ""),
-        depositToPay: String(amountEUR),
-        totalPrice: String(totalPrice ?? ""),
-        notes: String(notes || ""),
-      },
-
-      // ✅ IMPORTANTE: vuelve siempre al mismo dominio
+      metadata,
       success_url: `${baseUrl}/?paid=1&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/?paid=0`,
     });

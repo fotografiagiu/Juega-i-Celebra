@@ -6,15 +6,18 @@ type PendingBooking = {
   selectedISO: string;
   name: string;
   phone: string;
+  email: string;
   kids: string;
   notes: string;
   rentalType: string;
+  tarifaLabel: string;
+  schedule: string;
   depositToPay: number;
   totalPrice: number;
   sessionId?: string;
 };
 
-const PENDING_KEY = "juga_pending_booking_v1";
+const PENDING_KEY = "juga_pending_booking_v2";
 
 type RentalOpt = { label: string; value: string; schedule: string };
 
@@ -54,7 +57,8 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
     modify: bc.modify ?? (lang === "val" ? "← MODIFICAR" : "← MODIFICAR"),
     payButton: bc.payButton ?? (lang === "val" ? "PAGAR AMB TARGETA (STRIPE) 🥳" : "PAGAR CON TARJETA (STRIPE) 🥳"),
     redirecting: bc.redirecting ?? (lang === "val" ? "REDIRIGINT A STRIPE..." : "REDIRIGIENDO A STRIPE..."),
-    missingFields: bc.missingFields ?? (lang === "val" ? "Completa nom i WhatsApp abans de pagar." : "Completa nombre y WhatsApp antes de pagar."),
+    missingFields: bc.missingFields ?? (lang === "val" ? "Completa nom, WhatsApp i correu abans de pagar." : "Completa nombre, WhatsApp y correo antes de pagar."),
+    invalidEmail: bc.invalidEmail ?? (lang === "val" ? "Introdueix un correu vàlid per a enviar-te la confirmació." : "Introduce un correo válido para enviarte la confirmación."),
     dateTaken: bc.dateTaken ?? (lang === "val" ? "Eixa data ja està reservada. Tria una altra." : "Esa fecha ya está reservada. Elige otra."),
     paidNoPending:
       bc.paidNoPending ??
@@ -66,11 +70,18 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
       (lang === "val"
         ? "Pagament OK, però ha fallat el registre. Escriu-nos per WhatsApp amb el justificant."
         : "Pago OK, pero falló el registro. Escríbenos por WhatsApp con tu justificante."),
+    paidNotVerified:
+      bc.paidNotVerified ??
+      (lang === "val"
+        ? "No hem pogut verificar el pagament a Stripe. Escriu-nos per WhatsApp amb el justificant."
+        : "No hemos podido verificar el pago en Stripe. Escríbenos por WhatsApp con el justificante."),
     labels: {
       responsible: bc.labels?.responsible ?? (lang === "val" ? "Responsable de la festa" : "Responsable de la fiesta"),
       fullNamePH: bc.labels?.fullNamePH ?? (lang === "val" ? "Nom complet" : "Nombre completo"),
       whatsapp: bc.labels?.whatsapp ?? (lang === "val" ? "WhatsApp de contacte" : "WhatsApp de contacto"),
       whatsappPH: bc.labels?.whatsappPH ?? (lang === "val" ? "6XX XXX XXX" : "6XX XXX XXX"),
+      email: bc.labels?.email ?? (lang === "val" ? "Correu de confirmació" : "Correo de confirmación"),
+      emailPH: bc.labels?.emailPH ?? (lang === "val" ? "el.teu@correu.com" : "tu@correo.com"),
       rentalConfig: bc.labels?.rentalConfig ?? (lang === "val" ? "Configuració del lloguer" : "Configuración del alquiler"),
       autoRates:
         bc.labels?.autoRates ??
@@ -98,12 +109,17 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
       info3:
         bc.labels?.info3 ??
         (lang === "val"
-          ? "• En pagar, et redirigim a Stripe. En tornar, es marca com a RESERVAT."
-          : "• Al pagar, te redirigimos a Stripe. Al volver, se marca como RESERVADO."),
+          ? "• En pagar, et redirigim a Stripe. El rebut de la reserva t’arriba al correu."
+          : "• Al pagar, te redirigimos a Stripe. El recibo de la reserva te llega al correo."),
       reservedOkTitle: bc.labels?.reservedOkTitle ?? (lang === "val" ? "RESERVAT!" : "¡RESERVADO!"),
       reservedOkTextPre: bc.labels?.reservedOkTextPre ?? (lang === "val" ? "La teua data" : "Tu fecha"),
       reservedOkTextPost: bc.labels?.reservedOkTextPost ?? (lang === "val" ? "ja està marcada en VERD." : "ya está marcada en VERDE."),
-      sendProof: bc.labels?.sendProof ?? (lang === "val" ? "ENVIAR JUSTIFICANT PER WHATSAPP 📄" : "ENVIAR JUSTIFICANTE POR WHATSAPP 📄"),
+      reservedOkEmail:
+        bc.labels?.reservedOkEmail ??
+        (lang === "val"
+          ? "Stripe t’enviarà el rebut de la reserva a"
+          : "Stripe te enviará el recibo de la reserva a"),
+      sendProof: bc.labels?.sendProof ?? (lang === "val" ? "ESCRIURE PER WHATSAPP" : "ESCRIBIR POR WHATSAPP"),
     },
   };
 
@@ -115,6 +131,7 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
   const [paymentStep, setPaymentStep] = useState(false);
   const [bookedDates, setBookedDates] = useState<Set<string>>(new Set());
   const formRef = useRef<HTMLDivElement>(null);
+  const registeringRef = useRef(false);
 
   // Importes
   const CLEANING_FEE = 60;
@@ -276,6 +293,7 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
+    email: "",
     kids: "15",
     notes: "",
     rentalType: "80",
@@ -440,9 +458,12 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
       selectedDate,
       name: formData.name,
       phone: formData.phone,
+      email: formData.email.trim().toLowerCase(),
       kids: formData.kids,
       notes: formData.notes,
       rentalType: formData.rentalType,
+      tarifaLabel: selectedTarifaLabel,
+      schedule: selectedSchedule,
       depositToPay: Number(depositToPay.toFixed(2)),
       totalPrice: Number(totalPrice.toFixed(2)),
       sessionId,
@@ -466,11 +487,14 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
   }
 
   async function registerReservation(pending: PendingBooking) {
+    const tarifa = pending.tarifaLabel || selectedTarifaLabel;
+    const schedule = pending.schedule || selectedSchedule;
     const notesPack =
       `WEB_RESERVA | Pago Stripe (señal) | Session: ${pending.sessionId || ""} | ` +
-      `Señal: ${pending.depositToPay}€ | Tarifa: ${selectedTarifaLabel} | Horario: ${selectedSchedule} | ` +
+      `Señal: ${pending.depositToPay}€ | Tarifa: ${tarifa} | Horario: ${schedule} | ` +
       `Niños: ${pending.kids || "-"} | ` +
       `Limpieza: A CONSULTAR | Fianza: ${SECURITY_DEPOSIT}€ | Total alquiler: ${pending.totalPrice}€ | ` +
+      `Email: ${pending.email || "-"} | ` +
       `${pending.notes ? "Notas: " + pending.notes : ""}`;
 
     const body = new URLSearchParams({
@@ -478,6 +502,7 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
       date: pending.selectedISO || "",
       name: pending.name || "",
       phone: pending.phone || "",
+      email: pending.email || "",
       notes: notesPack,
     }).toString();
 
@@ -496,18 +521,6 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
     setSubmitted(true);
 
     await loadDates();
-
-    const waMsg =
-      `¡Hola! He reservado el día ${pending.selectedDate}.\n` +
-      `👤: ${pending.name}\n` +
-      `💳 Pago Reserva (Stripe): ${pending.depositToPay}€\n` +
-      `📅 Tarifa: ${selectedTarifaLabel}\n` +
-      `🕒 Horario: ${selectedSchedule}\n` +
-      `👶 Niños: ${pending.kids || "-"}\n` +
-      `⚠️ Recordatorio: Fianza de ${SECURITY_DEPOSIT}€ en efectivo y Limpieza (${CLEANING_FEE}€) a consultar.\n` +
-      `🧾 Session: ${pending.sessionId || "-"}`;
-
-    window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(waMsg)}`, "_blank");
   }
 
   // ✅ Retorno de Stripe
@@ -534,12 +547,21 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
         return;
       }
 
+      if (!sessionId) {
+        alert(T.paidNotVerified);
+        return;
+      }
+
+      if (registeringRef.current) return;
+      registeringRef.current = true;
+
       setSelectedISO(pending.selectedISO);
       setSelectedDate(pending.selectedDate);
       setFormData((prev) => ({
         ...prev,
         name: pending.name,
         phone: pending.phone,
+        email: pending.email || "",
         kids: pending.kids,
         notes: pending.notes,
         rentalType: pending.rentalType,
@@ -550,9 +572,21 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
 
       pending.sessionId = sessionId;
 
-      registerReservation(pending)
+      fetch("/api/verify-checkout-session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId }),
+      })
+        .then(async (r) => {
+          const data = await r.json().catch(() => null);
+          if (!r.ok || !data?.paid) {
+            throw new Error(data?.error || T.paidNotVerified);
+          }
+          return registerReservation(pending);
+        })
         .then(() => clearPendingBooking())
         .catch((err: any) => {
+          registeringRef.current = false;
           console.error(err);
           alert(`${T.paidRegisterFail}\n\nMotivo: ${err?.message || "desconocido"}`);
         })
@@ -563,8 +597,14 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
   async function goToStripeCheckout() {
     if (!selectedISO || !selectedDate) return;
 
-    if (!formData.name || !formData.phone) {
+    if (!formData.name || !formData.phone || !formData.email) {
       alert(T.missingFields);
+      return;
+    }
+
+    const email = formData.email.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert(T.invalidEmail);
       return;
     }
 
@@ -590,9 +630,12 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
           formatted_date: selectedDate,
           name: formData.name,
           phone: formData.phone,
+          email,
           kids: formData.kids,
           notes: formData.notes,
           rentalType: formData.rentalType,
+          tarifa: selectedTarifaLabel,
+          schedule: selectedSchedule,
           depositToPay: Number(depositToPay.toFixed(2)),
           totalPrice: Number(totalPrice.toFixed(2)),
         }),
@@ -790,12 +833,23 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
               <h4 className="text-5xl font-black text-gray-800 mb-6 font-['Baloo_2']">
                 {T.labels.reservedOkTitle}
               </h4>
-              <p className="text-gray-500 mb-8 font-bold text-xl leading-relaxed">
+              <p className="text-gray-500 mb-4 font-bold text-xl leading-relaxed">
                 {T.labels.reservedOkTextPre} <span className="text-green-600">{selectedDate}</span>{" "}
                 {T.labels.reservedOkTextPost}
               </p>
+              {formData.email && (
+                <p className="text-blue-700 mb-8 font-black">
+                  {T.labels.reservedOkEmail} {formData.email}
+                </p>
+              )}
               <button
-                onClick={() => window.open(`https://wa.me/${PHONE_NUMBER}`, "_blank")}
+                onClick={() => {
+                  const msg =
+                    lang === "val"
+                      ? `Hola! Tinc la reserva confirmada per al ${selectedDate}. Nom: ${formData.name}.`
+                      : `Hola! Tengo la reserva confirmada para el ${selectedDate}. Nombre: ${formData.name}.`;
+                  window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msg)}`, "_blank");
+                }}
                 className="bg-[#25D366] text-white px-10 py-5 rounded-[25px] font-black text-xl hover:scale-105 transition-all shadow-xl flex items-center justify-center gap-3 mx-auto"
               >
                 {T.labels.sendProof}
@@ -844,6 +898,20 @@ const BookingCalendar: React.FC<Props> = ({ lang }) => {
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl outline-none font-black text-lg focus:ring-2 focus:ring-blue-600 transition-all"
                       placeholder={T.labels.whatsappPH}
+                    />
+                  </div>
+
+                  <div className="space-y-2 md:col-span-2">
+                    <label className="text-xs font-black text-gray-400 uppercase ml-2">
+                      {T.labels.email}
+                    </label>
+                    <input
+                      required
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full px-6 py-4 bg-gray-50 border-none rounded-2xl outline-none font-black text-lg focus:ring-2 focus:ring-blue-600 transition-all"
+                      placeholder={T.labels.emailPH}
                     />
                   </div>
                 </div>
